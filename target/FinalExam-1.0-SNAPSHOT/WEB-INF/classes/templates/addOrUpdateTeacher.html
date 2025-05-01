@@ -1,0 +1,61 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Quản lý sản phẩm</title>
+    <th:block th:replace="base :: bootstrap"></th:block>
+</head>
+<body>
+    <main class="container">
+        <div th:replace="base :: header"></div>
+        <h1 class="text-center text-info mt-1">QUẢN LÝ GIẢNG VIÊN</h1>
+        <form method="post" th:action="@{/addOrUpdateTeacher/}" th:object="${user}" enctype="multipart/form-data">
+            <div class="mb-3 mt-3">
+                <label for="userCode" class="form-label">Mã giảng viên: </label>
+                <input type="text" class="form-control" id="userCode" placeholder="Mã giảng viên" th:field="*{userCode}" />
+            </div>
+
+            <div class="mb-3 mt-3">
+                <label for="lastName" class="form-label">Họ giảng viên: </label>
+                <input type="text" class="form-control" id="lastName" placeholder="Họ giảng viên" th:field="*{lastName}" />
+            </div>
+
+            <div class="mb-3 mt-3">
+                <label for="firstName" class="form-label">Tên giảng viên: </label>
+                <input type="text" class="form-control" id="firstName" placeholder="Tên giảng viên" th:field="*{firstName}" />
+            </div>
+
+            <div class="mb-3 mt-3">
+                <label for="email" class="form-label">Email: </label>
+                <input type="email" class="form-control" id="email" placeholder="Email" th:field="*{email}" />
+            </div>
+
+            <div class="mb-3 mt-3">
+                <label for="password" class="form-label">Mật khẩu: </label>
+                <input type="password" class="form-control" id="password" placeholder="Mật khẩu" th:field="*{password}" />
+            </div>
+            
+            
+
+            <div class="mb-3 mt-3">
+                <label for="avatar" class="form-label">Ảnh đại diện: </label>
+                <input type="file" class="form-control" th:field="*{file}" />
+                <img th:if="${user.avatar != null}" th:src="@{${user.avatar}}" width="200" />
+            </div>
+             
+            <input type="hidden" th:field="*{role}" />
+
+            <div class="mb-3 mt-3">
+                <input type="hidden" th:field="*{id}" />
+                <input type="hidden" th:field="*{avatar}" />
+                <button class="btn btn-success mt-1" type="submit">
+                    <span th:if="${user.id == null}">Thêm giảng viên</span>
+                    <span th:unless="${user.id == null}">Cập nhật giảng viên</span>
+                </button>
+            </div>
+        </form>
+
+        <div th:replace="base :: footer"></div>
+
+
+    </main>
+</body>
