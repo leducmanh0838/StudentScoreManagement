@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Quản lý môn học</title>
+    <th:block th:replace="base :: bootstrap"></th:block>
+</head>
+<body>
+    <div th:replace="base :: header"></div>
+
+    <!--<div th:text="${debugMessage}" style="color: red; font-weight: bold;"></div>-->
+
+    <div class="container mt-4">
+        <h2></h2>
+        
+        <!-- Form thêm mới môn học -->
+        <form th:action="@{/addOrUpdateCourse/}" method="post" class="row g-3 mb-4">
+            <div class="col-md-4">
+                <input type="text" name="name" class="form-control" placeholder="Tên môn học mới" required>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-success">Thêm môn học</button>
+            </div>
+        </form>
+
+        <!-- Form lọc -->
+        <form method="get" action="#">
+            <div class="row g-3 mb-4">
+                <div class="col-md-3">
+                    <input type="text" name="name" class="form-control" placeholder="Tìm theo tên"
+                           th:value="${param.name}">
+                </div>
+                <div class="col-md-3">
+                    <button type="submit" class="btn btn-primary">Lọc</button>
+                    <a th:href="@{/courseListView/}" class="btn btn-secondary">Reset</a>
+                </div>
+            </div>
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Mã</th>
+                        <th>Tên môn học</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="c: ${courses}">
+                        <td th:text="${c.id}"></td>
+                        <td th:text="${c.name}"></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </form>
+
+        <div class="mt-3 d-flex justify-content-between">
+            <!-- Nút Trước (bên trái) -->
+            <div>
+                <form method="get" action="#"
+                      th:classappend="${currentPage != null and currentPage != 1} ? '' : 'invisible'">
+                    <input type="hidden" name="page" th:value="${currentPage > 1 ? currentPage - 1 : 1}" />
+                    <input type="hidden" name="name" th:value="${param.name}" />
+                    <button type="submit" class="btn btn-secondary">Trước</button>
+                </form>
+            </div>
+
+            <!-- Nút Sau (bên phải) -->
+            <div>
+                <form method="get" action="#"
+                      th:classappend="${isLoadMore} ? '' : 'invisible'">
+                    <input type="hidden" name="page" th:value="${currentPage + 1}" />
+                    <input type="hidden" name="name" th:value="${param.name}" />
+                    <button type="submit" class="btn btn-primary">Sau</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+    <div th:replace="base :: footer"></div>
+</body>
+</html>
