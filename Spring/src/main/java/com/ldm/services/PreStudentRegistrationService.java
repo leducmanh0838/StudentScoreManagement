@@ -14,4 +14,5 @@ import org.springframework.web.multipart.MultipartFile;
  */
 public interface PreStudentRegistrationService {
     PreStudentRegistration register(Map<String, String> params, MultipartFile avatar);
+    boolean verifyOtp(String email, String otp);
 }

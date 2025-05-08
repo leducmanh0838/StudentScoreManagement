@@ -40,6 +40,7 @@ public class PreStudentRegistrationRepositoryImpl implements PreStudentRegistrat
             existing.setFirstName(p.getFirstName());
             existing.setLastName(p.getLastName());
             existing.setAvatar(p.getAvatar());
+            existing.setVerificationAttempts(p.getVerificationAttempts());
             // Cập nhật record
             s.merge(existing);
             return existing;
@@ -57,6 +58,16 @@ public class PreStudentRegistrationRepositoryImpl implements PreStudentRegistrat
             "FROM PreStudentRegistration WHERE email = :email", PreStudentRegistration.class);
         query.setParameter("email", email);
         return query.uniqueResult();
+    }
+
+    @Override
+    public void delete(PreStudentRegistration p) {
+        Session s = this.factory.getObject().getCurrentSession();
+
+        PreStudentRegistration persistent = s.get(PreStudentRegistration.class, p.getId());
+        if (persistent != null) {
+            s.remove(persistent);
+        }
     }
     
 }

@@ -12,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -36,6 +37,7 @@ import java.util.Date;
     @NamedQuery(name = "PreStudentRegistration.findByAvatar", query = "SELECT p FROM PreStudentRegistration p WHERE p.avatar = :avatar"),
     @NamedQuery(name = "PreStudentRegistration.findByOtp", query = "SELECT p FROM PreStudentRegistration p WHERE p.otp = :otp"),
     @NamedQuery(name = "PreStudentRegistration.findByOtpExpiration", query = "SELECT p FROM PreStudentRegistration p WHERE p.otpExpiration = :otpExpiration"),
+    @NamedQuery(name = "PreStudentRegistration.findByVerificationAttempts", query = "SELECT p FROM PreStudentRegistration p WHERE p.verificationAttempts = :verificationAttempts"),
     @NamedQuery(name = "PreStudentRegistration.findByCreatedDate", query = "SELECT p FROM PreStudentRegistration p WHERE p.createdDate = :createdDate")})
 public class PreStudentRegistration implements Serializable {
 
@@ -75,9 +77,18 @@ public class PreStudentRegistration implements Serializable {
     @Column(name = "otp_expiration")
     @Temporal(TemporalType.TIMESTAMP)
     private Date otpExpiration;
+    @Column(name = "verification_attempts")
+    private Integer verificationAttempts;
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
+    
+    @PrePersist
+    public void prePersist() {
+        if (verificationAttempts == null) {
+            verificationAttempts = 0;
+        }
+    }
 
     public PreStudentRegistration() {
     }
@@ -156,6 +167,14 @@ public class PreStudentRegistration implements Serializable {
 
     public void setOtpExpiration(Date otpExpiration) {
         this.otpExpiration = otpExpiration;
+    }
+
+    public Integer getVerificationAttempts() {
+        return verificationAttempts;
+    }
+
+    public void setVerificationAttempts(Integer verificationAttempts) {
+        this.verificationAttempts = verificationAttempts;
     }
 
     public Date getCreatedDate() {

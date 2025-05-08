@@ -13,4 +13,5 @@ import com.ldm.pojo.PreStudentRegistration;
 public interface PreStudentRegistrationRepository {
     PreStudentRegistration addOrUpdate(PreStudentRegistration p);
     PreStudentRegistration findByEmail(String email);
+    void delete(PreStudentRegistration p);
 }

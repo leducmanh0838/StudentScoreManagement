@@ -4,6 +4,7 @@ com\ldm\formatters\CourseFormatter.class
 com\ldm\repositories\impl\UserRepositoryImpl.class
 com\ldm\repositories\PreStudentRegistrationRepository.class
 com\ldm\pojo\Enrollment.class
+com\ldm\utils\MyUserUtil.class
 com\ldm\pojo\User.class
 com\ldm\configs\WebAppContextConfigs.class
 com\ldm\pojo\Comment.class
@@ -26,7 +27,6 @@ com\ldm\services\CourseService.class
 com\ldm\configs\ThymeleafConfig.class
 com\ldm\services\PreStudentRegistrationService.class
 com\ldm\finalexam\resources\JakartaEE11Resource.class
-com\ldm\utils\OtpUtil.class
 com\ldm\pojo\Grade.class
 com\ldm\repositories\UserRepository.class
 com\ldm\utils\JwtUtils.class

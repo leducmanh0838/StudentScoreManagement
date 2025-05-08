@@ -20,4 +20,5 @@ public interface UserRepository {
     User addOrUpdateUser(User u);
     User getUserByEmail(String email);
     boolean authenticate(String email, String password);
+    boolean isEmailExists(String email);
 }
