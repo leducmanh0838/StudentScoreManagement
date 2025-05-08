@@ -14,16 +14,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
+import java.util.Set;
 
 /**
  *
@@ -40,17 +38,18 @@ import java.util.Date;
     @NamedQuery(name = "Course.findByUpdatedDate", query = "SELECT c FROM Course c WHERE c.updatedDate = :updatedDate")})
 public class Course implements Serializable {
 
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "name")
+    private String name;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
-    @Column(name = "name")
-    private String name;
     @Column(name = "is_active")
     private Boolean isActive;
     @Column(name = "created_date")
@@ -60,18 +59,7 @@ public class Course implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedDate;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "courseId")
-    private Collection<CourseSession> courseSessionCollection;
-    
-    @PrePersist
-    protected void onCreate() {
-        this.updatedDate = new Date();
-        this.createdDate = new Date();
-    }
-    
-    @PreUpdate
-    protected void onUpdate() {
-        this.updatedDate = new Date();
-    }
+    private Set<CourseSession> courseSessionSet;
 
     public Course() {
     }
@@ -93,13 +81,6 @@ public class Course implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public Boolean getIsActive() {
         return isActive;
@@ -125,12 +106,12 @@ public class Course implements Serializable {
         this.updatedDate = updatedDate;
     }
 
-    public Collection<CourseSession> getCourseSessionCollection() {
-        return courseSessionCollection;
+    public Set<CourseSession> getCourseSessionSet() {
+        return courseSessionSet;
     }
 
-    public void setCourseSessionCollection(Collection<CourseSession> courseSessionCollection) {
-        this.courseSessionCollection = courseSessionCollection;
+    public void setCourseSessionSet(Set<CourseSession> courseSessionSet) {
+        this.courseSessionSet = courseSessionSet;
     }
 
     @Override
@@ -156,6 +137,14 @@ public class Course implements Serializable {
     @Override
     public String toString() {
         return "com.ldm.pojo.Course[ id=" + id + " ]";
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
     
 }

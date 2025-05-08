@@ -33,12 +33,6 @@ import java.io.Serializable;
     @NamedQuery(name = "AdditionalGrade.findByWeight", query = "SELECT a FROM AdditionalGrade a WHERE a.weight = :weight")})
 public class AdditionalGrade implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "id")
-    private Integer id;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 20)
@@ -48,6 +42,13 @@ public class AdditionalGrade implements Serializable {
     @NotNull
     @Column(name = "score")
     private float score;
+
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
+    private Integer id;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "weight")
     private Float weight;
@@ -84,13 +85,6 @@ public class AdditionalGrade implements Serializable {
         this.gradeName = gradeName;
     }
 
-    public float getScore() {
-        return score;
-    }
-
-    public void setScore(float score) {
-        this.score = score;
-    }
 
     public Float getWeight() {
         return weight;
@@ -131,6 +125,14 @@ public class AdditionalGrade implements Serializable {
     @Override
     public String toString() {
         return "com.ldm.pojo.AdditionalGrade[ id=" + id + " ]";
+    }
+
+    public float getScore() {
+        return score;
+    }
+
+    public void setScore(float score) {
+        this.score = score;
     }
     
 }

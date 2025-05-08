@@ -14,10 +14,10 @@ import java.util.Map;
  */
 public interface UserRepository {
     List<User> getAllUsers();
+    List<Object[]> getAllTeacherNames();
     List<User> getUsersForStaff(Map<String, String> params);
-    User addOrUpdateTeacher(User teacher);
     User getUserById(int id);
-    User addUser(User u);
+    User addOrUpdateUser(User u);
     User getUserByEmail(String email);
     boolean authenticate(String email, String password);
 }

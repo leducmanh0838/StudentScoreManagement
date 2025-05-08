@@ -38,18 +38,19 @@ import java.util.Date;
     @NamedQuery(name = "Notification.findByUpdatedDate", query = "SELECT n FROM Notification n WHERE n.updatedDate = :updatedDate")})
 public class Notification implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "id")
-    private Integer id;
     @Basic(optional = false)
     @NotNull
     @Lob
     @Size(min = 1, max = 65535)
     @Column(name = "message")
     private String message;
+
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
+    private Integer id;
     @Column(name = "is_read")
     private Boolean isRead;
     @Column(name = "is_active")
@@ -84,13 +85,6 @@ public class Notification implements Serializable {
         this.id = id;
     }
 
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
 
     public Boolean getIsRead() {
         return isRead;
@@ -155,6 +149,14 @@ public class Notification implements Serializable {
     @Override
     public String toString() {
         return "com.ldm.pojo.Notification[ id=" + id + " ]";
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
     
 }

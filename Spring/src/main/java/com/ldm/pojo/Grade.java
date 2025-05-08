@@ -18,10 +18,9 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
-import jakarta.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
-import java.util.Set;
 
 /**
  *
@@ -35,7 +34,6 @@ import java.util.Set;
     @NamedQuery(name = "Grade.findByMidtermScore", query = "SELECT g FROM Grade g WHERE g.midtermScore = :midtermScore"),
     @NamedQuery(name = "Grade.findByMidtermWeight", query = "SELECT g FROM Grade g WHERE g.midtermWeight = :midtermWeight"),
     @NamedQuery(name = "Grade.findByFinalScore", query = "SELECT g FROM Grade g WHERE g.finalScore = :finalScore"),
-    @NamedQuery(name = "Grade.findByStatus", query = "SELECT g FROM Grade g WHERE g.status = :status"),
     @NamedQuery(name = "Grade.findByIsActive", query = "SELECT g FROM Grade g WHERE g.isActive = :isActive"),
     @NamedQuery(name = "Grade.findByCreatedDate", query = "SELECT g FROM Grade g WHERE g.createdDate = :createdDate"),
     @NamedQuery(name = "Grade.findByUpdatedDate", query = "SELECT g FROM Grade g WHERE g.updatedDate = :updatedDate")})
@@ -54,9 +52,6 @@ public class Grade implements Serializable {
     private Float midtermWeight;
     @Column(name = "final_score")
     private Float finalScore;
-    @Size(max = 6)
-    @Column(name = "status")
-    private String status;
     @Column(name = "is_active")
     private Boolean isActive;
     @Column(name = "created_date")
@@ -69,7 +64,7 @@ public class Grade implements Serializable {
     @ManyToOne
     private Enrollment enrollmentId;
     @OneToMany(mappedBy = "gradeId")
-    private Set<AdditionalGrade> additionalGradeSet;
+    private Collection<AdditionalGrade> additionalGradeCollection;
 
     public Grade() {
     }
@@ -110,14 +105,6 @@ public class Grade implements Serializable {
         this.finalScore = finalScore;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public Boolean getIsActive() {
         return isActive;
     }
@@ -150,12 +137,12 @@ public class Grade implements Serializable {
         this.enrollmentId = enrollmentId;
     }
 
-    public Set<AdditionalGrade> getAdditionalGradeSet() {
-        return additionalGradeSet;
+    public Collection<AdditionalGrade> getAdditionalGradeCollection() {
+        return additionalGradeCollection;
     }
 
-    public void setAdditionalGradeSet(Set<AdditionalGrade> additionalGradeSet) {
-        this.additionalGradeSet = additionalGradeSet;
+    public void setAdditionalGradeCollection(Collection<AdditionalGrade> additionalGradeCollection) {
+        this.additionalGradeCollection = additionalGradeCollection;
     }
 
     @Override

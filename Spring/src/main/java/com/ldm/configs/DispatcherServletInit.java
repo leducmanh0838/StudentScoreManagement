@@ -8,9 +8,11 @@ package com.ldm.configs;
 //import jakarta.servlet.Filter;
 //import jakarta.servlet.MultipartConfigElement;
 //import jakarta.servlet.ServletRegistration;
+import com.ldm.filters.JwtFilter;
 import jakarta.servlet.MultipartConfigElement;
 import jakarta.servlet.ServletRegistration;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
+import jakarta.servlet.Filter;
 
 /**
  *
@@ -24,7 +26,8 @@ public class DispatcherServletInit extends AbstractAnnotationConfigDispatcherSer
             ThymeleafConfig.class,
             HibernateConfigs.class,
             MessageConfig.class,
-            SpringSecurityConfigs.class
+            SpringSecurityConfigs.class,
+            MailConfig.class
         };
     }
 
@@ -60,8 +63,8 @@ public class DispatcherServletInit extends AbstractAnnotationConfigDispatcherSer
 //        registration.setMultipartConfig(new MultipartConfigElement(location, maxFileSize, maxRequestSize, fileSizeThreshold));
 //    }
 //    
-//    @Override
-//    protected Filter[] getServletFilters() {
-//        return new Filter[] { new JwtFilter() }; // Filter sẽ áp dụng cho mọi request
-//    }
+    @Override
+    protected Filter[] getServletFilters() {
+        return new Filter[] { new JwtFilter() }; // Filter sẽ áp dụng cho mọi request
+    }
 }

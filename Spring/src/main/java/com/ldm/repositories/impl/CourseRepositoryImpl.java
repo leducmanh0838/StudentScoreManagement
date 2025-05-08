@@ -6,7 +6,6 @@ package com.ldm.repositories.impl;
 
 import com.ldm.pojo.Course;
 import com.ldm.repositories.CourseRepository;
-import jakarta.persistence.Query;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
@@ -19,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.hibernate.query.Query;
 
 /**
  *
@@ -80,6 +80,14 @@ public class CourseRepositoryImpl implements CourseRepository{
             query.setFirstResult(start);
         }
         return query.getResultList();
+    }
+
+    @Override
+    public List<Object[]> getAllCourseNames() {
+        Session s = this.factory.getObject().getCurrentSession();
+        Query<Object[]> q = s.createQuery(
+            "SELECT c.id, c.name FROM Course c", Object[].class);
+        return q.getResultList();
     }
     
 }

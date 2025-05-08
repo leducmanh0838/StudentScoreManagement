@@ -4,6 +4,7 @@
  */
 package com.ldm.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Basic;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -48,16 +49,6 @@ import org.springframework.web.multipart.MultipartFile;
     @NamedQuery(name = "User.findByUpdatedDate", query = "SELECT u FROM User u WHERE u.updatedDate = :updatedDate")})
 public class User implements Serializable {
 
-    public static final String STUDENT_ROLE = "student";
-    public static final String TEACHER_ROLE = "teacher";
-    public static final String STAFF_ROLE = "staff";
-    public static final String ADMIN_ROLE = "admin";
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "id")
-    private Integer id;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 20)
@@ -92,24 +83,45 @@ public class User implements Serializable {
     @Size(max = 255)
     @Column(name = "avatar")
     private String avatar;
+
+    public static final String STUDENT_ROLE = "student";
+    public static final String TEACHER_ROLE = "teacher";
+    public static final String STAFF_ROLE = "staff";
+    public static final String ADMIN_ROLE = "admin";
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
+    private Integer id;
     @Column(name = "is_active")
     private Boolean isActive;
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
+    @JsonIgnore
     @Column(name = "updated_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedDate;
+    @JsonIgnore
     @OneToMany(mappedBy = "userId")
     private Collection<Notification> notificationCollection;
+    @JsonIgnore
     @OneToMany(mappedBy = "userId")
     private Collection<ForumPost> forumPostCollection;
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "teacherId")
     private Collection<CourseSession> courseSessionCollection;
+    
+    @JsonIgnore
     @OneToMany(mappedBy = "userId")
     private Collection<Comment> commentCollection;
+    
+    @JsonIgnore
     @OneToMany(mappedBy = "userId")
     private Collection<Enrollment> enrollmentCollection;
+    
+    @JsonIgnore
     @Transient
     private MultipartFile file;
     
@@ -173,37 +185,6 @@ public class User implements Serializable {
         this.lastName = lastName;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
 
     public Boolean getIsActive() {
         return isActive;
@@ -306,6 +287,38 @@ public class User implements Serializable {
      */
     public void setFile(MultipartFile file) {
         this.file = file;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
     
 }

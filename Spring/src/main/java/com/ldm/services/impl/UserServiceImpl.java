@@ -66,7 +66,9 @@ public class UserServiceImpl implements UserService{
             String hashed = passwordEncoder.encode(teacher.getPassword());
             teacher.setPassword(hashed);
         }
-        return this.userRepository.addOrUpdateTeacher(teacher);
+        teacher.setRole(User.TEACHER_ROLE);
+        System.out.println("role "+teacher.getId());
+        return this.userRepository.addOrUpdateUser(teacher);
     }
 
     @Override
@@ -74,45 +76,45 @@ public class UserServiceImpl implements UserService{
         return this.userRepository.getUserById(id);
     }
     
-    @Override
-    public User addUser(Map<String, String> params, MultipartFile avatar) {
-        String firstName = params.get("firstName");
-        String lastName = params.get("lastName");
-        String email = params.get("email");
-        String password = params.get("password");
-        String userCode = params.get("userCode");
-
-        // Kiểm tra rỗng
-        if (firstName == null || firstName.isBlank())
-            throw new IllegalArgumentException("Thiếu firstName");
-        if (lastName == null || lastName.isBlank())
-            throw new IllegalArgumentException("Thiếu lastName");
-        if (email == null || email.isBlank())
-            throw new IllegalArgumentException("Thiếu email");
-        if (password == null || password.isBlank())
-            throw new IllegalArgumentException("Thiếu password");
-        if (userCode == null || userCode.isBlank())
-            throw new IllegalArgumentException("Thiếu userCode");
-        
-        User u = new User();
-        u.setFirstName(firstName);
-        u.setLastName(lastName);
-        u.setEmail(email);
-        u.setPassword(this.passwordEncoder.encode(password));
-        u.setUserCode(userCode);
-        u.setRole(User.STUDENT_ROLE);
-        
-        if (avatar!=null && !avatar.isEmpty()) {
-            try {
-                Map res = cloudinary.uploader().upload(avatar.getBytes(), ObjectUtils.asMap("resource_type", "auto"));
-                u.setAvatar(res.get("secure_url").toString());
-            } catch (IOException ex) {
-                Logger.getLogger(UserServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        
-        return this.userRepository.addUser(u);
-    }
+//    @Override
+//    public User addUser(Map<String, String> params, MultipartFile avatar) {
+//        String firstName = params.get("firstName");
+//        String lastName = params.get("lastName");
+//        String email = params.get("email");
+//        String password = params.get("password");
+//        String userCode = params.get("userCode");
+//
+//        // Kiểm tra rỗng
+//        if (firstName == null || firstName.isBlank())
+//            throw new IllegalArgumentException("Thiếu firstName");
+//        if (lastName == null || lastName.isBlank())
+//            throw new IllegalArgumentException("Thiếu lastName");
+//        if (email == null || email.isBlank())
+//            throw new IllegalArgumentException("Thiếu email");
+//        if (password == null || password.isBlank())
+//            throw new IllegalArgumentException("Thiếu password");
+//        if (userCode == null || userCode.isBlank())
+//            throw new IllegalArgumentException("Thiếu userCode");
+//        
+//        User u = new User();
+//        u.setFirstName(firstName);
+//        u.setLastName(lastName);
+//        u.setEmail(email);
+//        u.setPassword(this.passwordEncoder.encode(password));
+//        u.setUserCode(userCode);
+//        u.setRole(User.STUDENT_ROLE);
+//        
+//        if (avatar!=null && !avatar.isEmpty()) {
+//            try {
+//                Map res = cloudinary.uploader().upload(avatar.getBytes(), ObjectUtils.asMap("resource_type", "auto"));
+//                u.setAvatar(res.get("secure_url").toString());
+//            } catch (IOException ex) {
+//                Logger.getLogger(UserServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        }
+//        
+//        return this.userRepository.addUser(u);
+//    }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -137,5 +139,15 @@ public class UserServiceImpl implements UserService{
     public boolean authenticate(String email, String password) {
         return this.userRepository.authenticate(email, password);
     }
-    
+
+    @Override
+    public List<Object[]> getAllTeacherNames() {
+        return this.userRepository.getAllTeacherNames();
+    }
+
+    @Override
+    public User addStudent(User student) {
+        student.setRole(User.STUDENT_ROLE);
+        return this.userRepository.addOrUpdateUser(student);
+    } 
 }

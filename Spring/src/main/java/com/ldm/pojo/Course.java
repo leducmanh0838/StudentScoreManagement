@@ -14,8 +14,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -61,17 +59,6 @@ public class Course implements Serializable {
     private Date updatedDate;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "courseId")
     private Collection<CourseSession> courseSessionCollection;
-    
-    @PrePersist
-    protected void onCreate() {
-        this.updatedDate = new Date();
-        this.createdDate = new Date();
-    }
-    
-    @PreUpdate
-    protected void onUpdate() {
-        this.updatedDate = new Date();
-    }
 
     public Course() {
     }

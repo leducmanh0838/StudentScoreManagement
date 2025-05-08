@@ -13,5 +13,6 @@
     <class>com.ldm.pojo.Coursesession</class>
     <class>com.ldm.pojo.CourseSession</class>
     <class>com.ldm.pojo.OtpVerification</class>
+    <class>com.ldm.pojo.PreStudentRegistration</class>
   </persistence-unit>
 </persistence>

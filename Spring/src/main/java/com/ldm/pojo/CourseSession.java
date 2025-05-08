@@ -19,9 +19,10 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
-import java.util.Set;
 
 /**
  *
@@ -32,9 +33,10 @@ import java.util.Set;
 @NamedQueries({
     @NamedQuery(name = "CourseSession.findAll", query = "SELECT c FROM CourseSession c"),
     @NamedQuery(name = "CourseSession.findById", query = "SELECT c FROM CourseSession c WHERE c.id = :id"),
-    @NamedQuery(name = "CourseSession.findByMaxSlots", query = "SELECT c FROM CourseSession c WHERE c.maxSlots = :maxSlots"),
+    @NamedQuery(name = "CourseSession.findByCode", query = "SELECT c FROM CourseSession c WHERE c.code = :code"),
     @NamedQuery(name = "CourseSession.findByIsActive", query = "SELECT c FROM CourseSession c WHERE c.isActive = :isActive"),
     @NamedQuery(name = "CourseSession.findByIsOpen", query = "SELECT c FROM CourseSession c WHERE c.isOpen = :isOpen"),
+    @NamedQuery(name = "CourseSession.findByGradeStatus", query = "SELECT c FROM CourseSession c WHERE c.gradeStatus = :gradeStatus"),
     @NamedQuery(name = "CourseSession.findByCreatedDate", query = "SELECT c FROM CourseSession c WHERE c.createdDate = :createdDate"),
     @NamedQuery(name = "CourseSession.findByUpdatedDate", query = "SELECT c FROM CourseSession c WHERE c.updatedDate = :updatedDate")})
 public class CourseSession implements Serializable {
@@ -47,12 +49,16 @@ public class CourseSession implements Serializable {
     private Integer id;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "max_slots")
-    private int maxSlots;
+    @Size(min = 1, max = 20)
+    @Column(name = "code")
+    private String code;
     @Column(name = "is_active")
     private Boolean isActive;
     @Column(name = "is_open")
     private Boolean isOpen;
+    @Size(max = 6)
+    @Column(name = "grade_status")
+    private String gradeStatus;
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
@@ -66,7 +72,7 @@ public class CourseSession implements Serializable {
     @ManyToOne(optional = false)
     private User teacherId;
     @OneToMany(mappedBy = "courseSessionId")
-    private Set<Enrollment> enrollmentSet;
+    private Collection<Enrollment> enrollmentCollection;
 
     public CourseSession() {
     }
@@ -75,9 +81,9 @@ public class CourseSession implements Serializable {
         this.id = id;
     }
 
-    public CourseSession(Integer id, int maxSlots) {
+    public CourseSession(Integer id, String code) {
         this.id = id;
-        this.maxSlots = maxSlots;
+        this.code = code;
     }
 
     public Integer getId() {
@@ -88,12 +94,12 @@ public class CourseSession implements Serializable {
         this.id = id;
     }
 
-    public int getMaxSlots() {
-        return maxSlots;
+    public String getCode() {
+        return code;
     }
 
-    public void setMaxSlots(int maxSlots) {
-        this.maxSlots = maxSlots;
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public Boolean getIsActive() {
@@ -110,6 +116,14 @@ public class CourseSession implements Serializable {
 
     public void setIsOpen(Boolean isOpen) {
         this.isOpen = isOpen;
+    }
+
+    public String getGradeStatus() {
+        return gradeStatus;
+    }
+
+    public void setGradeStatus(String gradeStatus) {
+        this.gradeStatus = gradeStatus;
     }
 
     public Date getCreatedDate() {
@@ -144,12 +158,12 @@ public class CourseSession implements Serializable {
         this.teacherId = teacherId;
     }
 
-    public Set<Enrollment> getEnrollmentSet() {
-        return enrollmentSet;
+    public Collection<Enrollment> getEnrollmentCollection() {
+        return enrollmentCollection;
     }
 
-    public void setEnrollmentSet(Set<Enrollment> enrollmentSet) {
-        this.enrollmentSet = enrollmentSet;
+    public void setEnrollmentCollection(Collection<Enrollment> enrollmentCollection) {
+        this.enrollmentCollection = enrollmentCollection;
     }
 
     @Override

@@ -1,10 +1,16 @@
 //package com.ldm.tests;
-//import static org.junit.jupiter.api.Assertions.assertNotNull;
 //
+//
+//import com.ldm.pojo.Course;
+//import com.ldm.pojo.CourseSession;
+//import com.ldm.pojo.User;
+//import com.ldm.repositories.impl.CourseSessionRepositoryImpl;
+//import static org.junit.jupiter.api.Assertions.assertNotNull;
 //import org.junit.jupiter.api.Test;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.boot.test.context.SpringBootTest;
-//import com.ldm.pojo.CourseSession;
+//
+//
 //
 //@SpringBootTest
 //public class CourseSessionRepositoryImplTest {

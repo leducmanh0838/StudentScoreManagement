@@ -40,12 +40,6 @@ import java.util.Set;
     @NamedQuery(name = "ForumPost.findByUpdatedDate", query = "SELECT f FROM ForumPost f WHERE f.updatedDate = :updatedDate")})
 public class ForumPost implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "id")
-    private Integer id;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
@@ -57,6 +51,13 @@ public class ForumPost implements Serializable {
     @Size(min = 1, max = 65535)
     @Column(name = "content")
     private String content;
+
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
+    private Integer id;
     @Column(name = "is_active")
     private Boolean isActive;
     @Column(name = "created_date")
@@ -92,21 +93,6 @@ public class ForumPost implements Serializable {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
 
     public Boolean getIsActive() {
         return isActive;
@@ -171,6 +157,22 @@ public class ForumPost implements Serializable {
     @Override
     public String toString() {
         return "com.ldm.pojo.ForumPost[ id=" + id + " ]";
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
     
 }

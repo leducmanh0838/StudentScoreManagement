@@ -52,17 +52,36 @@ public class CourseSessionRepositoryImpl implements CourseSessionRepository{
         CriteriaBuilder cb = s.getCriteriaBuilder();
         CriteriaQuery<Object[]> cq = cb.createQuery(Object[].class);
 
+        // Root CourseSession
         Root<CourseSession> root = cq.from(CourseSession.class);
+        
+        // Join Course and User (teacher)
         Join<CourseSession, Course> courseJoin = root.join("courseId", JoinType.INNER);
         Join<CourseSession, User> teacherJoin = root.join("teacherId", JoinType.INNER);
 
+        // Multiselect: choose fields to select
         cq.multiselect(
-            courseJoin.get("name"),
-            cb.concat(cb.concat(teacherJoin.get("firstName"), " "), teacherJoin.get("lastName")),
-            root.get("maxSlots")
+            root.get("id"),
+            root.get("code"),
+            courseJoin.get("name"), // Course name
+            cb.concat(cb.concat(teacherJoin.get("firstName"), " "), teacherJoin.get("lastName")), // Teacher's name
+            root.get("isOpen")    // Is open
         );
 
+        // Apply filtering for courseId if provided
+        if (params.containsKey("courseId")) {
+            Long courseId = Long.valueOf(params.get("courseId"));
+            cq.where(cb.equal(courseJoin.get("id"), courseId));
+        }
+
+        // Create query and set pagination
         Query<Object[]> query = s.createQuery(cq);
+
+        // Pagination: Set start position (page - 1) * PAGE_SIZE and max results
+        int page = Integer.parseInt(params.getOrDefault("page", "1")); // Default to page 1
+        query.setFirstResult((page - 1) * PAGE_SIZE); // Start from the correct offset (page - 1) * PAGE_SIZE
+        query.setMaxResults(PAGE_SIZE); // Limit results per page
+
         return query.getResultList();
     }
 
@@ -70,5 +89,10 @@ public class CourseSessionRepositoryImpl implements CourseSessionRepository{
     public boolean registerCourseSession() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
+    @Override
+    public CourseSession getById(int id) {
+        Session s = this.factory.getObject().getCurrentSession();
+        return s.get(CourseSession.class, id); // Dùng Hibernate để lấy theo primary key
+    }
 }

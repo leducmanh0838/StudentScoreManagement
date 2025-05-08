@@ -19,6 +19,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
@@ -32,12 +33,22 @@ import java.util.Set;
 @NamedQueries({
     @NamedQuery(name = "CourseSession.findAll", query = "SELECT c FROM CourseSession c"),
     @NamedQuery(name = "CourseSession.findById", query = "SELECT c FROM CourseSession c WHERE c.id = :id"),
-    @NamedQuery(name = "CourseSession.findByMaxSlots", query = "SELECT c FROM CourseSession c WHERE c.maxSlots = :maxSlots"),
+    @NamedQuery(name = "CourseSession.findByCode", query = "SELECT c FROM CourseSession c WHERE c.code = :code"),
     @NamedQuery(name = "CourseSession.findByIsActive", query = "SELECT c FROM CourseSession c WHERE c.isActive = :isActive"),
     @NamedQuery(name = "CourseSession.findByIsOpen", query = "SELECT c FROM CourseSession c WHERE c.isOpen = :isOpen"),
+    @NamedQuery(name = "CourseSession.findByGradeStatus", query = "SELECT c FROM CourseSession c WHERE c.gradeStatus = :gradeStatus"),
     @NamedQuery(name = "CourseSession.findByCreatedDate", query = "SELECT c FROM CourseSession c WHERE c.createdDate = :createdDate"),
     @NamedQuery(name = "CourseSession.findByUpdatedDate", query = "SELECT c FROM CourseSession c WHERE c.updatedDate = :updatedDate")})
 public class CourseSession implements Serializable {
+
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 20)
+    @Column(name = "code")
+    private String code;
+    @Size(max = 6)
+    @Column(name = "grade_status")
+    private String gradeStatus;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -45,10 +56,6 @@ public class CourseSession implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "max_slots")
-    private int maxSlots;
     @Column(name = "is_active")
     private Boolean isActive;
     @Column(name = "is_open")
@@ -75,9 +82,9 @@ public class CourseSession implements Serializable {
         this.id = id;
     }
 
-    public CourseSession(Integer id, int maxSlots) {
+    public CourseSession(Integer id, String code) {
         this.id = id;
-        this.maxSlots = maxSlots;
+        this.code = code;
     }
 
     public Integer getId() {
@@ -88,13 +95,6 @@ public class CourseSession implements Serializable {
         this.id = id;
     }
 
-    public int getMaxSlots() {
-        return maxSlots;
-    }
-
-    public void setMaxSlots(int maxSlots) {
-        this.maxSlots = maxSlots;
-    }
 
     public Boolean getIsActive() {
         return isActive;
@@ -110,6 +110,14 @@ public class CourseSession implements Serializable {
 
     public void setIsOpen(Boolean isOpen) {
         this.isOpen = isOpen;
+    }
+
+    public String getGradeStatus() {
+        return gradeStatus;
+    }
+
+    public void setGradeStatus(String gradeStatus) {
+        this.gradeStatus = gradeStatus;
     }
 
     public Date getCreatedDate() {
@@ -175,6 +183,14 @@ public class CourseSession implements Serializable {
     @Override
     public String toString() {
         return "com.ldm.pojo.CourseSession[ id=" + id + " ]";
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
     
 }

@@ -15,6 +15,7 @@ import java.util.Map;
 public interface CourseSessionService {
     
     CourseSession addOrUpdate(CourseSession cs);
+    CourseSession getById(int id);
 //    SELECT 
 //    c.name AS courseName,
 //    CONCAT(u.first_name, ' ', u.last_name) AS teacherFullName,

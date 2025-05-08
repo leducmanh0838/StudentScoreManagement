@@ -14,8 +14,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -47,11 +45,10 @@ import org.springframework.web.multipart.MultipartFile;
     @NamedQuery(name = "User.findByCreatedDate", query = "SELECT u FROM User u WHERE u.createdDate = :createdDate"),
     @NamedQuery(name = "User.findByUpdatedDate", query = "SELECT u FROM User u WHERE u.updatedDate = :updatedDate")})
 public class User implements Serializable {
-
-    public static final String STUDENT_ROLE = "student";
-    public static final String TEACHER_ROLE = "teacher";
     public static final String STAFF_ROLE = "staff";
     public static final String ADMIN_ROLE = "admin";
+    public static final String TEACHER_ROLE = "teacher";
+    public static final String STUDENT_ROLE = "student";
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -112,17 +109,6 @@ public class User implements Serializable {
     private Collection<Enrollment> enrollmentCollection;
     @Transient
     private MultipartFile file;
-    
-    @PrePersist
-    protected void onCreate() {
-        this.updatedDate = new Date();
-        this.createdDate = new Date();
-    }
-    
-    @PreUpdate
-    protected void onUpdate() {
-        this.updatedDate = new Date();
-    }
 
     public User() {
     }

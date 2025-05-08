@@ -17,10 +17,12 @@ import org.springframework.web.multipart.MultipartFile;
 public interface UserService extends UserDetailsService{
 //public interface UserService{
     List<User> getAllUsers();
+    List<Object[]> getAllTeacherNames();
     List<User> getUsersForStaff(Map<String, String> params);
     User addOrUpdateTeacher(User teacher);
     User getUserById(int id);
-    User addUser(Map<String, String> params, MultipartFile avatar);
+//    User addUser(Map<String, String> params, MultipartFile avatar);
     User getUserByEmail(String email);
     boolean authenticate(String email, String password);
+    User addStudent(User student);
 }

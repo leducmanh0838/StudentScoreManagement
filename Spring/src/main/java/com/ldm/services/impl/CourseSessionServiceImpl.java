@@ -10,6 +10,7 @@ import com.ldm.pojo.CourseSession;
 import com.ldm.pojo.User;
 import com.ldm.repositories.CourseRepository;
 import com.ldm.repositories.CourseSessionRepository;
+import com.ldm.services.CourseSessionService;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Join;
@@ -28,7 +29,7 @@ import org.springframework.stereotype.Service;
  * @author PC
  */
 @Service
-public class CourseSessionServiceImpl implements CourseSessionRepository{
+public class CourseSessionServiceImpl implements CourseSessionService{
     @Autowired
     private CourseSessionRepository repo;
     
@@ -45,6 +46,11 @@ public class CourseSessionServiceImpl implements CourseSessionRepository{
     @Override
     public boolean registerCourseSession() {
         return this.registerCourseSession();
+    }
+
+    @Override
+    public CourseSession getById(int id) {
+        return this.repo.getById(id);
     }
     
 }

@@ -49,7 +49,7 @@ public class UserRepositoryImpl implements UserRepository {
         CriteriaQuery<User> q = b.createQuery(User.class);
         Root<User> root = q.from(User.class);
         q.select(root);
-        
+
         List<Predicate> predicates = new ArrayList<>();
         predicates.add(b.notEqual(root.get("role"), User.STAFF_ROLE));
         predicates.add(b.notEqual(root.get("role"), User.ADMIN_ROLE));
@@ -78,7 +78,6 @@ public class UserRepositoryImpl implements UserRepository {
                 predicates.add(b.equal(root.get("role"), role));
             }
 
-            
         }
         // Thêm các điều kiện lọc vào câu truy vấn
         q.where(predicates.toArray(Predicate[]::new));
@@ -102,40 +101,33 @@ public class UserRepositoryImpl implements UserRepository {
 
         return query.getResultList();
     }
-    
-    @Override
-    public User addOrUpdateTeacher(User teacher) {
-        Session s = this.factory.getObject().getCurrentSession();
 
-        if (teacher.getId() == null) {
-            teacher.setRole("teacher");
-            s.persist(teacher);
-        } else {
-//            s.merge(teacher);
-            User existing = s.get(User.class, teacher.getId());
-            if (existing != null) {
-                existing.setFirstName(teacher.getFirstName());
-                existing.setLastName(teacher.getLastName());
-                existing.setAvatar(teacher.getAvatar());
-                // Không cập nhật password hay role
-                // Hibernate sẽ tự động cập nhật khi commit transaction
-            }
-        }
-
-        return teacher; // Trả về giảng viên đã được thêm hoặc cập nhật
-    }
-    
     @Override
     public User getUserById(int id) {
         Session s = this.factory.getObject().getCurrentSession();
         return s.get(User.class, id); // Dùng Hibernate để lấy theo primary key
     }
-    
+
     @Override
-    public User addUser(User u) {
+    public User addOrUpdateUser(User u) {
         Session s = this.factory.getObject().getCurrentSession();
-        s.persist(u);
-        
+        if (u.getId() == null) {
+            s.persist(u);
+        } else {
+            User existing = s.get(User.class, u.getId());
+            if (existing != null) {
+                // 2. Chỉ cập nhật nếu != null
+                if (u.getFirstName()!= null)
+                    existing.setFirstName(u.getFirstName());
+                if (u.getLastName()!= null)
+                    existing.setLastName(u.getLastName());
+                if (u.getAvatar()!= null)
+                    existing.setAvatar(u.getAvatar());
+                // ... thêm các field khác tương tự
+                s.merge(existing); // cập nhật lại bản đã sửa
+                return existing;
+            }
+        }
         return u;
     }
 
@@ -146,12 +138,26 @@ public class UserRepositoryImpl implements UserRepository {
         q.setParameter("email", email);
         return q.uniqueResult(); // Trả về 1 user nếu tồn tại, null nếu không
     }
-    
+
     @Override
     public boolean authenticate(String email, String password) {
         User u = this.getUserByEmail(email);
 
+        // Kiểm tra null
+        if (u == null || password == null || u.getPassword() == null) {
+            return false;
+        }
+
         return this.passwordEncoder.matches(password, u.getPassword());
+    }
+
+    @Override
+    public List<Object[]> getAllTeacherNames() {
+        Session s = this.factory.getObject().getCurrentSession();
+        Query<Object[]> q = s.createQuery(
+                "SELECT u.id, CONCAT(u.firstName, ' ', u.lastName) FROM User u WHERE u.role = :role", Object[].class);
+        q.setParameter("role", "teacher");
+        return q.getResultList();
     }
 
 }

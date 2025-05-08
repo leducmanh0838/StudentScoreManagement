@@ -22,8 +22,8 @@ import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
-import java.util.Set;
 
 /**
  *
@@ -69,7 +69,7 @@ public class ForumPost implements Serializable {
     @ManyToOne
     private User userId;
     @OneToMany(mappedBy = "forumPostId")
-    private Set<Comment> commentSet;
+    private Collection<Comment> commentCollection;
 
     public ForumPost() {
     }
@@ -140,12 +140,12 @@ public class ForumPost implements Serializable {
         this.userId = userId;
     }
 
-    public Set<Comment> getCommentSet() {
-        return commentSet;
+    public Collection<Comment> getCommentCollection() {
+        return commentCollection;
     }
 
-    public void setCommentSet(Set<Comment> commentSet) {
-        this.commentSet = commentSet;
+    public void setCommentCollection(Collection<Comment> commentCollection) {
+        this.commentCollection = commentCollection;
     }
 
     @Override

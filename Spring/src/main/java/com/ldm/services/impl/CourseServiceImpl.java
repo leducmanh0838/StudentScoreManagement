@@ -30,5 +30,10 @@ public class CourseServiceImpl implements CourseService{
     public List<Course> getCourses(Map<String, String> params) {
         return courseRepository.getCourses(params);
     }
+
+    @Override
+    public List<Object[]> getAllCourseNames() {
+        return courseRepository.getAllCourseNames();
+    }
     
 }
