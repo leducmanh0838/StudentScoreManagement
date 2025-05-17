@@ -7,6 +7,7 @@ package com.ldm.controllers;
 import com.ldm.pojo.User;
 import com.ldm.services.UserService;
 import com.ldm.utils.JwtUtils;
+import jakarta.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.Collection;
 import java.util.Collections;
@@ -22,6 +23,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -54,7 +56,8 @@ public class ApiUserController {
 
         if (this.userDetailsService.authenticate(u.getEmail(), u.getPassword())) {
             try {
-                String token = JwtUtils.generateToken(u.getEmail());
+                User userInfo = this.userDetailsService.getUserByEmail(u.getEmail());
+                String token = JwtUtils.generateToken(userInfo.getId(), userInfo.getEmail(), userInfo.getRole());
                 return ResponseEntity.ok().body(Collections.singletonMap("token", token));
             } catch (Exception e) {
                 return ResponseEntity.status(500).body("Lỗi khi tạo JWT");
@@ -62,8 +65,30 @@ public class ApiUserController {
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Sai thông tin đăng nhập");
     }
+    
+    @GetMapping("secure/userInfo/")
+    public ResponseEntity<Map<String, Object>> getUserInfo(HttpServletRequest request) {
+        // Lấy thông tin từ request attributes (được set từ filter)
+        Long id = (Long) request.getAttribute("id");
+        String username = (String) request.getAttribute("username");
+        String role = (String) request.getAttribute("role");
 
-    @RequestMapping("/secure/profile")
+        if (id == null || username == null || role == null) {
+            // Trả về lỗi nếu thông tin không hợp lệ
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Collections.singletonMap("error", "User information is not available. Please check the token."));
+        }
+
+        // Trả về thông tin người dùng dưới dạng Map
+        Map<String, Object> userInfo = new HashMap<>();
+        userInfo.put("id", id);
+        userInfo.put("username", username);
+        userInfo.put("role", role);
+
+        return ResponseEntity.ok(userInfo);  // Trả về thông tin người dùng
+    }
+
+    @RequestMapping("secure/profile/")
     @ResponseBody
     @CrossOrigin
     public ResponseEntity<User> getProfile(Principal principal) {
