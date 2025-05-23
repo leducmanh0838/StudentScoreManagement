@@ -53,15 +53,15 @@ public class SpringSecurityConfigs {
         http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(c -> c.disable()).authorizeHttpRequests(requests
                 -> requests.requestMatchers("/").authenticated()
-                        .requestMatchers(HttpMethod.GET, "/userListView/").hasAuthority(User.STAFF_ROLE)
+                        .requestMatchers(HttpMethod.GET, "/userListView").hasAuthority(User.STAFF_ROLE)
 //                        .requestMatchers(HttpMethod.GET, "/userListView/").permitAll()
                         .requestMatchers("/api/**").permitAll()
                         .anyRequest().authenticated())
-                .formLogin(form -> form.loginPage("/login/")
-                .loginProcessingUrl("/login/")
+                .formLogin(form -> form.loginPage("/login")
+                .loginProcessingUrl("/login")
                 .defaultSuccessUrl("/", true)
                 .failureUrl("/login/?error=true").permitAll())
-                .logout(logout -> logout.logoutSuccessUrl("/login/").permitAll());
+                .logout(logout -> logout.logoutSuccessUrl("/login").permitAll());
 
         return http.build();
 //        http.cors(cors -> cors.configurationSource(corsConfigurationSource()))

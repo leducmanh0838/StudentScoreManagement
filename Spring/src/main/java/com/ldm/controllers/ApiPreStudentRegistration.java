@@ -7,10 +7,8 @@ package com.ldm.controllers;
 import com.ldm.pojo.PreStudentRegistration;
 import com.ldm.services.PreStudentRegistrationService;
 import com.ldm.services.UserService;
-import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
  * @author PC
  */
 @RestController
-@RequestMapping("/api/")
+@RequestMapping("/api")
 @CrossOrigin
 public class ApiPreStudentRegistration {
 
@@ -36,7 +34,7 @@ public class ApiPreStudentRegistration {
     @Autowired
     private PreStudentRegistrationService preStudentService;
 
-    @PostMapping(path = "preStudent/register/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+    @PostMapping(path = "/preStudent/register", consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> registerPreStudent(@RequestParam Map<String, String> params, @RequestParam(value = "avatar", required = false) MultipartFile avatar) {
         try {
@@ -49,7 +47,7 @@ public class ApiPreStudentRegistration {
         } 
     }
 
-    @PostMapping("preStudent/verify/")
+    @PostMapping("/preStudent/verify")
     public ResponseEntity<?> verifyPreStudent(@RequestBody Map<String, String> requestBody) {
         String email = requestBody.get("email");
         String otp = requestBody.get("otp");

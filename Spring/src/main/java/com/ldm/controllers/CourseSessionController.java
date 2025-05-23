@@ -35,7 +35,7 @@ public class CourseSessionController {
     @Autowired
     private UserService userService;
     
-    @GetMapping("/courseSessionListView/")
+    @GetMapping("/courseSessionListView")
     public String userListView(Model model, @RequestParam Map<String, String> params) {
         
         List<Object[]> courseSessions = this.service.getCourseSessions(params);
@@ -49,7 +49,7 @@ public class CourseSessionController {
         return "courseSessionListView";
     }
     
-    @GetMapping("/addOrUpdateCourseSessionView/")
+    @GetMapping("/addOrUpdateCourseSessionView")
     public String addCourseSessionView(Model model, @RequestParam Map<String, String> params) {
         model.addAttribute("courseSession", new CourseSession());
         model.addAttribute("courses", courseService.getAllCourseNames());
@@ -57,7 +57,7 @@ public class CourseSessionController {
         return "addOrUpdateCourseSession";
     }
     
-    @GetMapping("/addOrUpdateCourseSessionView/{course_session_id}/")
+    @GetMapping("/addOrUpdateCourseSessionView/{course_session_id}")
     public String updateCourseSessionView(Model model, @PathVariable(value="course_session_id") int id) {
         model.addAttribute("courseSession", this.service.getById(id));
         model.addAttribute("courses", courseService.getAllCourseNames());
@@ -65,9 +65,9 @@ public class CourseSessionController {
         return "addOrUpdateCourseSession";
     }
     
-    @PostMapping("/addOrUpdateCourseSession/")
+    @PostMapping("/addOrUpdateCourseSession")
     public String addOrUpdateCourseSession(@ModelAttribute(value = "courseSession") CourseSession courseSession){
         this.service.addOrUpdate(courseSession);
-        return "redirect:/courseSessionListView/";
+        return "redirect:/courseSessionListView";
     }
 }

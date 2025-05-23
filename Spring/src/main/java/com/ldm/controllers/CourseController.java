@@ -27,7 +27,7 @@ public class CourseController {
     @Autowired
     private CourseService courseService;
     
-    @GetMapping("/courseListView/")
+    @GetMapping("/courseListView")
     public String userListView(Model model, @RequestParam Map<String, String> params) {
         
         List<Course> courses = this.courseService.getCourses(params);
@@ -42,11 +42,11 @@ public class CourseController {
         return "courseListView";
     }
     
-    @PostMapping("/addOrUpdateCourse/")
+    @PostMapping("/addOrUpdateCourse")
     public String addOrUpdateCourse(@RequestParam("name") String name) {
         Course c = new Course();
         c.setName(name);
         this.courseService.addOrUpdate(c);
-        return "redirect:/courseListView/";
+        return "redirect:/courseListView";
     }
 }

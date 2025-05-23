@@ -1,4 +1,4 @@
-package com.ldm.services.impl;
+package com.ldm.services;
 
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;

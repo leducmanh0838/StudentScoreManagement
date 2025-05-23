@@ -5,6 +5,7 @@
 package com.ldm.pojo;
 
 import jakarta.persistence.Basic;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,24 +15,26 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.Set;
 
 /**
  *
  * @author PC
  */
 @Entity
-@Table(name = "additional_grade")
+@Table(name = "criteria")
 @NamedQueries({
-    @NamedQuery(name = "AdditionalGrade.findAll", query = "SELECT a FROM AdditionalGrade a"),
-    @NamedQuery(name = "AdditionalGrade.findById", query = "SELECT a FROM AdditionalGrade a WHERE a.id = :id"),
-    @NamedQuery(name = "AdditionalGrade.findByGradeName", query = "SELECT a FROM AdditionalGrade a WHERE a.gradeName = :gradeName"),
-    @NamedQuery(name = "AdditionalGrade.findByScore", query = "SELECT a FROM AdditionalGrade a WHERE a.score = :score"),
-    @NamedQuery(name = "AdditionalGrade.findByWeight", query = "SELECT a FROM AdditionalGrade a WHERE a.weight = :weight")})
-public class AdditionalGrade implements Serializable {
+    @NamedQuery(name = "Criteria.findAll", query = "SELECT c FROM Criteria c"),
+    @NamedQuery(name = "Criteria.findById", query = "SELECT c FROM Criteria c WHERE c.id = :id"),
+    @NamedQuery(name = "Criteria.findByCriteriaName", query = "SELECT c FROM Criteria c WHERE c.criteriaName = :criteriaName"),
+    @NamedQuery(name = "Criteria.findByWeight", query = "SELECT c FROM Criteria c WHERE c.weight = :weight"),
+    @NamedQuery(name = "Criteria.findByType", query = "SELECT c FROM Criteria c WHERE c.type = :type")})
+public class Criteria implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -42,30 +45,33 @@ public class AdditionalGrade implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 20)
-    @Column(name = "grade_name")
-    private String gradeName;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "score")
-    private float score;
+    @Column(name = "criteria_name")
+    private String criteriaName;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "weight")
     private Float weight;
-    @JoinColumn(name = "grade_id", referencedColumnName = "id")
-    @ManyToOne
-    private Grade gradeId;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 7)
+    @Column(name = "type")
+    private String type;
+    @JoinColumn(name = "course_session_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private CourseSession courseSessionId;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "criteriaId")
+    private Set<Grade> gradeSet;
 
-    public AdditionalGrade() {
+    public Criteria() {
     }
 
-    public AdditionalGrade(Integer id) {
+    public Criteria(Integer id) {
         this.id = id;
     }
 
-    public AdditionalGrade(Integer id, String gradeName, float score) {
+    public Criteria(Integer id, String criteriaName, String type) {
         this.id = id;
-        this.gradeName = gradeName;
-        this.score = score;
+        this.criteriaName = criteriaName;
+        this.type = type;
     }
 
     public Integer getId() {
@@ -76,20 +82,12 @@ public class AdditionalGrade implements Serializable {
         this.id = id;
     }
 
-    public String getGradeName() {
-        return gradeName;
+    public String getCriteriaName() {
+        return criteriaName;
     }
 
-    public void setGradeName(String gradeName) {
-        this.gradeName = gradeName;
-    }
-
-    public float getScore() {
-        return score;
-    }
-
-    public void setScore(float score) {
-        this.score = score;
+    public void setCriteriaName(String criteriaName) {
+        this.criteriaName = criteriaName;
     }
 
     public Float getWeight() {
@@ -100,12 +98,28 @@ public class AdditionalGrade implements Serializable {
         this.weight = weight;
     }
 
-    public Grade getGradeId() {
-        return gradeId;
+    public String getType() {
+        return type;
     }
 
-    public void setGradeId(Grade gradeId) {
-        this.gradeId = gradeId;
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public CourseSession getCourseSessionId() {
+        return courseSessionId;
+    }
+
+    public void setCourseSessionId(CourseSession courseSessionId) {
+        this.courseSessionId = courseSessionId;
+    }
+
+    public Set<Grade> getGradeSet() {
+        return gradeSet;
+    }
+
+    public void setGradeSet(Set<Grade> gradeSet) {
+        this.gradeSet = gradeSet;
     }
 
     @Override
@@ -118,10 +132,10 @@ public class AdditionalGrade implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof AdditionalGrade)) {
+        if (!(object instanceof Criteria)) {
             return false;
         }
-        AdditionalGrade other = (AdditionalGrade) object;
+        Criteria other = (Criteria) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -130,7 +144,7 @@ public class AdditionalGrade implements Serializable {
 
     @Override
     public String toString() {
-        return "com.ldm.pojo.AdditionalGrade[ id=" + id + " ]";
+        return "com.ldm.pojo.Criteria[ id=" + id + " ]";
     }
     
 }

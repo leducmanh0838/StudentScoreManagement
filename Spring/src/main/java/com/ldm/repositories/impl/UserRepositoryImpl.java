@@ -4,12 +4,14 @@
  */
 package com.ldm.repositories.impl;
 
+import com.ldm.pojo.Enrollment;
 import com.ldm.pojo.User;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import com.ldm.repositories.UserRepository;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Join;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +45,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public List<User> getUsersForStaff(Map<String, String> params) {
+    public List<User> getUsers(Map<String, String> params) {
         Session s = this.factory.getObject().getCurrentSession();
         CriteriaBuilder b = s.getCriteriaBuilder();
         CriteriaQuery<User> q = b.createQuery(User.class);
@@ -168,5 +170,65 @@ public class UserRepositoryImpl implements UserRepository {
         query.setParameter("email", email);
         Long count = query.uniqueResult();
         return count != null && count > 0;
+    }
+    
+    @Override
+    public List<User> getStudentsInCourseSession(Map<String, String> params) {
+        Session s = this.factory.getObject().getCurrentSession();
+        CriteriaBuilder cb = s.getCriteriaBuilder();
+        CriteriaQuery<User> cq = cb.createQuery(User.class);
+
+        // Truy vấn trên User
+        Root<Enrollment> enrollRoot = cq.from(Enrollment.class);
+        Join<Enrollment, User> userJoin = enrollRoot.join("userId");
+        cq.select(userJoin);
+
+        List<Predicate> predicates = new ArrayList<>();
+
+        // Bắt buộc phải có courseSessionId
+        if (params.containsKey("courseSessionId")) {
+            Integer csId = Integer.parseInt(params.get("courseSessionId"));
+            predicates.add(cb.equal(enrollRoot.get("courseSessionId").get("id"), csId));
+
+        } else {
+            throw new IllegalArgumentException("Thiếu tham số courseSessionId!");
+        }
+
+        // Lọc theo userCode nếu có
+        if (params.containsKey("userCode")) {
+            String userCode = params.get("userCode");
+            if (!userCode.isEmpty()) {
+                predicates.add(cb.equal(userJoin.get("userCode"), userCode));
+            }
+        }
+
+        // Lọc theo tên (first_name hoặc last_name)
+        if (params.containsKey("name")) {
+            String name = params.get("name");
+            if (!name.isEmpty()) {
+                String namePattern = "%" + name + "%";
+                predicates.add(cb.or(
+                    cb.like(userJoin.get("firstName"), namePattern),
+                    cb.like(userJoin.get("lastName"), namePattern)
+                ));
+            }
+        }
+
+        // Chỉ lấy sinh viên
+        predicates.add(cb.equal(userJoin.get("role"), User.STUDENT_ROLE));
+
+        // Ghép điều kiện
+        cq.where(predicates.toArray(Predicate[]::new));
+        cq.distinct(true); // Tránh trùng sinh viên
+
+        Query<User> query = s.createQuery(cq);
+
+        // Phân trang
+        int page = Integer.parseInt(params.getOrDefault("page", "1"));
+        int start = (page - 1) * PAGE_SIZE;
+        query.setFirstResult(start);
+        query.setMaxResults(PAGE_SIZE);
+
+        return query.getResultList();
     }
 }

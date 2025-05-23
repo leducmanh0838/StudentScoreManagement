@@ -27,45 +27,54 @@ public class JwtFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 
         HttpServletRequest httpRequest = (HttpServletRequest) request;
+        HttpServletResponse httpResponse = (HttpServletResponse) response;
 
-        if (httpRequest.getRequestURI().startsWith(String.format("%s/api/secure", httpRequest.getContextPath())) == true) {
+        String path = httpRequest.getRequestURI();
+        String contextPath = httpRequest.getContextPath();
+        String securePath = String.format("%s/api/secure", contextPath);
 
+        // Chỉ áp dụng lọc cho các đường dẫn bắt đầu bằng /api/secure
+        if (path.startsWith(securePath)) {
             String header = httpRequest.getHeader("Authorization");
 
             if (header == null || !header.startsWith("Bearer ")) {
-                ((HttpServletResponse) response).sendError(HttpServletResponse.SC_UNAUTHORIZED, "Missing or invalid Authorization header.");
+                httpResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Missing or invalid Authorization header.");
                 return;
-            } else {
-                String token = header.substring(7);
-                try {
-                    Map<String, Object> userDetails = JwtUtils.validateTokenAndGetUserDetails(token);
-                    if (userDetails != null) {
-                        // Truy xuất thông tin từ Map
-                        Long id = (Long) userDetails.get("id");
-                        String username = (String) userDetails.get("username");
-                        String role = (String) userDetails.get("role");
-
-                        // Đặt thông tin vào request attributes để có thể sử dụng trong các xử lý sau
-                        httpRequest.setAttribute("id", id);
-                        httpRequest.setAttribute("username", username);
-                        httpRequest.setAttribute("role", role);
-
-                        // Tạo đối tượng authentication với thông tin user (chưa có password và authorities)
-                        UsernamePasswordAuthenticationToken authentication
-                                = new UsernamePasswordAuthenticationToken(username, null, null); // Có thể thêm authorities vào đây nếu cần
-                        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-                        // Tiến hành tiếp tục chuỗi bộ lọc
-                        chain.doFilter(request, response);
-                        return;
-                    }
-                } catch (Exception e) {
-                    // Log lỗi
-                }
             }
 
-            ((HttpServletResponse) response).sendError(HttpServletResponse.SC_UNAUTHORIZED,
-                    "Token không hợp lệ hoặc hết hạn");
+            String token = header.substring(7);
+
+            try {
+                Map<String, Object> userDetails = JwtUtils.validateTokenAndGetUserDetails(token);
+                if (userDetails != null) {
+                    String role = (String) userDetails.get("role");
+
+                    // Nếu truy cập endpoint dành riêng cho giáo viên thì kiểm tra role
+                    if (path.startsWith(securePath + "/teacherAuth")) {
+                        if (!"teacher".equals(role)) {
+                            httpResponse.sendError(HttpServletResponse.SC_FORBIDDEN, "Bạn không có quyền truy cập endpoint dành cho giáo viên.");
+                            return;
+                        }
+                    }
+
+                    // Gắn attribute vào request
+                    httpRequest.setAttribute("id", userDetails.get("id"));
+                    httpRequest.setAttribute("username", userDetails.get("username"));
+                    httpRequest.setAttribute("role", role);
+
+                    UsernamePasswordAuthenticationToken authentication
+                            = new UsernamePasswordAuthenticationToken(userDetails.get("username"), null, null);
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+
+                    chain.doFilter(request, response);
+                    return;
+                }
+            } catch (Exception e) {
+                // Có thể log lỗi ở đây nếu cần
+            }
+
+            httpResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token không hợp lệ hoặc đã hết hạn.");
+            return;
         }
 
         chain.doFilter(request, response);

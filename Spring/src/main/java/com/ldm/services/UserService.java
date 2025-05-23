@@ -25,4 +25,5 @@ public interface UserService extends UserDetailsService{
     User getUserByEmail(String email);
     boolean authenticate(String email, String password);
     User addStudent(User student);
+    List<User> getStudentsInCourseSession(Map<String, String> params);
 }

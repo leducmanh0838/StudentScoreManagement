@@ -37,7 +37,7 @@ import org.springframework.web.multipart.MultipartFile;
  * @author admin
  */
 @RestController
-@RequestMapping("/api/")
+@RequestMapping("/api")
 @CrossOrigin
 public class ApiUserController {
 
@@ -51,7 +51,7 @@ public class ApiUserController {
 //        return new ResponseEntity<>(this.userDetailsService.addUser(params, avatar), HttpStatus.CREATED);
 //    }
 
-    @PostMapping("login/")
+    @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User u) {
 
         if (this.userDetailsService.authenticate(u.getEmail(), u.getPassword())) {
@@ -66,72 +66,26 @@ public class ApiUserController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Sai thông tin đăng nhập");
     }
     
-    @GetMapping("secure/userInfo/")
-    public ResponseEntity<Map<String, Object>> getUserInfo(HttpServletRequest request) {
-        // Lấy thông tin từ request attributes (được set từ filter)
-        Long id = (Long) request.getAttribute("id");
-        String username = (String) request.getAttribute("username");
-        String role = (String) request.getAttribute("role");
+    @GetMapping("/secure/teacherAuth/getStudentsByCourseSession")
+    public ResponseEntity<?> getStudentsByCourseSession(@RequestParam Map<String, String> params) {
+        try {
+            List<User> students = userDetailsService.getStudentsInCourseSession(params);
+            
+            List<Map<String, String>> result = students.stream().map(s -> {
+                Map<String, String> m = new HashMap<>();
+                m.put("id", s.getId().toString());
+                m.put("userCode", s.getUserCode());
+                m.put("firstName", s.getFirstName());
+                m.put("lastName", s.getLastName());
+                return m;
+            }).collect(Collectors.toList());
 
-        if (id == null || username == null || role == null) {
-            // Trả về lỗi nếu thông tin không hợp lệ
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(Collections.singletonMap("error", "User information is not available. Please check the token."));
+            return ResponseEntity.ok(result);
+
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi hệ thống: " + ex.getMessage());
         }
-
-        // Trả về thông tin người dùng dưới dạng Map
-        Map<String, Object> userInfo = new HashMap<>();
-        userInfo.put("id", id);
-        userInfo.put("username", username);
-        userInfo.put("role", role);
-
-        return ResponseEntity.ok(userInfo);  // Trả về thông tin người dùng
     }
-
-    @RequestMapping("secure/profile/")
-    @ResponseBody
-    @CrossOrigin
-    public ResponseEntity<User> getProfile(Principal principal) {
-        return new ResponseEntity<>(this.userDetailsService.getUserByEmail(principal.getName()), HttpStatus.OK);
-    }
-
-    @RequestMapping("secure/roles/")
-@ResponseBody
-@CrossOrigin
-public ResponseEntity<Map<String, Object>> getRoles(Principal principal) {
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-    // Lấy danh sách các quyền của người dùng (vai trò)
-    Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-    
-    // Tạo một map để trả về
-    Map<String, Object> response = new HashMap<>();
-    response.put("username", principal.getName());
-    response.put("roles", authorities.stream()
-                                      .map(GrantedAuthority::getAuthority)
-                                      .collect(Collectors.toList()));
-
-    return new ResponseEntity<>(response, HttpStatus.OK);
-}
-
-    @RequestMapping("secure/authorities/")
-@ResponseBody
-@CrossOrigin
-public ResponseEntity<Map<String, Object>> getAuthorities(Principal principal) {
-    // Lấy thông tin xác thực từ SecurityContext
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-    // Lấy danh sách các authorities (quyền của người dùng)
-    Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-
-    // Tạo một map để trả về
-    Map<String, Object> response = new HashMap<>();
-    response.put("username", principal.getName());
-    response.put("authorities", authorities.stream()
-                                            .map(GrantedAuthority::getAuthority)
-                                            .collect(Collectors.toList()));
-
-    return new ResponseEntity<>(response, HttpStatus.OK);
-}
-
 }

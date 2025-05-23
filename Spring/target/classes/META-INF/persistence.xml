@@ -14,5 +14,7 @@
     <class>com.ldm.pojo.CourseSession</class>
     <class>com.ldm.pojo.OtpVerification</class>
     <class>com.ldm.pojo.PreStudentRegistration</class>
+    <class>com.ldm.pojo.AdditionalCriteria</class>
+    <class>com.ldm.pojo.Criteria</class>
   </persistence-unit>
 </persistence>

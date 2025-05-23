@@ -5,6 +5,7 @@
 package com.ldm.pojo;
 
 import jakarta.persistence.Basic;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,8 +20,8 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
+import java.util.Set;
 
 /**
  *
@@ -46,13 +47,13 @@ public class Enrollment implements Serializable {
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
-    @OneToMany(mappedBy = "enrollmentId")
-    private Collection<Grade> gradeCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "enrollmentId")
+    private Set<Grade> gradeSet;
     @JoinColumn(name = "course_session_id", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(optional = false)
     private CourseSession courseSessionId;
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(optional = false)
     private User userId;
 
     public Enrollment() {
@@ -86,12 +87,12 @@ public class Enrollment implements Serializable {
         this.createdDate = createdDate;
     }
 
-    public Collection<Grade> getGradeCollection() {
-        return gradeCollection;
+    public Set<Grade> getGradeSet() {
+        return gradeSet;
     }
 
-    public void setGradeCollection(Collection<Grade> gradeCollection) {
-        this.gradeCollection = gradeCollection;
+    public void setGradeSet(Set<Grade> gradeSet) {
+        this.gradeSet = gradeSet;
     }
 
     public CourseSession getCourseSessionId() {

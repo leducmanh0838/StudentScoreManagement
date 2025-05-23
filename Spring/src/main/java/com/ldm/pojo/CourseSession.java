@@ -5,6 +5,7 @@
 package com.ldm.pojo;
 
 import jakarta.persistence.Basic;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,8 +22,8 @@ import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
+import java.util.Set;
 
 /**
  *
@@ -34,9 +35,9 @@ import java.util.Date;
     @NamedQuery(name = "CourseSession.findAll", query = "SELECT c FROM CourseSession c"),
     @NamedQuery(name = "CourseSession.findById", query = "SELECT c FROM CourseSession c WHERE c.id = :id"),
     @NamedQuery(name = "CourseSession.findByCode", query = "SELECT c FROM CourseSession c WHERE c.code = :code"),
-    @NamedQuery(name = "CourseSession.findByIsActive", query = "SELECT c FROM CourseSession c WHERE c.isActive = :isActive"),
     @NamedQuery(name = "CourseSession.findByIsOpen", query = "SELECT c FROM CourseSession c WHERE c.isOpen = :isOpen"),
     @NamedQuery(name = "CourseSession.findByGradeStatus", query = "SELECT c FROM CourseSession c WHERE c.gradeStatus = :gradeStatus"),
+    @NamedQuery(name = "CourseSession.findByIsActive", query = "SELECT c FROM CourseSession c WHERE c.isActive = :isActive"),
     @NamedQuery(name = "CourseSession.findByCreatedDate", query = "SELECT c FROM CourseSession c WHERE c.createdDate = :createdDate"),
     @NamedQuery(name = "CourseSession.findByUpdatedDate", query = "SELECT c FROM CourseSession c WHERE c.updatedDate = :updatedDate")})
 public class CourseSession implements Serializable {
@@ -52,27 +53,29 @@ public class CourseSession implements Serializable {
     @Size(min = 1, max = 20)
     @Column(name = "code")
     private String code;
-    @Column(name = "is_active")
-    private Boolean isActive;
     @Column(name = "is_open")
     private Boolean isOpen;
     @Size(max = 6)
     @Column(name = "grade_status")
     private String gradeStatus;
+    @Column(name = "is_active")
+    private Boolean isActive;
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
     @Column(name = "updated_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedDate;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "courseSessionId")
+    private Set<Criteria> criteriaSet;
     @JoinColumn(name = "course_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Course courseId;
     @JoinColumn(name = "teacher_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private User teacherId;
-    @OneToMany(mappedBy = "courseSessionId")
-    private Collection<Enrollment> enrollmentCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "courseSessionId")
+    private Set<Enrollment> enrollmentSet;
 
     public CourseSession() {
     }
@@ -102,14 +105,6 @@ public class CourseSession implements Serializable {
         this.code = code;
     }
 
-    public Boolean getIsActive() {
-        return isActive;
-    }
-
-    public void setIsActive(Boolean isActive) {
-        this.isActive = isActive;
-    }
-
     public Boolean getIsOpen() {
         return isOpen;
     }
@@ -124,6 +119,14 @@ public class CourseSession implements Serializable {
 
     public void setGradeStatus(String gradeStatus) {
         this.gradeStatus = gradeStatus;
+    }
+
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
     }
 
     public Date getCreatedDate() {
@@ -142,6 +145,14 @@ public class CourseSession implements Serializable {
         this.updatedDate = updatedDate;
     }
 
+    public Set<Criteria> getCriteriaSet() {
+        return criteriaSet;
+    }
+
+    public void setCriteriaSet(Set<Criteria> criteriaSet) {
+        this.criteriaSet = criteriaSet;
+    }
+
     public Course getCourseId() {
         return courseId;
     }
@@ -158,12 +169,12 @@ public class CourseSession implements Serializable {
         this.teacherId = teacherId;
     }
 
-    public Collection<Enrollment> getEnrollmentCollection() {
-        return enrollmentCollection;
+    public Set<Enrollment> getEnrollmentSet() {
+        return enrollmentSet;
     }
 
-    public void setEnrollmentCollection(Collection<Enrollment> enrollmentCollection) {
-        this.enrollmentCollection = enrollmentCollection;
+    public void setEnrollmentSet(Set<Enrollment> enrollmentSet) {
+        this.enrollmentSet = enrollmentSet;
     }
 
     @Override

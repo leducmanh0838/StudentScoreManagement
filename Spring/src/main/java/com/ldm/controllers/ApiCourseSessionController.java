@@ -1,0 +1,57 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.ldm.controllers;
+
+import com.ldm.repositories.impl.CourseRepositoryImpl;
+import com.ldm.services.CourseService;
+import com.ldm.services.CourseSessionService;
+import com.ldm.services.UserService;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+/**
+ *
+ * @author PC
+ */
+@RestController
+@RequestMapping("/api")
+@CrossOrigin
+public class ApiCourseSessionController {
+    @Autowired
+    private CourseSessionService courseSessionService;
+    @Autowired
+    private CourseService courseService;
+    @Autowired
+    private UserService userService;
+    
+    @GetMapping("/courseSession")
+    public ResponseEntity<List<Map<String, Object>>> getCourseSessions(@RequestParam Map<String, String> params) {
+        List<Object[]> results = courseSessionService.getCourseSessions(params);
+        
+        // Chuyển đổi Object[] thành danh sách Map để dễ đọc ở frontend
+        List<Map<String, Object>> response = new ArrayList<>();
+        for (Object[] row : results) {
+            Map<String, Object> item = new HashMap<>();
+            item.put("id", row[0]);
+            item.put("code", row[1]);
+            item.put("courseName", row[2]);
+            item.put("teacherName", row[3]);
+            item.put("isOpen", row[4]);
+            response.add(item);
+        }
+
+        return ResponseEntity.ok(response);
+    }
+}

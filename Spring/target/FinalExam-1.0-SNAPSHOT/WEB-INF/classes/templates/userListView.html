@@ -35,7 +35,7 @@
                     <button type="submit" class="btn btn-primary">Lọc</button>
                     <a th:href="@{/userListView/}" class="btn btn-secondary">Reset</a>
                     <!--<button class="btn btn-danger">Thêm giảng viên</button>-->
-                    <a th:href="@{/addOrUpdateTeacherView/}" class="btn btn-danger">Thêm giảng viên</a>
+                    <a th:href="@{/addOrUpdateTeacherView}" class="btn btn-danger">Thêm giảng viên</a>
                 </div>
             </div>
 
@@ -71,7 +71,7 @@
                         <td th:text="${u.firstName + ' ' + u.lastName}"></td>
                         <td th:text="${u.role}"></td>
                         <td>
-                            <a th:href="@{'/addOrUpdateTeacherView/' + ${u.id}} + '/'" th:if="${u.role == 'teacher'}" class="btn btn-success">Sửa️ giảng viên</a>
+                            <a th:href="@{'/addOrUpdateTeacherView/' + ${u.id}}" th:if="${u.role == 'teacher'}" class="btn btn-success">Sửa️ giảng viên</a>
                         </td>
                     </tr>
                 </tbody>

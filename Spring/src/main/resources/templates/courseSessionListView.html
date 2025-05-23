@@ -32,7 +32,7 @@
                 <div class="col-md-3">
                     <button type="submit" class="btn btn-primary">Lọc</button>
                     <a th:href="@{/courseListView/}" class="btn btn-secondary">Reset</a>
-                    <a th:href="@{/addOrUpdateCourseSessionView/}" class="btn btn-danger">Thêm buổi học</a>
+                    <a th:href="@{/addOrUpdateCourseSessionView}" class="btn btn-danger">Thêm buổi học</a>
                 </div>
             </div>
 
@@ -53,7 +53,7 @@
                         <td th:text="${courseSession[3]}"></td>
                         <td th:text="${courseSession[4] ? 'Mở' : 'Đóng'}"></td>
                         <td>
-                            <a th:href="@{'/addOrUpdateCourseSessionView/' + ${courseSession[0]} + '/?courseName=' + ${courseSession[2]} + '&teacherName=' + ${courseSession[3]}}" 
+                            <a th:href="@{'/addOrUpdateCourseSessionView/' + ${courseSession[0]} + '?courseName=' + ${courseSession[2]} + '&teacherName=' + ${courseSession[3]}}" 
                                 class="btn btn-info btn-sm">
                                 Chỉnh sửa
                              </a>

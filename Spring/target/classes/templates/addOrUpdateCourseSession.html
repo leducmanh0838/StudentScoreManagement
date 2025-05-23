@@ -8,7 +8,7 @@
         <main class="container">
             <div th:replace="base :: header"></div>
             <h1 class="text-center text-info mt-1">QUẢN LÝ BUỔI HỌC</h1>
-            <form method="post" th:action="@{/addOrUpdateCourseSession/}" th:object="${courseSession}">
+            <form method="post" th:action="@{/addOrUpdateCourseSession}" th:object="${courseSession}">
                 
                 <!-- Mã buổi học -->
                 <div class="mb-3 mt-3">

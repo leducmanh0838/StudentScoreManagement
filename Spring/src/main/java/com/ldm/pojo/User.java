@@ -21,8 +21,8 @@ import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
+import java.util.Set;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -45,10 +45,12 @@ import org.springframework.web.multipart.MultipartFile;
     @NamedQuery(name = "User.findByCreatedDate", query = "SELECT u FROM User u WHERE u.createdDate = :createdDate"),
     @NamedQuery(name = "User.findByUpdatedDate", query = "SELECT u FROM User u WHERE u.updatedDate = :updatedDate")})
 public class User implements Serializable {
+    
     public static final String STAFF_ROLE = "staff";
     public static final String ADMIN_ROLE = "admin";
     public static final String TEACHER_ROLE = "teacher";
     public static final String STUDENT_ROLE = "student";
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -91,22 +93,17 @@ public class User implements Serializable {
     private String avatar;
     @Column(name = "is_active")
     private Boolean isActive;
-    @Column(name = "created_date")
+    @Column(name = "created_date", insertable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
-    @Column(name = "updated_date")
+    @Column(name = "updated_date", insertable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedDate;
-    @OneToMany(mappedBy = "userId")
-    private Collection<Notification> notificationCollection;
-    @OneToMany(mappedBy = "userId")
-    private Collection<ForumPost> forumPostCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "teacherId")
-    private Collection<CourseSession> courseSessionCollection;
-    @OneToMany(mappedBy = "userId")
-    private Collection<Comment> commentCollection;
-    @OneToMany(mappedBy = "userId")
-    private Collection<Enrollment> enrollmentCollection;
+    private Set<CourseSession> courseSessionSet;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
+    private Set<Enrollment> enrollmentSet;
+    
     @Transient
     private MultipartFile file;
 
@@ -215,44 +212,20 @@ public class User implements Serializable {
         this.updatedDate = updatedDate;
     }
 
-    public Collection<Notification> getNotificationCollection() {
-        return notificationCollection;
+    public Set<CourseSession> getCourseSessionSet() {
+        return courseSessionSet;
     }
 
-    public void setNotificationCollection(Collection<Notification> notificationCollection) {
-        this.notificationCollection = notificationCollection;
+    public void setCourseSessionSet(Set<CourseSession> courseSessionSet) {
+        this.courseSessionSet = courseSessionSet;
     }
 
-    public Collection<ForumPost> getForumPostCollection() {
-        return forumPostCollection;
+    public Set<Enrollment> getEnrollmentSet() {
+        return enrollmentSet;
     }
 
-    public void setForumPostCollection(Collection<ForumPost> forumPostCollection) {
-        this.forumPostCollection = forumPostCollection;
-    }
-
-    public Collection<CourseSession> getCourseSessionCollection() {
-        return courseSessionCollection;
-    }
-
-    public void setCourseSessionCollection(Collection<CourseSession> courseSessionCollection) {
-        this.courseSessionCollection = courseSessionCollection;
-    }
-
-    public Collection<Comment> getCommentCollection() {
-        return commentCollection;
-    }
-
-    public void setCommentCollection(Collection<Comment> commentCollection) {
-        this.commentCollection = commentCollection;
-    }
-
-    public Collection<Enrollment> getEnrollmentCollection() {
-        return enrollmentCollection;
-    }
-
-    public void setEnrollmentCollection(Collection<Enrollment> enrollmentCollection) {
-        this.enrollmentCollection = enrollmentCollection;
+    public void setEnrollmentSet(Set<Enrollment> enrollmentSet) {
+        this.enrollmentSet = enrollmentSet;
     }
 
     @Override

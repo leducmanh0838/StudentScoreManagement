@@ -14,13 +14,9 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
+import jakarta.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.Date;
 
 /**
  *
@@ -31,12 +27,7 @@ import java.util.Date;
 @NamedQueries({
     @NamedQuery(name = "Grade.findAll", query = "SELECT g FROM Grade g"),
     @NamedQuery(name = "Grade.findById", query = "SELECT g FROM Grade g WHERE g.id = :id"),
-    @NamedQuery(name = "Grade.findByMidtermScore", query = "SELECT g FROM Grade g WHERE g.midtermScore = :midtermScore"),
-    @NamedQuery(name = "Grade.findByMidtermWeight", query = "SELECT g FROM Grade g WHERE g.midtermWeight = :midtermWeight"),
-    @NamedQuery(name = "Grade.findByFinalScore", query = "SELECT g FROM Grade g WHERE g.finalScore = :finalScore"),
-    @NamedQuery(name = "Grade.findByIsActive", query = "SELECT g FROM Grade g WHERE g.isActive = :isActive"),
-    @NamedQuery(name = "Grade.findByCreatedDate", query = "SELECT g FROM Grade g WHERE g.createdDate = :createdDate"),
-    @NamedQuery(name = "Grade.findByUpdatedDate", query = "SELECT g FROM Grade g WHERE g.updatedDate = :updatedDate")})
+    @NamedQuery(name = "Grade.findByScore", query = "SELECT g FROM Grade g WHERE g.score = :score")})
 public class Grade implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -45,32 +36,27 @@ public class Grade implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "midterm_score")
-    private Float midtermScore;
-    @Column(name = "midterm_weight")
-    private Float midtermWeight;
-    @Column(name = "final_score")
-    private Float finalScore;
-    @Column(name = "is_active")
-    private Boolean isActive;
-    @Column(name = "created_date")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdDate;
-    @Column(name = "updated_date")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date updatedDate;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "score")
+    private float score;
+    @JoinColumn(name = "criteria_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Criteria criteriaId;
     @JoinColumn(name = "enrollment_id", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Enrollment enrollmentId;
-    @OneToMany(mappedBy = "gradeId")
-    private Collection<AdditionalGrade> additionalGradeCollection;
 
     public Grade() {
     }
 
     public Grade(Integer id) {
         this.id = id;
+    }
+
+    public Grade(Integer id, float score) {
+        this.id = id;
+        this.score = score;
     }
 
     public Integer getId() {
@@ -81,52 +67,20 @@ public class Grade implements Serializable {
         this.id = id;
     }
 
-    public Float getMidtermScore() {
-        return midtermScore;
+    public float getScore() {
+        return score;
     }
 
-    public void setMidtermScore(Float midtermScore) {
-        this.midtermScore = midtermScore;
+    public void setScore(float score) {
+        this.score = score;
     }
 
-    public Float getMidtermWeight() {
-        return midtermWeight;
+    public Criteria getCriteriaId() {
+        return criteriaId;
     }
 
-    public void setMidtermWeight(Float midtermWeight) {
-        this.midtermWeight = midtermWeight;
-    }
-
-    public Float getFinalScore() {
-        return finalScore;
-    }
-
-    public void setFinalScore(Float finalScore) {
-        this.finalScore = finalScore;
-    }
-
-    public Boolean getIsActive() {
-        return isActive;
-    }
-
-    public void setIsActive(Boolean isActive) {
-        this.isActive = isActive;
-    }
-
-    public Date getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public Date getUpdatedDate() {
-        return updatedDate;
-    }
-
-    public void setUpdatedDate(Date updatedDate) {
-        this.updatedDate = updatedDate;
+    public void setCriteriaId(Criteria criteriaId) {
+        this.criteriaId = criteriaId;
     }
 
     public Enrollment getEnrollmentId() {
@@ -135,14 +89,6 @@ public class Grade implements Serializable {
 
     public void setEnrollmentId(Enrollment enrollmentId) {
         this.enrollmentId = enrollmentId;
-    }
-
-    public Collection<AdditionalGrade> getAdditionalGradeCollection() {
-        return additionalGradeCollection;
-    }
-
-    public void setAdditionalGradeCollection(Collection<AdditionalGrade> additionalGradeCollection) {
-        this.additionalGradeCollection = additionalGradeCollection;
     }
 
     @Override

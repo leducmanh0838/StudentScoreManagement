@@ -28,7 +28,7 @@ public class UserController {
     @Autowired
     private UserService userService;
     
-    @GetMapping("/userListView/")
+    @GetMapping("/userListView")
     public String userListView(Model model, @RequestParam Map<String, String> params) {
         
         List<User> users = this.userService.getUsersForStaff(params);
@@ -45,21 +45,21 @@ public class UserController {
     }
     
     
-    @GetMapping("/addOrUpdateTeacherView/")
+    @GetMapping("/addOrUpdateTeacherView")
     public String addTeacherView(Model model, @RequestParam Map<String, String> params) {
         model.addAttribute("user", new User());
         return "addOrUpdateTeacher";
     }
     
-    @GetMapping("/addOrUpdateTeacherView/{user_id}/")
+    @GetMapping("/addOrUpdateTeacherView/{user_id}")
     public String updateTeacherView(Model model, @PathVariable(value="user_id") int id) {
         model.addAttribute("user", this.userService.getUserById(id));
         return "addOrUpdateTeacher";
     }
     
-    @PostMapping("/addOrUpdateTeacher/")
+    @PostMapping("/addOrUpdateTeacher")
     public String addOrUpdateTeacher(@ModelAttribute(value = "user") User u){
         this.userService.addOrUpdateTeacher(u);
-        return "redirect:/userListView/";
+        return "redirect:/userListView";
     }
 }

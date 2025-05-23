@@ -8,7 +8,7 @@
     <main class="container">
         <div th:replace="base :: header"></div>
         <h1 class="text-center text-info mt-1">QUẢN LÝ GIẢNG VIÊN</h1>
-        <form method="post" th:action="@{/addOrUpdateTeacher/}" th:object="${user}" enctype="multipart/form-data">
+        <form method="post" th:action="@{/addOrUpdateTeacher}" th:object="${user}" enctype="multipart/form-data">
             <div class="mb-3 mt-3" th:if="${user.id == null}">
                 <label for="userCode" class="form-label">Mã giảng viên: </label>
                 <input type="text" class="form-control" id="userCode" placeholder="Mã giảng viên" th:field="*{userCode}" />

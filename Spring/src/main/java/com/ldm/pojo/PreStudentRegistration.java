@@ -12,7 +12,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
-import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -82,13 +81,6 @@ public class PreStudentRegistration implements Serializable {
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
-    
-    @PrePersist
-    public void prePersist() {
-        if (verificationAttempts == null) {
-            verificationAttempts = 0;
-        }
-    }
 
     public PreStudentRegistration() {
     }

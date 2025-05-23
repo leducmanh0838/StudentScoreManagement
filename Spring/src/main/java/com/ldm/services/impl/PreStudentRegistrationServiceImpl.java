@@ -4,6 +4,7 @@
  */
 package com.ldm.services.impl;
 
+import com.ldm.services.EmailService;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.ldm.pojo.PreStudentRegistration;
