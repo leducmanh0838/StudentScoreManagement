@@ -22,8 +22,8 @@ import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
-import java.util.Set;
 
 /**
  *
@@ -67,7 +67,7 @@ public class CourseSession implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedDate;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "courseSessionId")
-    private Set<Criteria> criteriaSet;
+    private Collection<Criteria> criteriaCollection;
     @JoinColumn(name = "course_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Course courseId;
@@ -75,7 +75,7 @@ public class CourseSession implements Serializable {
     @ManyToOne(optional = false)
     private User teacherId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "courseSessionId")
-    private Set<Enrollment> enrollmentSet;
+    private Collection<Enrollment> enrollmentCollection;
 
     public CourseSession() {
     }
@@ -145,12 +145,12 @@ public class CourseSession implements Serializable {
         this.updatedDate = updatedDate;
     }
 
-    public Set<Criteria> getCriteriaSet() {
-        return criteriaSet;
+    public Collection<Criteria> getCriteriaCollection() {
+        return criteriaCollection;
     }
 
-    public void setCriteriaSet(Set<Criteria> criteriaSet) {
-        this.criteriaSet = criteriaSet;
+    public void setCriteriaCollection(Collection<Criteria> criteriaCollection) {
+        this.criteriaCollection = criteriaCollection;
     }
 
     public Course getCourseId() {
@@ -169,12 +169,12 @@ public class CourseSession implements Serializable {
         this.teacherId = teacherId;
     }
 
-    public Set<Enrollment> getEnrollmentSet() {
-        return enrollmentSet;
+    public Collection<Enrollment> getEnrollmentCollection() {
+        return enrollmentCollection;
     }
 
-    public void setEnrollmentSet(Set<Enrollment> enrollmentSet) {
-        this.enrollmentSet = enrollmentSet;
+    public void setEnrollmentCollection(Collection<Enrollment> enrollmentCollection) {
+        this.enrollmentCollection = enrollmentCollection;
     }
 
     @Override

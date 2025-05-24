@@ -25,12 +25,14 @@ com\ldm\pojo\PreStudentRegistration.class
 com\ldm\configs\DispatcherServletInit.class
 com\ldm\controllers\ApiPreStudentRegistration.class
 com\ldm\filters\JwtFilter.class
+com\ldm\controllers\ApiGradeController.class
 com\ldm\repositories\CriteriaRepository.class
 com\ldm\controllers\GlobalExceptionHandler.class
 com\ldm\repositories\impl\EnrollmentRepositoryImpl.class
-com\ldm\dto\CreateCriteriaDTO.class
+com\ldm\dto\StudentGradeDTO.class
 com\ldm\services\CourseService.class
 com\ldm\configs\ThymeleafConfig.class
+com\ldm\dto\CriteriaInCourseSessionDTO.class
 com\ldm\services\PreStudentRegistrationService.class
 com\ldm\finalexam\resources\JakartaEE11Resource.class
 com\ldm\pojo\Grade.class
@@ -54,8 +56,10 @@ com\ldm\services\CriteriaService.class
 com\ldm\services\impl\PreStudentRegistrationServiceImpl.class
 com\ldm\repositories\EnrollmentRepository.class
 com\ldm\services\impl\UserServiceImpl.class
+com\ldm\dto\GradeInputDTO.class
 com\ldm\formatters\UserFormatter.class
 com\ldm\repositories\impl\PreStudentRegistrationRepositoryImpl.class
+com\ldm\dto\ScoreDTO.class
 com\ldm\services\EmailService.class
 com\ldm\controllers\IndexController.class
 com\ldm\configs\MessageConfig.class

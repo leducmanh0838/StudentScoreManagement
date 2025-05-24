@@ -15,4 +15,6 @@ public interface CriteriaRepository {
     Criteria addOrUpdate(Criteria criteria);
     List<Criteria> getCriteriaByCourseSesion(Integer courseSessionId);
     List<Criteria> addList(List<Criteria> criteriaList);
+    boolean hasCriteriaInCourseSession(Integer courseSessionId);
+    boolean isTeacherOwnerOfCourseSession(Integer courseSessionId, Integer teacherId);
 }

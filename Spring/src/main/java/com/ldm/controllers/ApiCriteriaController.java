@@ -4,16 +4,18 @@
  */
 package com.ldm.controllers;
 
-import com.ldm.dto.CreateCriteriaDTO;
+import com.ldm.dto.CriteriaInCourseSessionDTO;
 import com.ldm.pojo.CourseSession;
 import com.ldm.pojo.Criteria;
 import com.ldm.services.CriteriaService;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 /**
  *
@@ -34,39 +37,39 @@ public class ApiCriteriaController {
     @Autowired
     private CriteriaService criteriaService;
     
-    @GetMapping("/secure/teacherAuth/getCriterias/{courseSessionId}")
-    public ResponseEntity<?> getCriteriasByCourseSession(@PathVariable(name="courseSessionId") Integer courseSessionId) {
-        List<Criteria> criteriaList = criteriaService.getCriteriaByCourseSession(courseSessionId);
-        
-        List<Map<String, String>> result = criteriaList.stream().map(s -> {
-                Map<String, String> m = new HashMap<>();
-                m.put("id", s.getId().toString());
-                m.put("criteriaName", s.getCriteriaName());
-                m.put("type", s.getType());
-                return m;
-            }).collect(Collectors.toList());
+    @GetMapping("/secure/getCriterias/{courseSessionId}")
+    public ResponseEntity<List<CriteriaInCourseSessionDTO>> getCriteriasByCourseSession(
+            @PathVariable(name="courseSessionId") Integer courseSessionId) {
 
-            return ResponseEntity.ok(result);
+        List<Criteria> criteriaList = criteriaService.getCriteriaByCourseSession(courseSessionId);
+        List<CriteriaInCourseSessionDTO> dtoList = criteriaList.stream()
+                .map(CriteriaInCourseSessionDTO::new)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(dtoList);
     }
     
     @PostMapping("/secure/teacherAuth/addCriterias/{courseSessionId}")
     public ResponseEntity<?> addCriteriasByCourseSession(
             @PathVariable(name="courseSessionId") Integer courseSessionId,
-            @RequestBody List<Criteria> criteriaRequestList) {
-        CourseSession courseSession = new CourseSession(courseSessionId);
-        List<Criteria> criterias = new ArrayList<>();
-        for (Criteria c : criteriaRequestList) {
-            c.setCourseSessionId(courseSession);
-            criterias.add(c);
+            @RequestBody List<Criteria> criteriaRequestList,
+            HttpServletRequest request) {
+        // kiểm tra sở hữu
+        Integer teacherId = ((Number) request.getAttribute("id")).intValue();
+        if(!criteriaService.isTeacherOwnerOfCourseSession(courseSessionId, teacherId)){
+            throw new ResponseStatusException(
+                    HttpStatus.FORBIDDEN,
+                    "Bạn không phải là giảng viên môn này!"
+            );
         }
         
-        List<Criteria> criteriaReponseList = criteriaService.addList(criterias);
+        List<Criteria> criteriaReponseList = criteriaService.addList(criteriaRequestList, courseSessionId);
         
         List<Map<String, String>> result = criteriaReponseList.stream().map(s -> {
                 Map<String, String> m = new HashMap<>();
 //                m.put("id", s.getId().toString());
                 m.put("criteriaName", s.getCriteriaName());
-                m.put("type", s.getType());
+//                m.put("type", s.getType());
                 m.put("courseSessionId", s.getCourseSessionId().getId().toString());
                 return m;
             }).collect(Collectors.toList());

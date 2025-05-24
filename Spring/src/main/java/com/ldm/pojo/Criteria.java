@@ -20,7 +20,7 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.Set;
+import java.util.Collection;
 
 /**
  *
@@ -32,8 +32,7 @@ import java.util.Set;
     @NamedQuery(name = "Criteria.findAll", query = "SELECT c FROM Criteria c"),
     @NamedQuery(name = "Criteria.findById", query = "SELECT c FROM Criteria c WHERE c.id = :id"),
     @NamedQuery(name = "Criteria.findByCriteriaName", query = "SELECT c FROM Criteria c WHERE c.criteriaName = :criteriaName"),
-    @NamedQuery(name = "Criteria.findByWeight", query = "SELECT c FROM Criteria c WHERE c.weight = :weight"),
-    @NamedQuery(name = "Criteria.findByType", query = "SELECT c FROM Criteria c WHERE c.type = :type")})
+    @NamedQuery(name = "Criteria.findByWeight", query = "SELECT c FROM Criteria c WHERE c.weight = :weight")})
 public class Criteria implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -49,17 +48,12 @@ public class Criteria implements Serializable {
     private String criteriaName;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "weight")
-    private Float weight;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 7)
-    @Column(name = "type")
-    private String type;
+    private Integer weight;
     @JoinColumn(name = "course_session_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private CourseSession courseSessionId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "criteriaId")
-    private Set<Grade> gradeSet;
+    private Collection<Grade> gradeCollection;
 
     public Criteria() {
     }
@@ -68,10 +62,9 @@ public class Criteria implements Serializable {
         this.id = id;
     }
 
-    public Criteria(Integer id, String criteriaName, String type) {
+    public Criteria(Integer id, String criteriaName) {
         this.id = id;
         this.criteriaName = criteriaName;
-        this.type = type;
     }
 
     public Integer getId() {
@@ -90,20 +83,12 @@ public class Criteria implements Serializable {
         this.criteriaName = criteriaName;
     }
 
-    public Float getWeight() {
+    public Integer getWeight() {
         return weight;
     }
 
-    public void setWeight(Float weight) {
+    public void setWeight(Integer weight) {
         this.weight = weight;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public CourseSession getCourseSessionId() {
@@ -114,12 +99,12 @@ public class Criteria implements Serializable {
         this.courseSessionId = courseSessionId;
     }
 
-    public Set<Grade> getGradeSet() {
-        return gradeSet;
+    public Collection<Grade> getGradeCollection() {
+        return gradeCollection;
     }
 
-    public void setGradeSet(Set<Grade> gradeSet) {
-        this.gradeSet = gradeSet;
+    public void setGradeCollection(Collection<Grade> gradeCollection) {
+        this.gradeCollection = gradeCollection;
     }
 
     @Override

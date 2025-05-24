@@ -11,6 +11,7 @@ C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\controllers\ApiCourseSessionController.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\controllers\ApiCriteriaController.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\controllers\ApiEnrollmentController.java
+C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\controllers\ApiGradeController.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\controllers\ApiPreStudentRegistration.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\controllers\ApiUserController.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\controllers\CourseController.java
@@ -20,7 +21,10 @@ C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\controllers\IndexController.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\controllers\LoginController.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\controllers\UserController.java
-C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\dto\CreateCriteriaDTO.java
+C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\dto\CriteriaInCourseSessionDTO.java
+C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\dto\GradeInputDTO.java
+C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\dto\ScoreDTO.java
+C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\dto\StudentGradeDTO.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\filters\JwtFilter.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\finalexam\JakartaRestConfiguration.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\finalexam\resources\JakartaEE11Resource.java

@@ -23,7 +23,8 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Repository
 @Transactional
-public class CriteriaRepositoryImpl implements CriteriaRepository{
+public class CriteriaRepositoryImpl implements CriteriaRepository {
+
     private static final Logger logger = LoggerFactory.getLogger(CriteriaRepositoryImpl.class);
     public static final int BATCH_SIZE = 20;
     @Autowired
@@ -32,10 +33,9 @@ public class CriteriaRepositoryImpl implements CriteriaRepository{
     @Override
     public Criteria addOrUpdate(Criteria criteria) {
         Session s = this.factory.getObject().getCurrentSession();
-        if(criteria.getId()==null){
+        if (criteria.getId() == null) {
             s.persist(criteria);
-        }
-        else{
+        } else {
             s.merge(criteria);
         }
         return criteria;
@@ -50,12 +50,10 @@ public class CriteriaRepositoryImpl implements CriteriaRepository{
         );
         return q.getResultList();
     }
-    
+
     @Override
     public List<Criteria> addList(List<Criteria> criteriaList) {
-        LoggerConfig.info("Bắt đầu công việc với id={}", 123);
-        logger.info(String.format("DEBUG: %d", criteriaList.size()));
-//        System.out.printf("DEBUG: %d", criteriaList.size());
+        LoggerConfig.info("Thêm addList");
         Session session = this.factory.getObject().getCurrentSession();
 
         for (int i = 0; i < criteriaList.size(); i++) {
@@ -63,16 +61,42 @@ public class CriteriaRepositoryImpl implements CriteriaRepository{
             session.persist(c);
 
             // Flush + clear mỗi batchSize phần tử để tránh memory leak
-//            if (i % BATCH_SIZE == 0 && i > 0) {
-//                session.flush(); // ghi xuống DB
-//                session.clear(); // dọn dẹp session cache
-//            }
+            if (i % BATCH_SIZE == 0 && i > 0) {
+                session.flush(); // ghi xuống DB
+                session.clear(); // dọn dẹp session cache
+            }
         }
 
         // Flush lần cuối để đảm bảo mọi thứ được ghi vào DB
-//        session.flush();
-//        session.clear();
-
+        session.flush();
+        session.clear();
         return criteriaList;
     }
+
+    @Override
+    public boolean hasCriteriaInCourseSession(Integer courseSessionId) {
+        Session session = this.factory.getObject().getCurrentSession();
+
+        Query<Long> query = session.createQuery(
+                "SELECT COUNT(c.id) FROM Criteria c WHERE c.courseSessionId.id = :csId",
+                Long.class
+        );
+        query.setParameter("csId", courseSessionId);
+
+        Long count = query.getSingleResult();
+        return count > 0;
+    }
+
+    @Override
+    public boolean isTeacherOwnerOfCourseSession(Integer courseSessionId, Integer teacherId) {
+        Session session = this.factory.getObject().getCurrentSession();
+        Query<Long> query = session.createQuery(
+                "SELECT COUNT(cs.id) FROM CourseSession cs WHERE cs.id = :csId AND cs.teacherId.id = :teacherId", Long.class
+        );
+        query.setParameter("csId", courseSessionId);
+        query.setParameter("teacherId", teacherId);
+        return query.getSingleResult() > 0;
+    }
+    
+    
 }
