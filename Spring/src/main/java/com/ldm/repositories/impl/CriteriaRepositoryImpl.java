@@ -46,10 +46,13 @@ public class CriteriaRepositoryImpl implements CriteriaRepository {
         Session s = this.factory.getObject().getCurrentSession();
 
         Query<Criteria> q = s.createQuery(
-                "FROM Criteria", Criteria.class
+            "FROM Criteria c WHERE c.courseSessionId.id = :courseSessionId", Criteria.class
         );
+        q.setParameter("courseSessionId", courseSessionId);
+
         return q.getResultList();
     }
+
 
     @Override
     public List<Criteria> addList(List<Criteria> criteriaList) {
@@ -87,16 +90,4 @@ public class CriteriaRepositoryImpl implements CriteriaRepository {
         return count > 0;
     }
 
-    @Override
-    public boolean isTeacherOwnerOfCourseSession(Integer courseSessionId, Integer teacherId) {
-        Session session = this.factory.getObject().getCurrentSession();
-        Query<Long> query = session.createQuery(
-                "SELECT COUNT(cs.id) FROM CourseSession cs WHERE cs.id = :csId AND cs.teacherId.id = :teacherId", Long.class
-        );
-        query.setParameter("csId", courseSessionId);
-        query.setParameter("teacherId", teacherId);
-        return query.getSingleResult() > 0;
-    }
-    
-    
 }

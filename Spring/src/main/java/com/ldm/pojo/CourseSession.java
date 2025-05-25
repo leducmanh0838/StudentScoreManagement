@@ -41,6 +41,8 @@ import java.util.Date;
     @NamedQuery(name = "CourseSession.findByCreatedDate", query = "SELECT c FROM CourseSession c WHERE c.createdDate = :createdDate"),
     @NamedQuery(name = "CourseSession.findByUpdatedDate", query = "SELECT c FROM CourseSession c WHERE c.updatedDate = :updatedDate")})
 public class CourseSession implements Serializable {
+    public static final String DRAFT = "Draft";
+    public static final String LOCKED = "Locked";
 
     private static final long serialVersionUID = 1L;
     @Id

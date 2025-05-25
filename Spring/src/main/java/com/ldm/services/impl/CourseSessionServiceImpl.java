@@ -45,7 +45,7 @@ public class CourseSessionServiceImpl implements CourseSessionService{
 
     @Override
     public boolean registerCourseSession() {
-        return this.registerCourseSession();
+        return this.repo.registerCourseSession();
     }
 
     @Override
@@ -53,4 +53,18 @@ public class CourseSessionServiceImpl implements CourseSessionService{
         return this.repo.getById(id);
     }
     
+    @Override
+    public boolean isTeacherOwnerOfCourseSession(Integer courseSessionId, Integer teacherId){
+        return repo.isTeacherOwnerOfCourseSession(courseSessionId, teacherId);
+    }
+
+    @Override
+    public String getGradeStatusByCourseSessionId(int id) {
+        return repo.getGradeStatusByCourseSessionId(id);
+    }
+
+    @Override
+    public boolean lockGradeStatus(Integer courseSessionId) {
+        return repo.lockGradeStatus(courseSessionId);
+    }
 }

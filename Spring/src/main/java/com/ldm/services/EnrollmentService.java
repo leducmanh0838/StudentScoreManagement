@@ -4,6 +4,9 @@
  */
 package com.ldm.services;
 
+import com.ldm.dto.EnrollmentInfoForStudentDTO;
+import java.util.List;
+
 /**
  *
  * @author PC
@@ -11,4 +14,5 @@ package com.ldm.services;
 public interface EnrollmentService {
     boolean register(Integer studentId, Integer courseSessionId);
     boolean addMidAndFinalScore(Float midScore, Float finalScore);
+    List<EnrollmentInfoForStudentDTO> getEnrollmentsByStudentId(int userId);
 }

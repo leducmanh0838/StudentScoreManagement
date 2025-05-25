@@ -16,13 +16,9 @@ public interface CourseSessionService {
     
     CourseSession addOrUpdate(CourseSession cs);
     CourseSession getById(int id);
-//    SELECT 
-//    c.name AS courseName,
-//    CONCAT(u.first_name, ' ', u.last_name) AS teacherFullName,
-//    cs.max_slots AS maxSlots
-//FROM Course_Session cs
-//JOIN Course c ON cs.course_id = c.id
-//JOIN User u ON cs.teacher_id = u.id;
     List<Object[]> getCourseSessions(Map<String, String> params);
     boolean registerCourseSession();
+    boolean isTeacherOwnerOfCourseSession(Integer courseSessionId, Integer teacherId);
+    String getGradeStatusByCourseSessionId(int id);
+    boolean lockGradeStatus(Integer courseSessionId);
 }

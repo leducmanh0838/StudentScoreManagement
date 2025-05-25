@@ -7,6 +7,7 @@ package com.ldm.controllers;
 import com.ldm.dto.CriteriaInCourseSessionDTO;
 import com.ldm.pojo.CourseSession;
 import com.ldm.pojo.Criteria;
+import com.ldm.services.CourseSessionService;
 import com.ldm.services.CriteriaService;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -37,6 +38,9 @@ public class ApiCriteriaController {
     @Autowired
     private CriteriaService criteriaService;
     
+    @Autowired
+    private CourseSessionService courseSessionService;
+    
     @GetMapping("/secure/getCriterias/{courseSessionId}")
     public ResponseEntity<List<CriteriaInCourseSessionDTO>> getCriteriasByCourseSession(
             @PathVariable(name="courseSessionId") Integer courseSessionId) {
@@ -56,7 +60,7 @@ public class ApiCriteriaController {
             HttpServletRequest request) {
         // kiểm tra sở hữu
         Integer teacherId = ((Number) request.getAttribute("id")).intValue();
-        if(!criteriaService.isTeacherOwnerOfCourseSession(courseSessionId, teacherId)){
+        if(!courseSessionService.isTeacherOwnerOfCourseSession(courseSessionId, teacherId)){
             throw new ResponseStatusException(
                     HttpStatus.FORBIDDEN,
                     "Bạn không phải là giảng viên môn này!"

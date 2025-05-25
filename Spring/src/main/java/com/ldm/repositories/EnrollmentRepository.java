@@ -4,6 +4,7 @@
  */
 package com.ldm.repositories;
 
+import com.ldm.dto.EnrollmentInfoForStudentDTO;
 import com.ldm.pojo.Enrollment;
 import java.util.List;
 import java.util.Map;
@@ -15,4 +16,6 @@ import java.util.Map;
 public interface EnrollmentRepository {
     Enrollment addOrUpdate(Enrollment enrollment);
     boolean existsByUserIdAndCourseSessionId(int userId, int courseSessionId);
+    boolean areAllEnrollmentsInCourseSession(List<Integer> enrollmentIds, int courseSessionId);
+    List<EnrollmentInfoForStudentDTO> getEnrollmentsByStudentId(int userId);
 }

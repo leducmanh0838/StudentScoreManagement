@@ -1,36 +1,46 @@
 package com.ldm.dto;
 
 public class ScoreDTO {
-    private Integer criteriaId;
-    private Float score;
+    private int criteriaId;
+    private float score;
+    
+    public ScoreDTO(int criteriaId, float score) {
+        this.criteriaId = criteriaId;
+        this.score = score;
+    }
+
+    public ScoreDTO() {
+    }
+    
+    
 
     /**
      * @return the criteriaId
      */
-    public Integer getCriteriaId() {
+    public int getCriteriaId() {
         return criteriaId;
     }
 
     /**
      * @param criteriaId the criteriaId to set
      */
-    public void setCriteriaId(Integer criteriaId) {
+    public void setCriteriaId(int criteriaId) {
         this.criteriaId = criteriaId;
     }
 
     /**
      * @return the score
      */
-    public Float getScore() {
+    public float getScore() {
         return score;
     }
 
     /**
      * @param score the score to set
      */
-    public void setScore(Float score) {
+    public void setScore(float score) {
         this.score = score;
     }
-
+    
     
 }

@@ -15,6 +15,9 @@ public class StudentInCourseDTO {
         this.enrollmentId = enrollmentId;
     }
 
+    public StudentInCourseDTO() {
+    }
+
     /**
      * @return the userId
      */

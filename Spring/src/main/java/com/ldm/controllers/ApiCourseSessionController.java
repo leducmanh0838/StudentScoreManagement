@@ -8,18 +8,23 @@ import com.ldm.repositories.impl.CourseRepositoryImpl;
 import com.ldm.services.CourseService;
 import com.ldm.services.CourseSessionService;
 import com.ldm.services.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 /**
  *
@@ -29,17 +34,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 @CrossOrigin
 public class ApiCourseSessionController {
+
     @Autowired
     private CourseSessionService courseSessionService;
     @Autowired
     private CourseService courseService;
     @Autowired
     private UserService userService;
-    
+
     @GetMapping("/courseSession")
     public ResponseEntity<List<Map<String, Object>>> getCourseSessions(@RequestParam Map<String, String> params) {
         List<Object[]> results = courseSessionService.getCourseSessions(params);
-        
+
         // Chuyển đổi Object[] thành danh sách Map để dễ đọc ở frontend
         List<Map<String, Object>> response = new ArrayList<>();
         for (Object[] row : results) {
@@ -53,5 +59,24 @@ public class ApiCourseSessionController {
         }
 
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/secure/teacherAuth/courseSession/lock/{courseSessionId}")
+    public ResponseEntity<?> lockGrade(@PathVariable(name = "courseSessionId") Integer courseSessionId, HttpServletRequest request) {
+        Integer teacherId = ((Number) request.getAttribute("id")).intValue();
+        if(!courseSessionService.isTeacherOwnerOfCourseSession(courseSessionId, teacherId)){
+            throw new ResponseStatusException(
+                    HttpStatus.FORBIDDEN,
+                    "Bạn không phải là giảng viên môn này!"
+            );
+        }
+        
+        if(courseSessionService.lockGradeStatus(courseSessionId))
+            return ResponseEntity.ok("Khóa điểm thành công!");
+        else
+            return ResponseEntity
+             .status(HttpStatus.BAD_REQUEST)
+             .body("Khóa điểm thất bại!");
+        
     }
 }

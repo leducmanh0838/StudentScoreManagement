@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class CriteriaServiceImpl implements CriteriaService {
+    private static final int CRITERIA_SIZE=5;
 
     @Autowired
     private CriteriaRepository criteriaRepository;
@@ -38,6 +39,10 @@ public class CriteriaServiceImpl implements CriteriaService {
 
     @Override
     public List<Criteria> addList(List<Criteria> criteriaList, Integer courseSessionId) {
+        // Kiểm tra không vượt quá 5 tiêu chí
+        if (criteriaList.size() > CRITERIA_SIZE) {
+            throw new IllegalArgumentException(String.format("Không được thêm quá %d tiêu chí", CRITERIA_SIZE));
+        }
         // Kiểm tra có đúng 1 "midterm" và 1 "final"
         long midtermCount = criteriaList.stream()
                 .filter(c -> "midterm".equalsIgnoreCase(c.getCriteriaName()))
@@ -81,7 +86,4 @@ public class CriteriaServiceImpl implements CriteriaService {
         return criteriaRepository.addList(criteriaList);
     }
 
-    public boolean isTeacherOwnerOfCourseSession(Integer courseSessionId, Integer teacherId){
-        return criteriaRepository.isTeacherOwnerOfCourseSession(courseSessionId, teacherId);
-    }
 }

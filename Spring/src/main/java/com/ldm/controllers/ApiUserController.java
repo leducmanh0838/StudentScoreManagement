@@ -4,7 +4,9 @@
  */
 package com.ldm.controllers;
 
+import com.ldm.dto.StudentInCourseDTO;
 import com.ldm.pojo.User;
+import com.ldm.services.CourseSessionService;
 import com.ldm.services.UserService;
 import com.ldm.utils.JwtUtils;
 import jakarta.servlet.http.HttpServletRequest;
@@ -31,6 +33,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 /**
  *
@@ -43,6 +46,8 @@ public class ApiUserController {
 
     @Autowired
     private UserService userDetailsService;
+    @Autowired
+    private CourseSessionService courseSessionService;
 
 //    @PostMapping(path = "users/",
 //            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
@@ -67,25 +72,18 @@ public class ApiUserController {
     }
     
     @GetMapping("/secure/teacherAuth/getStudentsByCourseSession")
-    public ResponseEntity<?> getStudentsByCourseSession(@RequestParam Map<String, String> params) {
-        try {
-            List<User> students = userDetailsService.getStudentsInCourseSession(params);
-            
-            List<Map<String, String>> result = students.stream().map(s -> {
-                Map<String, String> m = new HashMap<>();
-                m.put("id", s.getId().toString());
-                m.put("userCode", s.getUserCode());
-                m.put("firstName", s.getFirstName());
-                m.put("lastName", s.getLastName());
-                return m;
-            }).collect(Collectors.toList());
-
-            return ResponseEntity.ok(result);
-
-        } catch (IllegalArgumentException ex) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
-        } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi hệ thống: " + ex.getMessage());
+    public ResponseEntity<List<StudentInCourseDTO>> getStudentsByCourseSession(@RequestParam Map<String, String> params, HttpServletRequest request) {
+        Integer teacherId = ((Number) request.getAttribute("id")).intValue();
+        Integer courseSessionId = Integer.parseInt(params.get("courseSessionId"));
+        if(!courseSessionService.isTeacherOwnerOfCourseSession(courseSessionId, teacherId)){
+            throw new ResponseStatusException(
+                    HttpStatus.FORBIDDEN,
+                    "Bạn không phải là giảng viên môn này!"
+            );
         }
+        
+        List<StudentInCourseDTO> students = userDetailsService.getStudentsInCourseSession(params);
+
+        return ResponseEntity.ok(students);
     }
 }

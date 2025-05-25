@@ -6,6 +6,7 @@ package com.ldm.services.impl;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import com.ldm.dto.StudentInCourseDTO;
 import com.ldm.pojo.User;
 import com.ldm.repositories.UserRepository;
 import com.ldm.repositories.impl.UserRepositoryImpl;
@@ -114,7 +115,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getStudentsInCourseSession(Map<String, String> params) {
+    public List<StudentInCourseDTO> getStudentsInCourseSession(Map<String, String> params) {
         String courseSessionIdStr = params.get("courseSessionId");
         if (courseSessionIdStr == null || courseSessionIdStr.isEmpty()) {
             throw new IllegalArgumentException("Thiếu mã buổi học");

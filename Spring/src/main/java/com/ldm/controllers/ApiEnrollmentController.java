@@ -35,12 +35,19 @@ public class ApiEnrollmentController {
         try{
             Integer userId = ((Number) request.getAttribute("id")).intValue();
             if(enrollmentService.register(userId, Integer.parseInt(requestBody.get("courseSessionId"))))
-                return ResponseEntity.ok("Thêm thành công!");
+                return ResponseEntity.ok("Đăng ký thành công!");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Không thể thêm đăng ký.");
         }catch (IllegalArgumentException ex){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
         }catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi hệ thống: " + ex.getMessage());
         } 
+    }
+    
+    @GetMapping("secure/enrollment/getEnrollments")
+    public ResponseEntity<?> getEnrollments(HttpServletRequest request){
+        Integer userId = ((Number) request.getAttribute("id")).intValue();
+        
+        return ResponseEntity.ok(enrollmentService.getEnrollmentsByStudentId(userId));
     }
 }

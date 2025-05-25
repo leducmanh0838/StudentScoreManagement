@@ -25,4 +25,7 @@ public interface CourseSessionRepository {
 //JOIN User u ON cs.teacher_id = u.id;
     List<Object[]> getCourseSessions(Map<String, String> params);
     boolean registerCourseSession();
+    boolean isTeacherOwnerOfCourseSession(Integer courseSessionId, Integer teacherId);
+    String getGradeStatusByCourseSessionId(int id);
+    boolean lockGradeStatus(Integer courseSessionId);
 }

@@ -4,6 +4,7 @@
  */
 package com.ldm.services.impl;
 
+import com.ldm.dto.EnrollmentInfoForStudentDTO;
 import com.ldm.pojo.CourseSession;
 import com.ldm.pojo.Enrollment;
 import com.ldm.pojo.User;
@@ -11,6 +12,7 @@ import com.ldm.repositories.CourseSessionRepository;
 import com.ldm.repositories.EnrollmentRepository;
 import com.ldm.repositories.UserRepository;
 import com.ldm.services.EnrollmentService;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -56,6 +58,11 @@ public class EnrollmentServiceImpl implements EnrollmentService{
     @Override
     public boolean addMidAndFinalScore(Float midScore, Float finalScore) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public List<EnrollmentInfoForStudentDTO> getEnrollmentsByStudentId(int userId) {
+        return enrollmentRepository.getEnrollmentsByStudentId(userId);
     }
     
 }

@@ -4,6 +4,7 @@
  */
 package com.ldm.services;
 
+import com.ldm.dto.StudentInCourseDTO;
 import com.ldm.pojo.User;
 import java.util.List;
 import java.util.Map;
@@ -25,5 +26,5 @@ public interface UserService extends UserDetailsService{
     User getUserByEmail(String email);
     boolean authenticate(String email, String password);
     User addStudent(User student);
-    List<User> getStudentsInCourseSession(Map<String, String> params);
+    List<StudentInCourseDTO> getStudentsInCourseSession(Map<String, String> params);
 }

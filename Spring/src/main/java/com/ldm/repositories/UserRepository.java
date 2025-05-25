@@ -4,6 +4,7 @@
  */
 package com.ldm.repositories;
 
+import com.ldm.dto.StudentInCourseDTO;
 import com.ldm.pojo.User;
 import java.util.List;
 import java.util.Map;
@@ -21,5 +22,5 @@ public interface UserRepository {
     User getUserByEmail(String email);
     boolean authenticate(String email, String password);
     boolean isEmailExists(String email);
-    List<User> getStudentsInCourseSession(Map<String, String> params);
+    List<StudentInCourseDTO> getStudentsInCourseSession(Map<String, String> params);
 }

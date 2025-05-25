@@ -4,6 +4,7 @@
  */
 package com.ldm.repositories.impl;
 
+import com.ldm.dto.StudentInCourseDTO;
 import com.ldm.pojo.Enrollment;
 import com.ldm.pojo.User;
 import org.hibernate.Session;
@@ -119,12 +120,15 @@ public class UserRepositoryImpl implements UserRepository {
             User existing = s.get(User.class, u.getId());
             if (existing != null) {
                 // 2. Chỉ cập nhật nếu != null
-                if (u.getFirstName()!= null)
+                if (u.getFirstName() != null) {
                     existing.setFirstName(u.getFirstName());
-                if (u.getLastName()!= null)
+                }
+                if (u.getLastName() != null) {
                     existing.setLastName(u.getLastName());
-                if (u.getAvatar()!= null)
+                }
+                if (u.getAvatar() != null) {
                     existing.setAvatar(u.getAvatar());
+                }
                 // ... thêm các field khác tương tự
                 s.merge(existing); // cập nhật lại bản đã sửa
                 return existing;
@@ -166,35 +170,38 @@ public class UserRepositoryImpl implements UserRepository {
     public boolean isEmailExists(String email) {
         Session session = this.factory.getObject().getCurrentSession();
         Query<Long> query = session.createQuery(
-            "SELECT COUNT(u.id) FROM User u WHERE u.email = :email", Long.class);
+                "SELECT COUNT(u.id) FROM User u WHERE u.email = :email", Long.class);
         query.setParameter("email", email);
         Long count = query.uniqueResult();
         return count != null && count > 0;
     }
-    
+
     @Override
-    public List<User> getStudentsInCourseSession(Map<String, String> params) {
+    public List<StudentInCourseDTO> getStudentsInCourseSession(Map<String, String> params) {
         Session s = this.factory.getObject().getCurrentSession();
         CriteriaBuilder cb = s.getCriteriaBuilder();
-        CriteriaQuery<User> cq = cb.createQuery(User.class);
+        CriteriaQuery<Object[]> cq = cb.createQuery(Object[].class);
 
-        // Truy vấn trên User
         Root<Enrollment> enrollRoot = cq.from(Enrollment.class);
         Join<Enrollment, User> userJoin = enrollRoot.join("userId");
-        cq.select(userJoin);
+
+        cq.multiselect(
+                userJoin.get("id"),
+                userJoin.get("firstName"),
+                userJoin.get("lastName"),
+                userJoin.get("userCode"),
+                enrollRoot.get("id")
+        );
 
         List<Predicate> predicates = new ArrayList<>();
 
-        // Bắt buộc phải có courseSessionId
         if (params.containsKey("courseSessionId")) {
             Integer csId = Integer.parseInt(params.get("courseSessionId"));
             predicates.add(cb.equal(enrollRoot.get("courseSessionId").get("id"), csId));
-
         } else {
             throw new IllegalArgumentException("Thiếu tham số courseSessionId!");
         }
 
-        // Lọc theo userCode nếu có
         if (params.containsKey("userCode")) {
             String userCode = params.get("userCode");
             if (!userCode.isEmpty()) {
@@ -202,33 +209,43 @@ public class UserRepositoryImpl implements UserRepository {
             }
         }
 
-        // Lọc theo tên (first_name hoặc last_name)
         if (params.containsKey("name")) {
             String name = params.get("name");
             if (!name.isEmpty()) {
                 String namePattern = "%" + name + "%";
                 predicates.add(cb.or(
-                    cb.like(userJoin.get("firstName"), namePattern),
-                    cb.like(userJoin.get("lastName"), namePattern)
+                        cb.like(userJoin.get("firstName"), namePattern),
+                        cb.like(userJoin.get("lastName"), namePattern)
                 ));
             }
         }
 
-        // Chỉ lấy sinh viên
-        predicates.add(cb.equal(userJoin.get("role"), User.STUDENT_ROLE));
+        predicates.add(cb.equal(userJoin.get("role"), "student"));
 
-        // Ghép điều kiện
         cq.where(predicates.toArray(Predicate[]::new));
-        cq.distinct(true); // Tránh trùng sinh viên
+        cq.distinct(true);
 
-        Query<User> query = s.createQuery(cq);
+        Query<Object[]> query = s.createQuery(cq);
 
-        // Phân trang
         int page = Integer.parseInt(params.getOrDefault("page", "1"));
         int start = (page - 1) * PAGE_SIZE;
         query.setFirstResult(start);
         query.setMaxResults(PAGE_SIZE);
 
-        return query.getResultList();
+        List<Object[]> results = query.getResultList();
+
+        List<StudentInCourseDTO> dtos = new ArrayList<>();
+        for (Object[] row : results) {
+            dtos.add(new StudentInCourseDTO(
+                    (Integer) row[0],
+                    (String) row[1],
+                    (String) row[2],
+                    (String) row[3],
+                    (Integer) row[4]
+            ));
+        }
+
+        return dtos;
     }
+
 }

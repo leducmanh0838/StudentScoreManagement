@@ -15,5 +15,4 @@ public interface CriteriaService {
     Criteria addOrUpdate(Criteria criteria);
     List<Criteria> getCriteriaByCourseSession(Integer courseSessionId);
     List<Criteria> addList(List<Criteria> criteriaList, Integer courseSessionId);
-    boolean isTeacherOwnerOfCourseSession(Integer courseSessionId, Integer teacherId);
 }
