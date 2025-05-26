@@ -39,16 +39,10 @@ public class ApiEnrollmentController {
     
     @PostMapping("/secure/studentAuth/enrollment/register")
     public ResponseEntity<?> registerCourseSession(HttpServletRequest request, @RequestBody Map<String, String> requestBody){
-        try{
-            Integer userId = ((Number) request.getAttribute("id")).intValue();
-            if(enrollmentService.register(userId, Integer.parseInt(requestBody.get("courseSessionId"))))
-                return ResponseEntity.ok("Đăng ký thành công!");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Đăng ký thất bại!");
-        }catch (IllegalArgumentException ex){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
-        }catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi hệ thống: " + ex.getMessage());
-        } 
+        Integer userId = ((Number) request.getAttribute("id")).intValue();
+        if(enrollmentService.register(userId, Integer.parseInt(requestBody.get("courseSessionId"))))
+            return ResponseEntity.ok("Đăng ký thành công!");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Đăng ký thất bại!");
     }
     
     @GetMapping("secure/studentAuth/enrollment/getEnrollments")

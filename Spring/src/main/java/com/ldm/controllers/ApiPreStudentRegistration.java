@@ -37,27 +37,15 @@ public class ApiPreStudentRegistration {
     @PostMapping(path = "/preStudent/register", consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> registerPreStudent(@RequestParam Map<String, String> params, @RequestParam(value = "avatar", required = false) MultipartFile avatar) {
-        try {
-            PreStudentRegistration registered = preStudentService.register(params, avatar);
-            return ResponseEntity.ok("Đăng ký thành công. Vui lòng kiểm tra email để xác thực.");
-        } catch (IllegalArgumentException ex) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Xác thực thất bại: " + ex.getMessage());
-        } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi hệ thống: " + ex.getMessage());
-        } 
+        PreStudentRegistration registered = preStudentService.register(params, avatar);
+        return ResponseEntity.ok("Đăng ký thành công. Vui lòng kiểm tra email để xác thực.");
     }
 
     @PostMapping("/preStudent/verify")
     public ResponseEntity<?> verifyPreStudent(@RequestBody Map<String, String> requestBody) {
         String email = requestBody.get("email");
         String otp = requestBody.get("otp");
-        try {
-            boolean success = preStudentService.verifyOtp(email, otp);
-            return ResponseEntity.ok("Xác thực thành công!");
-        } catch (IllegalArgumentException ex) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Xác thực thất bại: " + ex.getMessage());
-        } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi hệ thống: " + ex.getMessage());
-        } 
+        boolean success = preStudentService.verifyOtp(email, otp);
+        return ResponseEntity.ok("Xác thực thành công!");
     }
 }

@@ -14,7 +14,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Map<String, String>> handleIllegalArgument(IllegalArgumentException ex) {
         Map<String, String> err = new HashMap<>();
-        err.put("error", ex.getMessage());
+        err.put("message", ex.getMessage());
         return ResponseEntity.badRequest().body(err);
     }
     
@@ -22,7 +22,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ResponseStatusException.class)
     public ResponseEntity<Map<String, String>> handleResponseStatus(ResponseStatusException ex) {
         Map<String, String> err = new HashMap<>();
-        err.put("error", ex.getReason());  // Lý do từ throw new ResponseStatusException(...)
+        err.put("message", ex.getReason());  // Lý do từ throw new ResponseStatusException(...)
         return ResponseEntity.status(ex.getStatusCode()).body(err);
     }
 
