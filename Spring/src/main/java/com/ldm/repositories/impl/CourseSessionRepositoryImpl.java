@@ -4,6 +4,7 @@
  */
 package com.ldm.repositories.impl;
 
+import com.ldm.dto.CourseSessionListForTeacherDTO;
 import com.ldm.pojo.Course;
 import com.ldm.pojo.CourseSession;
 import com.ldm.pojo.User;
@@ -130,5 +131,20 @@ public class CourseSessionRepositoryImpl implements CourseSessionRepository {
                 .executeUpdate();
 
         return updated > 0;
+    }
+
+    @Override
+    public List<CourseSessionListForTeacherDTO> getCourseSessionsByTeacherId(int teacherId) {
+        Session session = this.factory.getObject().getCurrentSession();
+
+        Query<CourseSessionListForTeacherDTO> query = session.createQuery(
+                "SELECT new CourseSessionListForTeacherDTO(cs.id, cs.code, c.name) "
+                + "FROM CourseSession cs JOIN cs.courseId c "
+                + "WHERE cs.teacherId.id = :teacherId",
+                CourseSessionListForTeacherDTO.class
+        );
+
+        query.setParameter("teacherId", teacherId);
+        return query.getResultList();
     }
 }

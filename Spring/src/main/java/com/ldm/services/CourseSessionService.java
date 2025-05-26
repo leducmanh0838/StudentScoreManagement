@@ -4,6 +4,7 @@
  */
 package com.ldm.services;
 
+import com.ldm.dto.CourseSessionListForTeacherDTO;
 import com.ldm.pojo.CourseSession;
 import java.util.List;
 import java.util.Map;
@@ -21,4 +22,5 @@ public interface CourseSessionService {
     boolean isTeacherOwnerOfCourseSession(Integer courseSessionId, Integer teacherId);
     String getGradeStatusByCourseSessionId(int id);
     boolean lockGradeStatus(Integer courseSessionId);
+    List<CourseSessionListForTeacherDTO> getCourseSessionsByTeacherId(int teacherId);
 }

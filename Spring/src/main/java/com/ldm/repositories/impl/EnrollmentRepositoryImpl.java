@@ -91,18 +91,6 @@ public class EnrollmentRepositoryImpl implements EnrollmentRepository {
 
         return count == enrollmentIds.size();
     }
-//@Override
-//    public CourseSession addOrUpdate(CourseSession cs) {
-//        Session s = this.factory.getObject().getCurrentSession();
-//        if(cs.getId()==null){
-//            s.persist(cs);
-//        }
-//        else{
-//            s.merge(cs);
-//        }
-//        
-//        return cs;
-//    }    
 
     @Override
     public List<EnrollmentInfoForStudentDTO> getEnrollmentsByStudentId(int userId) {
@@ -121,5 +109,16 @@ public class EnrollmentRepositoryImpl implements EnrollmentRepository {
         query.setParameter("userId", userId);
 
         return query.getResultList();
+    }
+
+    @Override
+    public boolean isStudentOwnerOfEnrollment(int enrollmentId, int studentId) {
+        Session s = this.factory.getObject().getCurrentSession();
+        String hql = "SELECT COUNT(e) FROM Enrollment e WHERE e.id = :enrollmentId AND e.userId.id = :studentId";
+        Long count = s.createQuery(hql, Long.class)
+                .setParameter("enrollmentId", enrollmentId)
+                .setParameter("studentId", studentId)
+                .uniqueResult();
+        return count != null && count > 0;
     }
 }

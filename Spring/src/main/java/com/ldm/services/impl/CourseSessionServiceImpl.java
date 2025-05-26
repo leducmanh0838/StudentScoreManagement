@@ -4,6 +4,7 @@
  */
 package com.ldm.services.impl;
 
+import com.ldm.dto.CourseSessionListForTeacherDTO;
 import com.ldm.repositories.impl.*;
 import com.ldm.pojo.Course;
 import com.ldm.pojo.CourseSession;
@@ -66,5 +67,10 @@ public class CourseSessionServiceImpl implements CourseSessionService{
     @Override
     public boolean lockGradeStatus(Integer courseSessionId) {
         return repo.lockGradeStatus(courseSessionId);
+    }
+
+    @Override
+    public List<CourseSessionListForTeacherDTO> getCourseSessionsByTeacherId(int teacherId) {
+        return this.repo.getCourseSessionsByTeacherId(teacherId);
     }
 }

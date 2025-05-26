@@ -5,13 +5,17 @@
 package com.ldm.services.impl;
 
 import com.ldm.dto.EnrollmentGradeDTO;
+import com.ldm.dto.GradeInfoDTO;
 import com.ldm.dto.GradeRequestDTO;
+import com.ldm.dto.ScoreAndCriteriaDTO;
 import com.ldm.dto.ScoreDTO;
 import com.ldm.dto.ScoreUpdateDTO;
+import com.ldm.dto.StudentGradeMailDTO;
 import com.ldm.dto.UpdateGradeRequestDTO;
 import com.ldm.pojo.Grade;
 import com.ldm.repositories.CriteriaRepository;
 import com.ldm.repositories.GradeRepository;
+import com.ldm.services.EmailService;
 import com.ldm.services.GradeService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +30,9 @@ public class GradeServiceImpl implements GradeService {
 
     @Autowired
     private GradeRepository gradeRepository;
+    
+    @Autowired
+    private EmailService emailService;
 
     @Override
     public List<Grade> addGrades(GradeRequestDTO req) {
@@ -105,6 +112,23 @@ public class GradeServiceImpl implements GradeService {
 
         // Nếu hợp lệ thì gọi repository xử lý cập nhật
         return gradeRepository.updateGrades(req);
+    }
+
+    @Override
+    public List<ScoreAndCriteriaDTO> getGradesByEnrollmentId(int enrollmentId) {
+        return this.gradeRepository.getGradesByEnrollmentId(enrollmentId);
+    }
+
+    @Override
+    public List<GradeInfoDTO> getGradesByCourseSessionId(int courseSessionId) {
+        return this.gradeRepository.getGradesByCourseSessionId(courseSessionId);
+    }
+
+    @Override
+    public List<StudentGradeMailDTO> getStudentGradeMailByCourseSessionId(int courseSessionId) {
+        List<StudentGradeMailDTO> students = this.gradeRepository.getStudentGradeMailByCourseSessionId(courseSessionId);
+        emailService.sendGradesToStudents(students);
+        return students;
     }
 
 }

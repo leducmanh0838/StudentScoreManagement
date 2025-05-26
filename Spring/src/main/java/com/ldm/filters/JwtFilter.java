@@ -4,6 +4,7 @@
  */
 package com.ldm.filters;
 
+import com.ldm.pojo.User;
 import com.ldm.utils.JwtUtils;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
@@ -51,8 +52,14 @@ public class JwtFilter implements Filter {
 
                     // Nếu truy cập endpoint dành riêng cho giáo viên thì kiểm tra role
                     if (path.startsWith(securePath + "/teacherAuth")) {
-                        if (!"teacher".equals(role)) {
+                        if (!User.TEACHER_ROLE.equals(role)) {
                             httpResponse.sendError(HttpServletResponse.SC_FORBIDDEN, "Bạn không có quyền truy cập endpoint dành cho giáo viên.");
+                            return;
+                        }
+                    }
+                    if (path.startsWith(securePath + "/studentAuth")) {
+                        if (!User.STUDENT_ROLE.equals(role)) {
+                            httpResponse.sendError(HttpServletResponse.SC_FORBIDDEN, "Bạn không có quyền truy cập endpoint dành cho học sinh.");
                             return;
                         }
                     }

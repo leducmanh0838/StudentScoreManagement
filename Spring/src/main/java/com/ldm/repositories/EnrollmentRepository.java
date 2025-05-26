@@ -18,4 +18,5 @@ public interface EnrollmentRepository {
     boolean existsByUserIdAndCourseSessionId(int userId, int courseSessionId);
     boolean areAllEnrollmentsInCourseSession(List<Integer> enrollmentIds, int courseSessionId);
     List<EnrollmentInfoForStudentDTO> getEnrollmentsByStudentId(int userId);
+    boolean isStudentOwnerOfEnrollment(int enrollmentId, int studentId);
 }

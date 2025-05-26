@@ -21,13 +21,17 @@ C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\controllers\IndexController.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\controllers\LoginController.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\controllers\UserController.java
+C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\dto\CourseSessionListForTeacherDTO.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\dto\CriteriaInCourseSessionDTO.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\dto\EnrollmentGradeDTO.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\dto\EnrollmentInfoForStudentDTO.java
+C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\dto\GradeInfoDTO.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\dto\GradeReponseDTO.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\dto\GradeRequestDTO.java
+C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\dto\ScoreAndCriteriaDTO.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\dto\ScoreDTO.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\dto\ScoreUpdateDTO.java
+C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\dto\StudentGradeMailDTO.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\dto\StudentInCourseDTO.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\dto\UpdateGradeRequestDTO.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\filters\JwtFilter.java

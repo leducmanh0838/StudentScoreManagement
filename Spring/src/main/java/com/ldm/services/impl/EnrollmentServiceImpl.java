@@ -62,7 +62,12 @@ public class EnrollmentServiceImpl implements EnrollmentService{
 
     @Override
     public List<EnrollmentInfoForStudentDTO> getEnrollmentsByStudentId(int userId) {
-        return enrollmentRepository.getEnrollmentsByStudentId(userId);
+        return this.enrollmentRepository.getEnrollmentsByStudentId(userId);
+    }
+
+    @Override
+    public boolean isStudentOwnerOfEnrollment(int enrollmentId, int studentId) {
+        return this.enrollmentRepository.isStudentOwnerOfEnrollment(enrollmentId, studentId);
     }
     
 }

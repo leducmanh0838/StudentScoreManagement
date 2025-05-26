@@ -15,4 +15,5 @@ public interface EnrollmentService {
     boolean register(Integer studentId, Integer courseSessionId);
     boolean addMidAndFinalScore(Float midScore, Float finalScore);
     List<EnrollmentInfoForStudentDTO> getEnrollmentsByStudentId(int userId);
+    boolean isStudentOwnerOfEnrollment(int enrollmentId, int studentId);
 }
