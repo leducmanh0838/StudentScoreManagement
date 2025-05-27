@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Spinner, Alert, Container, Card, Button, Form } from 'react-bootstrap';
+import { Table, Spinner, Alert, Container, Card, Form } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import { authApis } from '../../configs/Apis';
 
@@ -7,35 +7,55 @@ const GradeManagement = () => {
   const { courseSessionId } = useParams();
   const [criteria, setCriteria] = useState([]);
   const [students, setStudents] = useState([]);
-  const [scores, setScores] = useState({}); // Dạng: {enrollmentId: {criteriaId: score}}
+  const [scores, setScores] = useState({}); // Dạng: { enrollmentId: { criteriaId: { score, gradeId } } }
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [submitMsg, setSubmitMsg] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const [criteriaRes, studentsRes] = await Promise.all([
+        const [criteriaRes, studentsRes, gradesRes] = await Promise.all([
           authApis().get(`/secure/courseSession/${courseSessionId}/getCriterias`),
-          authApis().get(`/secure/teacherAuth/getStudentsByCourseSession?courseSessionId=${courseSessionId}`)
+          authApis().get(`/secure/teacherAuth/getStudentsByCourseSession?courseSessionId=${courseSessionId}`),
+          authApis().get(`/secure/teacherAuth/courseSession/${courseSessionId}/getGrades`)
         ]);
 
-        setCriteria(criteriaRes.data || []);
-        setStudents(studentsRes.data || []);
+        const criterias = criteriaRes.data || [];
+        const studentsData = studentsRes.data || [];
+        const grades = gradesRes.data || [];
 
-        // Khởi tạo điểm trống
+        console.info('criterias: ',criterias)
+
+        setCriteria(criterias);
+        setStudents(studentsData);
+
         const initialScores = {};
-        (studentsRes.data || []).forEach(s => {
-          initialScores[s.enrollmentId] = {};
-          (criteriaRes.data || []).forEach(c => {
-            initialScores[s.enrollmentId][c.id] = '';
+        studentsData.forEach((student) => {
+          initialScores[student.enrollmentId] = {};
+          criterias.forEach((criteriaItem) => {
+            initialScores[student.enrollmentId][criteriaItem.id] = {
+              score: '',
+              gradeId: undefined,
+            };
           });
         });
+
+        // map dữ liệu điểm đã có vào
+        grades.forEach((grade) => {
+          const { enrollmentId, criteriaId, gradeId, score } = grade;
+          if (initialScores[enrollmentId] && initialScores[enrollmentId][criteriaId]) {
+            initialScores[enrollmentId][criteriaId] = {
+              score,
+              gradeId,
+            };
+          }
+        });
+
         setScores(initialScores);
       } catch (err) {
         console.error(err);
-        setError("Không thể tải dữ liệu.");
+        setError('Không thể tải dữ liệu.');
       } finally {
         setLoading(false);
       }
@@ -46,46 +66,16 @@ const GradeManagement = () => {
 
   const handleScoreChange = (enrollmentId, criteriaId, value) => {
     const numericValue = value === '' ? '' : parseFloat(value);
-    setScores(prev => ({
+    setScores((prev) => ({
       ...prev,
       [enrollmentId]: {
         ...prev[enrollmentId],
-        [criteriaId]: numericValue
-      }
+        [criteriaId]: {
+          ...prev[enrollmentId][criteriaId],
+          score: numericValue,
+        },
+      },
     }));
-  };
-
-  const handleSubmit = async () => {
-    const payload = {
-      courseSessionId: parseInt(courseSessionId),
-      enrollments: Object.entries(scores)
-        .map(([enrollmentId, criteriaScores]) => ({
-          enrollmentId: parseInt(enrollmentId),
-          scores: Object.entries(criteriaScores)
-            .filter(([_, score]) => score !== '') // bỏ điểm trống
-            .map(([criteriaId, score]) => ({
-              criteriaId: parseInt(criteriaId),
-              score: parseFloat(score)
-            }))
-        }))
-        .filter(enrollment => enrollment.scores.length > 0) // bỏ các enrollment không có score
-    };
-    console.info('payload:', JSON.stringify(payload, null, 2));
-
-    try {
-      await authApis().post('/secure/teacherAuth/grade/addGrades', payload); // <-- endpoint mẫu
-      setSubmitMsg('Lưu điểm thành công!');
-    } catch (error) {
-
-      if (error.response && error.response.data && error.response.data.message) {
-        setSubmitMsg(error.response.data.message);
-      } else {
-        setSubmitMsg("Lỗi khi lưu điểm!");
-      }
-
-      console.error("Login error:", error.response || error.message);
-
-    }
   };
 
   return (
@@ -103,48 +93,45 @@ const GradeManagement = () => {
           ) : error ? (
             <Alert variant="danger">{error}</Alert>
           ) : (
-            <>
-              {submitMsg && <Alert variant="info">{submitMsg}</Alert>}
-              <Table bordered responsive hover>
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Họ tên</th>
-                    <th>Mã sinh viên</th>
-                    {criteria.map(c => (
-                      <th key={c.id}>
-                        {c.criteriaName} <br />
-                        <small>({c.weight}%)</small>
-                      </th>
+            <Table bordered responsive hover>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Họ tên</th>
+                  <th>Mã sinh viên</th>
+                  {criteria.map((c) => (
+                    <th key={c.id}>
+                      {c.criteriaName}
+                      <br />
+                      <small>({c.weight}%)</small>
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {students.map((student, idx) => (
+                  <tr key={student.userId}>
+                    <td>{idx + 1}</td>
+                    <td>{student.lastName} {student.firstName}</td>
+                    <td>{student.userCode}</td>
+                    {criteria.map((c) => (
+                      <td key={c.id}>
+                        <Form.Control
+                          type="number"
+                          min="0"
+                          max="10"
+                          step="0.1"
+                          value={scores[student.enrollmentId]?.[c.id]?.score ?? ''}
+                          onChange={(e) =>
+                            handleScoreChange(student.enrollmentId, c.id, e.target.value)
+                          }
+                        />
+                      </td>
                     ))}
                   </tr>
-                </thead>
-                <tbody>
-                  {students.map((student, idx) => (
-                    <tr key={student.userId}>
-                      <td>{idx + 1}</td>
-                      <td>{student.lastName} {student.firstName}</td>
-                      <td>{student.userCode}</td>
-                      {criteria.map(c => (
-                        <td key={c.id}>
-                          <Form.Control
-                            type="number"
-                            min="0"
-                            max="10"
-                            step="0.1"
-                            value={scores[student.enrollmentId]?.[c.id] ?? ''}
-                            onChange={(e) => handleScoreChange(student.enrollmentId, c.id, e.target.value)}
-                          />
-                        </td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-              </Table>
-              <div className="text-end mt-3">
-                <Button variant="success" onClick={handleSubmit}>Lưu điểm</Button>
-              </div>
-            </>
+                ))}
+              </tbody>
+            </Table>
           )}
         </Card.Body>
       </Card>
