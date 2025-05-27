@@ -227,10 +227,16 @@ public class UserRepositoryImpl implements UserRepository {
 
         Query<Object[]> query = s.createQuery(cq);
 
-        int page = Integer.parseInt(params.getOrDefault("page", "1"));
-        int start = (page - 1) * PAGE_SIZE;
-        query.setFirstResult(start);
-        query.setMaxResults(PAGE_SIZE);
+//        int page = Integer.parseInt(params.getOrDefault("page", "1"));
+//        int start = (page - 1) * PAGE_SIZE;
+//        query.setFirstResult(start);
+//        query.setMaxResults(PAGE_SIZE);
+        if (params.containsKey("page")) {
+            int page = Integer.parseInt(params.get("page"));
+            int start = (page - 1) * PAGE_SIZE;
+            query.setFirstResult(start);
+            query.setMaxResults(PAGE_SIZE);
+        }
 
         List<Object[]> results = query.getResultList();
 

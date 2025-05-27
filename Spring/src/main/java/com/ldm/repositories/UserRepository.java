@@ -23,4 +23,5 @@ public interface UserRepository {
     boolean authenticate(String email, String password);
     boolean isEmailExists(String email);
     List<StudentInCourseDTO> getStudentsInCourseSession(Map<String, String> params);
+    
 }

@@ -19,4 +19,5 @@ public interface EnrollmentRepository {
     boolean areAllEnrollmentsInCourseSession(List<Integer> enrollmentIds, int courseSessionId);
     List<EnrollmentInfoForStudentDTO> getEnrollmentsByStudentId(int userId);
     boolean isStudentOwnerOfEnrollment(int enrollmentId, int studentId);
+    String getGradeStatusByEnrollmentId(int enrollmentId);
 }

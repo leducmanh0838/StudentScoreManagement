@@ -12,6 +12,7 @@ com\ldm\dto\GradeReponseDTO.class
 com\ldm\pojo\Enrollment.class
 com\ldm\utils\MyUserUtil.class
 com\ldm\controllers\ApiEnrollmentController.class
+com\ldm\controllers\ApiCourseController.class
 com\ldm\pojo\User.class
 com\ldm\configs\WebAppContextConfigs.class
 com\ldm\controllers\LoginController.class
@@ -24,6 +25,7 @@ com\ldm\dto\UpdateGradeRequestDTO.class
 com\ldm\repositories\impl\GradeRepositoryImpl.class
 com\ldm\pojo\Criteria.class
 com\ldm\repositories\impl\CourseRepositoryImpl.class
+com\ldm\dto\UserInfoDTO.class
 com\ldm\configs\HibernateConfigs.class
 com\ldm\configs\LoggerConfig.class
 com\ldm\services\UserService.class

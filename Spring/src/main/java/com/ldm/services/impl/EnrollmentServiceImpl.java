@@ -69,5 +69,10 @@ public class EnrollmentServiceImpl implements EnrollmentService{
     public boolean isStudentOwnerOfEnrollment(int enrollmentId, int studentId) {
         return this.enrollmentRepository.isStudentOwnerOfEnrollment(enrollmentId, studentId);
     }
+
+    @Override
+    public String getGradeStatusByEnrollmentId(int enrollmentId) {
+        return this.enrollmentRepository.getGradeStatusByEnrollmentId(enrollmentId);
+    }
     
 }

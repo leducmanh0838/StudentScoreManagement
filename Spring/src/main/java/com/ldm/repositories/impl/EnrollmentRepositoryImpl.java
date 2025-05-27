@@ -121,4 +121,18 @@ public class EnrollmentRepositoryImpl implements EnrollmentRepository {
                 .uniqueResult();
         return count != null && count > 0;
     }
+    
+    @Override
+    public String getGradeStatusByEnrollmentId(int enrollmentId) {
+        Session session = this.factory.getObject().getCurrentSession();
+
+        String hql = "SELECT cs.gradeStatus "
+                   + "FROM Enrollment e "
+                   + "JOIN e.courseSessionId cs "
+                   + "WHERE e.id = :enrollmentId";
+
+        return session.createQuery(hql, String.class)
+                      .setParameter("enrollmentId", enrollmentId)
+                      .uniqueResult();
+    }
 }

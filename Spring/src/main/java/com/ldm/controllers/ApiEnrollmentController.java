@@ -5,6 +5,8 @@
 package com.ldm.controllers;
 
 import com.ldm.dto.ScoreAndCriteriaDTO;
+import com.ldm.pojo.CourseSession;
+import com.ldm.pojo.Enrollment;
 import com.ldm.services.EnrollmentService;
 import com.ldm.services.GradeService;
 import com.ldm.services.impl.EnrollmentServiceImpl;
@@ -55,6 +57,14 @@ public class ApiEnrollmentController {
     @GetMapping("secure/studentAuth/enrollment/{enrollmentId}/getGrades")
     public ResponseEntity<List<ScoreAndCriteriaDTO>> getGrades(@PathVariable("enrollmentId") int enrollmentId, HttpServletRequest request) {
         Integer userId = ((Number) request.getAttribute("id")).intValue();
+        
+        if(enrollmentService.getGradeStatusByEnrollmentId(enrollmentId).equals(CourseSession.DRAFT)){
+            throw new ResponseStatusException(
+                    HttpStatus.FORBIDDEN,
+                    "Điểm CHƯA được công bố, vui lòng chờ!"
+            );
+        }
+        
         if(!enrollmentService.isStudentOwnerOfEnrollment(enrollmentId, userId)){
             throw new ResponseStatusException(
                     HttpStatus.FORBIDDEN,

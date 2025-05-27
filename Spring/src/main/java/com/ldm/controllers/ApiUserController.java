@@ -5,6 +5,7 @@
 package com.ldm.controllers;
 
 import com.ldm.dto.StudentInCourseDTO;
+import com.ldm.dto.UserInfoDTO;
 import com.ldm.pojo.User;
 import com.ldm.services.CourseSessionService;
 import com.ldm.services.UserService;
@@ -86,4 +87,12 @@ public class ApiUserController {
 
         return ResponseEntity.ok(students);
     }
+    
+    @GetMapping("/secure/user/getCurrentUser")
+    public ResponseEntity<?> getCurrentUser(HttpServletRequest request) {
+        Integer userId = ((Number) request.getAttribute("id")).intValue();
+        User user = userDetailsService.getUserById(userId);
+        return ResponseEntity.ok(new UserInfoDTO(user));
+    }
+
 }

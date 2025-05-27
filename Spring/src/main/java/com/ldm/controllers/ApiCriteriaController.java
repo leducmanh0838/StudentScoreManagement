@@ -41,7 +41,7 @@ public class ApiCriteriaController {
     @Autowired
     private CourseSessionService courseSessionService;
     
-    @GetMapping("/secure/getCriterias/{courseSessionId}")
+    @GetMapping("/secure/courseSession/{courseSessionId}/getCriterias")
     public ResponseEntity<List<CriteriaInCourseSessionDTO>> getCriteriasByCourseSession(
             @PathVariable(name="courseSessionId") Integer courseSessionId) {
 

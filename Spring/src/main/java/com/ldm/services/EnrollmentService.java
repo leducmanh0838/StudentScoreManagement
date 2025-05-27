@@ -16,4 +16,5 @@ public interface EnrollmentService {
     boolean addMidAndFinalScore(Float midScore, Float finalScore);
     List<EnrollmentInfoForStudentDTO> getEnrollmentsByStudentId(int userId);
     boolean isStudentOwnerOfEnrollment(int enrollmentId, int studentId);
+    String getGradeStatusByEnrollmentId(int enrollmentId);
 }
