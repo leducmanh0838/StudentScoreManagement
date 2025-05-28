@@ -5,14 +5,16 @@ public class StudentInCourseDTO {
     private String firstName;
     private String lastName;
     private String userCode;
+    private String email;
     private int enrollmentId;
 
-    public StudentInCourseDTO(int userId, String firstName, String lastName, String userCode, int enrollmentId) {
+    public StudentInCourseDTO(int userId, String firstName, String lastName, String userCode, String email, int enrollmentId) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.userCode = userCode;
         this.enrollmentId = enrollmentId;
+        this.email=email;
     }
 
     public StudentInCourseDTO() {
@@ -86,6 +88,20 @@ public class StudentInCourseDTO {
      */
     public void setEnrollmentId(int enrollmentId) {
         this.enrollmentId = enrollmentId;
+    }
+
+    /**
+     * @return the email
+     */
+    public String getEmail() {
+        return email;
+    }
+
+    /**
+     * @param email the email to set
+     */
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     

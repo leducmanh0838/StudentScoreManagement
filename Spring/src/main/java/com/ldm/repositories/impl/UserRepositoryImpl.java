@@ -190,6 +190,7 @@ public class UserRepositoryImpl implements UserRepository {
                 userJoin.get("firstName"),
                 userJoin.get("lastName"),
                 userJoin.get("userCode"),
+                userJoin.get("email"),
                 enrollRoot.get("id")
         );
 
@@ -247,7 +248,8 @@ public class UserRepositoryImpl implements UserRepository {
                     (String) row[1],
                     (String) row[2],
                     (String) row[3],
-                    (Integer) row[4]
+                    (String) row[4],
+                    (Integer) row[5]
             ));
         }
 

@@ -15,6 +15,7 @@ import EnrollmentListByStudent from './components/Course/EnrollmentListByStudent
 import TeacherCourseSessions from './components/Course/TeacherCourseSessions ';
 import CourseSessionStudents from './components/Course/CourseSessionStudents ';
 import GradeManagement from './components/Grade/GradeManagement';
+import CriteriaManagement from './components/Grade/CriteriaManagement';
 
 const initUser = () => {
   const cookieUser = cookie.load('user');
@@ -42,6 +43,7 @@ const App = () => {
               <Route path="course-sessions" element={<TeacherCourseSessions />} />
               <Route path="course-sessions/:courseSessionId/students" element={<CourseSessionStudents />} />
               <Route path="course-sessions/:courseSessionId/grades" element={<GradeManagement />} />
+              <Route path="course-sessions/:courseSessionId/criterias" element={<CriteriaManagement />} />
 
             </Route>
           </Routes>

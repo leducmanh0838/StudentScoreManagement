@@ -53,7 +53,7 @@ public class ApiCriteriaController {
         return ResponseEntity.ok(dtoList);
     }
     
-    @PostMapping("/secure/teacherAuth/addCriterias/{courseSessionId}")
+    @PostMapping("/secure/teacherAuth/courseSession/{courseSessionId}/addCriterias")
     public ResponseEntity<?> addCriteriasByCourseSession(
             @PathVariable(name="courseSessionId") Integer courseSessionId,
             @RequestBody List<Criteria> criteriaRequestList,
