@@ -6,6 +6,7 @@ package com.ldm.controllers;
 
 import com.ldm.dto.GradeInfoDTO;
 import com.ldm.dto.StudentGradeMailDTO;
+import com.ldm.pojo.CourseSession;
 import com.ldm.pojo.Criteria;
 import com.ldm.repositories.impl.CourseRepositoryImpl;
 import com.ldm.services.CourseService;
@@ -67,46 +68,64 @@ public class ApiCourseSessionController {
 
         return ResponseEntity.ok(response);
     }
-    
+
     @GetMapping("/secure/teacherAuth/courseSessions")
     public ResponseEntity<?> getCourseSessionsByTeacher(HttpServletRequest request) {
         Integer teacherId = ((Number) request.getAttribute("id")).intValue();
         return ResponseEntity.ok(courseSessionService.getCourseSessionsByTeacherId(teacherId));
     }
 
+    @GetMapping("/secure/teacherAuth/courseSession/{courseSessionId}/getGradeStatus")
+    public ResponseEntity<?> getGradeStatus(@PathVariable(name = "courseSessionId") Integer courseSessionId, HttpServletRequest request) {
+        Integer teacherId = ((Number) request.getAttribute("id")).intValue();
+        if (!courseSessionService.isTeacherOwnerOfCourseSession(courseSessionId, teacherId)) {
+            throw new ResponseStatusException(
+                    HttpStatus.FORBIDDEN,
+                    "Bạn không phải là giảng viên môn này!"
+            );
+        }
+        //courseSessionService.getGradeStatusByCourseSessionId(courseSessionId)
+
+        return ResponseEntity.ok(courseSessionService.getGradeStatusByCourseSessionId(courseSessionId));
+    }
+
     @PostMapping("/secure/teacherAuth/courseSession/{courseSessionId}/lock")
     public ResponseEntity<?> lockGrade(@PathVariable(name = "courseSessionId") Integer courseSessionId, HttpServletRequest request) {
         Integer teacherId = ((Number) request.getAttribute("id")).intValue();
-        if(!courseSessionService.isTeacherOwnerOfCourseSession(courseSessionId, teacherId)){
+        if (!courseSessionService.isTeacherOwnerOfCourseSession(courseSessionId, teacherId)) {
             throw new ResponseStatusException(
                     HttpStatus.FORBIDDEN,
                     "Bạn không phải là giảng viên môn này!"
             );
         }
-        
+
+        if (courseSessionService.getGradeStatusByCourseSessionId(courseSessionId).equals(CourseSession.LOCKED)) {
+            throw new IllegalArgumentException("Bạn đã khóa điểm rồi!");
+        }
         List<StudentGradeMailDTO> studentGrades = gradeService.getStudentGradeMailByCourseSessionId(courseSessionId);
-        
-        if(courseSessionService.lockGradeStatus(courseSessionId))
-//            return ResponseEntity.ok("Khóa điểm thành công!");
+
+        if (courseSessionService.lockGradeStatus(courseSessionId)) //            return ResponseEntity.ok("Khóa điểm thành công!");
+        {
             return ResponseEntity.ok(studentGrades);
-        else
+        } else {
             return ResponseEntity
-             .status(HttpStatus.BAD_REQUEST)
-             .body("Khóa điểm thất bại!");
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("Khóa điểm thất bại!");
+        }
     }
-    
+
     @GetMapping("/secure/teacherAuth/courseSession/{courseSessionId}/getGrades")
     public ResponseEntity<?> getGradeByCourseSession(
-            @PathVariable(name = "courseSessionId") Integer courseSessionId, 
+            @PathVariable(name = "courseSessionId") Integer courseSessionId,
             HttpServletRequest request) {
         Integer teacherId = ((Number) request.getAttribute("id")).intValue();
-        if(!courseSessionService.isTeacherOwnerOfCourseSession(courseSessionId, teacherId)){
+        if (!courseSessionService.isTeacherOwnerOfCourseSession(courseSessionId, teacherId)) {
             throw new ResponseStatusException(
                     HttpStatus.FORBIDDEN,
                     "Bạn không phải là giảng viên môn này!"
             );
         }
-        
+
         return ResponseEntity.ok(gradeService.getGradesByCourseSessionId(courseSessionId));
     }
 }

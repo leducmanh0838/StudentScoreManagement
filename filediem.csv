@@ -1,5 +1,5 @@
-enrollmentId,criteriaId,score
-1,1,7.5
-1,2,8.0
-2,1,6.5
-2,2,9.0
+﻿#,Họ tên,Mã sinh viên,Email,midterm (40%),final (50%),bài tập về nhè (1%)
+1,Walker Liam,STD001,st@ou.edu.vn,5,6,7
+2,Hall Mia,STD002,leducmanhmanh2004@gmail.com,7,6,5
+3,Allen Noah,STD003,noah.allen@ou.edu.vn,5,8,6
+4,ma lê,2251012090,2251012090manh@ou.edu.vn,7,8,6

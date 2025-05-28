@@ -90,4 +90,13 @@ public class CourseRepositoryImpl implements CourseRepository{
         return q.getResultList();
     }
     
+    @Override
+    public String getCourseNameByCourseSessionId(int courseSessionId) {
+        Session session = factory.getObject().getCurrentSession();
+        String hql = "SELECT c.name FROM Course c JOIN CourseSession cs ON cs.courseId.id = c.id WHERE cs.id = :courseSessionId";
+        return session.createQuery(hql, String.class)
+                      .setParameter("courseSessionId", courseSessionId)
+                      .uniqueResult();
+    }
+    
 }

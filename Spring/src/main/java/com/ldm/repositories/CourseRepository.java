@@ -16,4 +16,5 @@ public interface CourseRepository {
     Course addOrUpdate(Course course);
     List<Course> getCourses(Map<String, String> params);
     List<Object[]> getAllCourseNames();
+    String getCourseNameByCourseSessionId(int courseSessionId);
 }

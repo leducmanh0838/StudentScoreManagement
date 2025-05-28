@@ -13,6 +13,7 @@ import com.ldm.dto.ScoreUpdateDTO;
 import com.ldm.dto.StudentGradeMailDTO;
 import com.ldm.dto.UpdateGradeRequestDTO;
 import com.ldm.pojo.Grade;
+import com.ldm.repositories.CourseRepository;
 import com.ldm.repositories.CriteriaRepository;
 import com.ldm.repositories.GradeRepository;
 import com.ldm.services.EmailService;
@@ -30,6 +31,9 @@ public class GradeServiceImpl implements GradeService {
 
     @Autowired
     private GradeRepository gradeRepository;
+    
+    @Autowired
+    private CourseRepository courseRepository;
     
     @Autowired
     private EmailService emailService;
@@ -127,7 +131,8 @@ public class GradeServiceImpl implements GradeService {
     @Override
     public List<StudentGradeMailDTO> getStudentGradeMailByCourseSessionId(int courseSessionId) {
         List<StudentGradeMailDTO> students = this.gradeRepository.getStudentGradeMailByCourseSessionId(courseSessionId);
-        emailService.sendGradesToStudents(students);
+        String courseName= courseRepository.getCourseNameByCourseSessionId(courseSessionId);
+        emailService.sendGradesToStudents(students, courseName);
         return students;
     }
 

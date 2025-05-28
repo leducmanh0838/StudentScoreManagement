@@ -23,27 +23,39 @@ public class EmailService {
         html.append("<table border='1' cellpadding='8' cellspacing='0' style='border-collapse: collapse;'>");
         html.append("<thead><tr><th>Criteria</th><th>Score</th><th>Weight (%)</th></tr></thead><tbody>");
 
+        double total = 0.0;
+
         for (ScoreAndCriteriaDTO score : dto.getScores()) {
             html.append("<tr>");
             html.append("<td>").append(score.getCriteria() != null ? score.getCriteria() : "N/A").append("</td>");
             html.append("<td>").append(score.getScore() != null ? score.getScore() : "N/A").append("</td>");
             html.append("<td>").append(score.getWeight() != null ? score.getWeight() : "N/A").append("</td>");
             html.append("</tr>");
+
+            // Tính tổng điểm nếu dữ liệu hợp lệ
+            if (score.getScore() != null && score.getWeight() != null) {
+                total += score.getScore() * score.getWeight() / 100.0;
+            }
         }
 
+        html.append("<tr style='font-weight:bold; background-color:#f0f0f0;'>");
+        html.append("<td colspan='2'>Total Grade</td>");
+        html.append("<td>").append(String.format("%.2f", total)).append("</td>");
+        html.append("</tr>");
+
         html.append("</tbody></table>");
-        html.append("<p>Best regards,<br>Book Store</p>");
+        html.append("<p>Best regards,<br>OU</p>");
         html.append("</body></html>");
 
         return html.toString();
     }
 
     @Async
-    public void sendGradesToStudents(List<StudentGradeMailDTO> students) {
+    public void sendGradesToStudents(List<StudentGradeMailDTO> students, String courseName) {
 
         for (StudentGradeMailDTO student : students) {
             String email = student.getStudentEmail();
-            String subject = "Your Course Grades";
+            String subject = String.format("%s Subject Score Announcement", courseName);
             String body = this.buildGradeHtml(student);
 
 //            emailService.sendHtmlEmail(email, subject, body);
@@ -76,7 +88,7 @@ public class EmailService {
                 <p>Enter this code on the verification page to complete your registration.</p>
                 <p>This code will expire in 15 minutes for security reasons.</p>
                 <p>If you did not create an account with us, please ignore this email.</p>
-                <p>Best regards,<br>Book Store</p>
+                <p>Best regards,<br>OU</p>
             </div>
             <div style="text-align: center; margin-top: 20px; color: #888; font-size: 0.8em;">
                 <p>This is an automated message, please do not reply to this email.</p>

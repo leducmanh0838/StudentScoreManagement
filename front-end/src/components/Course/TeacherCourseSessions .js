@@ -3,7 +3,7 @@ import { Spinner, Alert, Table, Container, Card, Button, ButtonGroup } from 'rea
 import axios from 'axios';
 import { authApis, endpoints } from '../../configs/Apis';
 import { useNavigate } from 'react-router-dom';
-import { PeopleFill, JournalCheck, ChatDotsFill } from 'react-bootstrap-icons';
+import { PeopleFill, JournalCheck, ChatDotsFill, GearFill } from 'react-bootstrap-icons';
 
 const TeacherCourseSessions = () => {
     const [courseSessions, setCourseSessions] = useState([]);
@@ -40,6 +40,10 @@ const TeacherCourseSessions = () => {
     const handleManageForum = (courseId) => {
         navigate(`/teacher/course-sessions/${courseId}/forum`);
     };
+
+    const handleManageCriteria = (courseId) =>{
+        navigate(`/teacher/course-sessions/${courseId}/criterias`);
+    }
 
     return (
         <Container className="mt-4">
@@ -88,6 +92,13 @@ const TeacherCourseSessions = () => {
                                                     onClick={() => handleManageGrades(course.id)}
                                                 >
                                                     <JournalCheck className="me-1" /> Quản lý điểm
+                                                </Button>
+                                                <Button
+                                                    variant="danger"
+                                                    size="sm"
+                                                    onClick={() => handleManageCriteria(course.id)}
+                                                >
+                                                    <GearFill className="me-1" /> Quản lý tiêu chí
                                                 </Button>
                                                 <Button
                                                     variant="warning"

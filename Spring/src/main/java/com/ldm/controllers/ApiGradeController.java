@@ -49,10 +49,7 @@ public class ApiGradeController {
         }
         
         if(courseSessionService.getGradeStatusByCourseSessionId(input.getCourseSessionId()).equals(CourseSession.LOCKED)){
-            throw new ResponseStatusException(
-                    HttpStatus.FORBIDDEN,
-                    "Điểm đã khóa!"
-            );
+            throw new IllegalArgumentException("Điểm đã khóa!");
         }
         
         List<Grade> grades = gradeService.addGrades(input);
