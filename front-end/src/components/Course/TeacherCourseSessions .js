@@ -38,7 +38,7 @@ const TeacherCourseSessions = () => {
     };
 
     const handleManageForum = (courseId) => {
-        navigate(`/teacher/course-sessions/${courseId}/forum`);
+        navigate(`/teacher/course-sessions/${courseId}/forum-posts`);
     };
 
     const handleManageCriteria = (courseId) =>{

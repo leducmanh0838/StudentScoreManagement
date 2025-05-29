@@ -89,18 +89,24 @@ public class UserRepositoryImpl implements UserRepository {
 
         // Phân trang nếu có tham số "page"
         if (params != null && params.containsKey("page")) {
-            // Nếu có tham số "page", lấy giá trị của nó
             int page = Integer.parseInt(params.get("page"));
             int start = (page - 1) * PAGE_SIZE;
             query.setMaxResults(PAGE_SIZE);
             query.setFirstResult(start);
-        } else {
-            // Nếu không có tham số "page", mặc định là trang 1
-            int page = 1; // Mặc định trang 1
-            int start = (page - 1) * PAGE_SIZE;
-            query.setMaxResults(PAGE_SIZE);
-            query.setFirstResult(start);
         }
+//        if (params != null && params.containsKey("page")) {
+//            // Nếu có tham số "page", lấy giá trị của nó
+//            int page = Integer.parseInt(params.get("page"));
+//            int start = (page - 1) * PAGE_SIZE;
+//            query.setMaxResults(PAGE_SIZE);
+//            query.setFirstResult(start);
+//        } else {
+//            // Nếu không có tham số "page", mặc định là trang 1
+//            int page = 1; // Mặc định trang 1
+//            int start = (page - 1) * PAGE_SIZE;
+//            query.setMaxResults(PAGE_SIZE);
+//            query.setFirstResult(start);
+//        }
 
         return query.getResultList();
     }

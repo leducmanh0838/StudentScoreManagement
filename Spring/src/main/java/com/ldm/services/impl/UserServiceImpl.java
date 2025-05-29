@@ -130,4 +130,17 @@ public class UserServiceImpl implements UserService {
 
         return userRepository.getStudentsInCourseSession(params);
     }
+
+    @Override
+    public List<User> findUsers(Map<String, String> params) {
+        String name = params.get("name");
+        String role = params.get("role");
+        if(name==null||name.isEmpty()){
+            throw new IllegalArgumentException("Chưa có tên cần tìm");
+        }
+        if(role==null||role.isEmpty()){
+            throw new IllegalArgumentException("Chưa có role cần tìm");
+        }
+        return this.userRepository.getUsers(params);
+    }
 }

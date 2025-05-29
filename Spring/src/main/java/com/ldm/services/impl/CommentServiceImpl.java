@@ -30,8 +30,8 @@ public class CommentServiceImpl implements CommentService{
     }
 
     @Override
-    public List<CommentInfoDTO> getCommentsByForumPostId(Integer forumPostId) {
-        return this.commentRepository.getCommentsByForumPostId(forumPostId);
+    public List<CommentInfoDTO> getCommentsByForumPostId(Integer forumPostId, int page) {
+        return this.commentRepository.getCommentsByForumPostId(forumPostId, page);
     }
     
 }

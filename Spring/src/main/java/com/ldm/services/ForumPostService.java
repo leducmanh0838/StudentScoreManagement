@@ -15,6 +15,6 @@ import java.util.List;
 public interface ForumPostService {
     ForumPost addOrUpdate(ForumPost forumPost);
     List<ForumPost> getForumPostByCourseSession(Integer courseSessionId);
-    List<ForumPostInfoDTO> getForumPostDTOsByCourseSession(Integer courseSessionId);
+    List<ForumPostInfoDTO> getForumPostDTOsByCourseSession(Integer courseSessionId, int page);
     public Integer getCourseSessionIdByForumPostId(Integer forumPostId);
 }

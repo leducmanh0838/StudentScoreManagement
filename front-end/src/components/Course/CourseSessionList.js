@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Apis, { authApis, endpoints } from '../../configs/Apis';
 import { Alert } from 'react-bootstrap';
-import UsePaginatedData from '../../configs/UsePaginatedData';
+import PaginatedData from '../../configs/PaginatedData';
 
 const CourseSessionList = () => {
   const [courses, setCourses] = useState([]);
@@ -15,7 +15,7 @@ const CourseSessionList = () => {
     loadMore,
     refresh,
     hasMore
-  } = UsePaginatedData(endpoints['course-sessions'], selectedCourseId ? { courseId: selectedCourseId } : {});
+  } = PaginatedData(endpoints['course-sessions'], selectedCourseId ? { courseId: selectedCourseId } : {});
 
   useEffect(() => {
     Apis.get(endpoints['get-all-course-session-names'])

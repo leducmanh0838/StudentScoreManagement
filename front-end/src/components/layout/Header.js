@@ -1,8 +1,8 @@
 import { Container, Nav, Navbar, Button } from "react-bootstrap";
 import { NavLink, useNavigate } from "react-router-dom";
-import { FaGraduationCap } from "react-icons/fa";
+import { FaFacebookMessenger, FaGraduationCap } from "react-icons/fa";
 import { useContext } from "react";
-import { MyDispatchContext, MyUserContext } from "../../configs/Contexts";
+import { ChatContext, MessengerUIContext, MyDispatchContext, MyUserContext } from "../../configs/Contexts";
 import { UserRoles } from "../../configs/MyValue";
 
 const Header = () => {
@@ -14,6 +14,12 @@ const Header = () => {
     dispatch({ type: 'logout' }); // bạn cần định nghĩa hành động này trong reducer
     navigate('/login');
   };
+
+  // const { toggleMessenger } = useContext(ChatContext);
+  const { showFriendList, setShowFriendList } = useContext(MessengerUIContext);
+  const handleMessage = () =>{
+    setShowFriendList(!showFriendList);
+  }
 
   return (
     <Navbar bg="dark" variant="dark" expand="lg" className="px-3">
@@ -43,11 +49,21 @@ const Header = () => {
                 <NavLink to="/teacher/course-sessions" className="nav-link">Danh sách môn học phụ trách</NavLink>
               </>
             )}
-            
+
           </Nav>
 
           {/* Đăng nhập + Đăng ký bên phải, styled như nút */}
           <Nav className="d-flex gap-2 align-items-center">
+            {user && (
+              <button
+                onClick={handleMessage}
+                className="btn btn-outline-light rounded-circle d-flex justify-content-center align-items-center position-relative"
+                style={{ width: 44, height: 44 }}
+                title="Messenger"
+              >
+                <FaFacebookMessenger size={32}/>
+              </button>
+            )}
             {user ? (<>
               <div className="flex items-center gap-2">
                 <img

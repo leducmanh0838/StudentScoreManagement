@@ -9,6 +9,7 @@ export const endpoints = {
     'signup': '/preStudent/register',
     'current-user': '/secure/user/getCurrentUser',
     'verify': '/preStudent/verify',
+    'find-users':'/secure/user/findUsers',
 
     //Enrollment
     'get-enrollments-by-student': '/secure/studentAuth/enrollment/getEnrollments',
@@ -31,6 +32,14 @@ export const endpoints = {
     // Criteria
     'get-criterias-by-course-session': (courseSessionId) => `/secure/courseSession/${courseSessionId}/getCriterias`,
     'add-criterias-by-teacher': (courseSessionId) => `/secure/teacherAuth/courseSession/${courseSessionId}/addCriterias`,
+
+    //Forum post
+    'get-forum-posts-by-course-session': (courseSessionId) => `/secure/courseSession/${courseSessionId}/getForumPosts`,
+    'add-forum-post-by-course-session': (courseSessionId) => `/secure/courseSession/${courseSessionId}/addForumPost`,
+
+    // Comment
+    'get-comments-by-forum-post': (forumPostId) => `/secure/forumPost/${forumPostId}/getComments`,
+    'add-comment-by-forum-post': (forumPostId) => `/secure/forumPost/${forumPostId}/addComment`,
 }
 
 export const authApis = () => {

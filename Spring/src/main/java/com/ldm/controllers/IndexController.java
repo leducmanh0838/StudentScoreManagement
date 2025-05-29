@@ -41,10 +41,10 @@ public class IndexController {
     
     @RequestMapping("/")
     public String index(Model model, @RequestParam Map<String, String> params) {
-        String lang = params.getOrDefault("lang", "vi");
-        Map<String, String> messages = messageHelper.getMessages(lang, MESSAGE_KEYS);
-        model.addAttribute("users", this.userService.getAllUsers());
-        model.addAttribute("messages", messages);
+//        String lang = params.getOrDefault("lang", "vi");
+//        Map<String, String> messages = messageHelper.getMessages(lang, MESSAGE_KEYS);
+//        model.addAttribute("users", this.userService.getAllUsers());
+//        model.addAttribute("messages", messages);
         return "index";
     }
         

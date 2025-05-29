@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import Apis, { authApis } from './Apis';
 
-const UsePaginatedData = (endpoint, params = {}, useAuth = false) => {
+const PaginatedData = (endpoint, params = {}, useAuth = false) => {
   const [data, setData] = useState([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -63,7 +63,7 @@ const UsePaginatedData = (endpoint, params = {}, useAuth = false) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(params)]);
 
-  return { data, loading, loadMore, refresh, hasMore };
+  return { data, setData, loading, loadMore, refresh, hasMore };
 };
 
-export default UsePaginatedData;
+export default PaginatedData;

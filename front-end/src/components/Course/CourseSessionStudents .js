@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Card, Container, ListGroup, Button, Spinner, Form, Row, Col } from 'react-bootstrap';
-import UsePaginatedData from '../../configs/UsePaginatedData';
 import { endpoints } from '../../configs/Apis';
+import PaginatedData from '../../configs/PaginatedData';
 
 const CourseSessionStudents = () => {
   const { courseSessionId } = useParams();
@@ -19,7 +19,7 @@ const CourseSessionStudents = () => {
     loadMore,
     refresh,
     hasMore
-  } = UsePaginatedData(
+  } = PaginatedData(
     endpoints['get-students-by-course-session'],
     searchParams,
     true

@@ -77,6 +77,7 @@ com\ldm\configs\ThymeleafConfig.class
 com\ldm\dto\CriteriaInCourseSessionDTO.class
 com\ldm\services\PreStudentRegistrationService.class
 com\ldm\repositories\GradeRepository.class
+com\ldm\utils\HtmlSanitizerUtil.class
 com\ldm\finalexam\resources\JakartaEE11Resource.class
 com\ldm\pojo\Grade.class
 com\ldm\utils\JwtUtils.class

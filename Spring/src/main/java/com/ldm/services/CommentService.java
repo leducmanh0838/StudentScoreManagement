@@ -14,5 +14,5 @@ import java.util.List;
  */
 public interface CommentService {
     Comment addOrUpdate(Comment comment);
-    List<CommentInfoDTO> getCommentsByForumPostId(Integer forumPostId);
+    List<CommentInfoDTO> getCommentsByForumPostId(Integer forumPostId, int page);
 }

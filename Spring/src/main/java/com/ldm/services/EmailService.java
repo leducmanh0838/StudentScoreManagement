@@ -24,6 +24,7 @@ public class EmailService {
         html.append("<thead><tr><th>Criteria</th><th>Score</th><th>Weight (%)</th></tr></thead><tbody>");
 
         double total = 0.0;
+        int totalWeight=0;
 
         for (ScoreAndCriteriaDTO score : dto.getScores()) {
             html.append("<tr>");
@@ -35,12 +36,14 @@ public class EmailService {
             // Tính tổng điểm nếu dữ liệu hợp lệ
             if (score.getScore() != null && score.getWeight() != null) {
                 total += score.getScore() * score.getWeight() / 100.0;
+                totalWeight+=score.getWeight();
             }
         }
 
         html.append("<tr style='font-weight:bold; background-color:#f0f0f0;'>");
-        html.append("<td colspan='2'>Total Grade</td>");
+        html.append("<td>Total Grade</td>");
         html.append("<td>").append(String.format("%.2f", total)).append("</td>");
+        html.append("<td>").append(String.format("%d%%", totalWeight)).append("</td>");
         html.append("</tr>");
 
         html.append("</tbody></table>");

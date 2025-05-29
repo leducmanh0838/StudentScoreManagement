@@ -6,6 +6,7 @@ export default (current, action) => {
             return action.payload;
         case "logout":
             cookie.remove('token');
+            cookie.remove('user');
             return null;
     }
     return current;

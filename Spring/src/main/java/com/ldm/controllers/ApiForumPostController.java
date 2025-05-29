@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -95,9 +96,10 @@ public class ApiForumPostController {
     
     @GetMapping("/secure/forumPost/{forumPostId}/getComments")
     public ResponseEntity<?> getCommentsByForumPost(
-            @PathVariable(name = "forumPostId") Integer forumPostId) {
+            @PathVariable(name = "forumPostId") Integer forumPostId,
+            @RequestParam(name = "page", defaultValue = "1") int page) {
 //        List<ForumPost> forumPosts = forumPostService.getForumPostByCourseSession(courseSessionId);
-        List<CommentInfoDTO> commentInfoDTOs = commentService.getCommentsByForumPostId(forumPostId);
+        List<CommentInfoDTO> commentInfoDTOs = commentService.getCommentsByForumPostId(forumPostId, page);
 
         return ResponseEntity.ok(commentInfoDTOs);
     }

@@ -135,52 +135,88 @@ public class ApiCourseSessionController {
 
         return ResponseEntity.ok(gradeService.getGradesByCourseSessionId(courseSessionId));
     }
-
-    @PostMapping("/secure/teacherAuth/courseSession/{courseSessionId}/addForumPost")
-    public ResponseEntity<?> addForumPostByTeacher(
-            @PathVariable(name = "courseSessionId") Integer courseSessionId,
-            HttpServletRequest request,
-            @RequestBody ForumPost input) {
-        Integer teacherId = ((Number) request.getAttribute("id")).intValue();
-        if (!courseSessionService.isTeacherOwnerOfCourseSession(courseSessionId, teacherId)) {
-            throw new ResponseStatusException(
-                    HttpStatus.FORBIDDEN,
-                    "Bạn không phải là giảng viên môn này!"
-            );
-        }
-
-        input.setCourseSessionId(new CourseSession(courseSessionId));
-        input.setUserId(new User(teacherId));
-        ForumPost forumPost = forumPostService.addOrUpdate(input);
-
-        return ResponseEntity.ok(new ForumPostDTO(forumPost));
-    }
-
-    @PostMapping("/secure/studentAuth/courseSession/{courseSessionId}/addForumPost")
+    
+    @PostMapping("/secure/courseSession/{courseSessionId}/addForumPost")
     public ResponseEntity<?> addForumPostByStudent(
             @PathVariable(name = "courseSessionId") Integer courseSessionId,
             HttpServletRequest request,
             @RequestBody ForumPost input) {
-        Integer studentId = ((Number) request.getAttribute("id")).intValue();
-        if (!courseSessionService.isStudentEnrolledInCourseSession(courseSessionId, studentId)) {
+        Integer userId = ((Number) request.getAttribute("id")).intValue();
+        String role = request.getAttribute("role").toString();
+        
+        if(role.equals(User.STUDENT_ROLE)) {
+            if (!this.courseSessionService.isStudentEnrolledInCourseSession(courseSessionId, userId)) {
+                throw new ResponseStatusException(
+                        HttpStatus.FORBIDDEN,
+                        "Bạn không phải là sinh viên môn này!"
+                );
+            }
+        } else if (role.equals(User.TEACHER_ROLE)) {
+            if (!this.courseSessionService.isTeacherOwnerOfCourseSession(courseSessionId, userId)) {
+                throw new ResponseStatusException(
+                        HttpStatus.FORBIDDEN,
+                        "Bạn không phải là giảng viên môn này!"
+                );
+            }
+        } else {
             throw new ResponseStatusException(
                     HttpStatus.FORBIDDEN,
-                    "Bạn không phải là sinh viên môn này!"
+                    "Bạn không phải là giảng viên hoặc sinh viên!"
             );
         }
 
         input.setCourseSessionId(new CourseSession(courseSessionId));
-        input.setUserId(new User(studentId));
+        input.setUserId(new User(userId));
         ForumPost forumPost = forumPostService.addOrUpdate(input);
 
         return ResponseEntity.ok(new ForumPostDTO(forumPost));
     }
+//    @PostMapping("/secure/teacherAuth/courseSession/{courseSessionId}/addForumPost")
+//    public ResponseEntity<?> addForumPostByTeacher(
+//            @PathVariable(name = "courseSessionId") Integer courseSessionId,
+//            HttpServletRequest request,
+//            @RequestBody ForumPost input) {
+//        Integer teacherId = ((Number) request.getAttribute("id")).intValue();
+//        if (!courseSessionService.isTeacherOwnerOfCourseSession(courseSessionId, teacherId)) {
+//            throw new ResponseStatusException(
+//                    HttpStatus.FORBIDDEN,
+//                    "Bạn không phải là giảng viên môn này!"
+//            );
+//        }
+//
+//        input.setCourseSessionId(new CourseSession(courseSessionId));
+//        input.setUserId(new User(teacherId));
+//        ForumPost forumPost = forumPostService.addOrUpdate(input);
+//
+//        return ResponseEntity.ok(new ForumPostDTO(forumPost));
+//    }
+//
+//    @PostMapping("/secure/studentAuth/courseSession/{courseSessionId}/addForumPost")
+//    public ResponseEntity<?> addForumPostByStudent(
+//            @PathVariable(name = "courseSessionId") Integer courseSessionId,
+//            HttpServletRequest request,
+//            @RequestBody ForumPost input) {
+//        Integer studentId = ((Number) request.getAttribute("id")).intValue();
+//        if (!courseSessionService.isStudentEnrolledInCourseSession(courseSessionId, studentId)) {
+//            throw new ResponseStatusException(
+//                    HttpStatus.FORBIDDEN,
+//                    "Bạn không phải là sinh viên môn này!"
+//            );
+//        }
+//
+//        input.setCourseSessionId(new CourseSession(courseSessionId));
+//        input.setUserId(new User(studentId));
+//        ForumPost forumPost = forumPostService.addOrUpdate(input);
+//
+//        return ResponseEntity.ok(new ForumPostDTO(forumPost));
+//    }
     
     @GetMapping("/secure/courseSession/{courseSessionId}/getForumPosts")
     public ResponseEntity<?> getForumPostByCourseSession(
-            @PathVariable(name = "courseSessionId") Integer courseSessionId) {
+            @PathVariable(name = "courseSessionId") Integer courseSessionId, 
+            @RequestParam(name = "page", defaultValue = "1") int page) {
 //        List<ForumPost> forumPosts = forumPostService.getForumPostByCourseSession(courseSessionId);
-        List<ForumPostInfoDTO> forumPostDTOs = forumPostService.getForumPostDTOsByCourseSession(courseSessionId);
+        List<ForumPostInfoDTO> forumPostDTOs = forumPostService.getForumPostDTOsByCourseSession(courseSessionId, page);
 
         return ResponseEntity.ok(forumPostDTOs);
     }

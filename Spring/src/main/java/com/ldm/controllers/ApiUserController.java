@@ -6,12 +6,14 @@ package com.ldm.controllers;
 
 import com.ldm.dto.StudentInCourseDTO;
 import com.ldm.dto.UserInfoDTO;
+import com.ldm.dto.UserNameAndAvatarDTO;
 import com.ldm.pojo.User;
 import com.ldm.services.CourseSessionService;
 import com.ldm.services.UserService;
 import com.ldm.utils.JwtUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -27,6 +29,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -94,5 +97,20 @@ public class ApiUserController {
         User user = userDetailsService.getUserById(userId);
         return ResponseEntity.ok(new UserInfoDTO(user));
     }
+    
+    @GetMapping("/secure/user/{userId}/getUserInfo")
+    public ResponseEntity<?> getUserInfo(@PathVariable(name = "userId") Integer userId) {
+        User user = userDetailsService.getUserById(userId);
+        return ResponseEntity.ok(new UserInfoDTO(user));
+    }
 
+    @GetMapping("/secure/user/findUsers")
+    public ResponseEntity<?> findTeachers(@RequestParam Map<String, String> params) {
+        List<User> users = userDetailsService.findUsers(params);
+        List<UserNameAndAvatarDTO> userNameAndAvatarDTOs = new ArrayList<>();
+        for(User u: users){
+            userNameAndAvatarDTOs.add(new UserNameAndAvatarDTO(u.getId(), u.getFirstName(), u.getLastName(), u.getAvatar()));
+        }
+        return ResponseEntity.ok(userNameAndAvatarDTOs);
+    }
 }
