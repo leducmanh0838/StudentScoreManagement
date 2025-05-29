@@ -20,8 +20,8 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
+import java.util.Set;
 
 /**
  *
@@ -48,7 +48,7 @@ public class Enrollment implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "enrollmentId")
-    private Collection<Grade> gradeCollection;
+    private Set<Grade> gradeSet;
     @JoinColumn(name = "course_session_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private CourseSession courseSessionId;
@@ -87,12 +87,12 @@ public class Enrollment implements Serializable {
         this.createdDate = createdDate;
     }
 
-    public Collection<Grade> getGradeCollection() {
-        return gradeCollection;
+    public Set<Grade> getGradeSet() {
+        return gradeSet;
     }
 
-    public void setGradeCollection(Collection<Grade> gradeCollection) {
-        this.gradeCollection = gradeCollection;
+    public void setGradeSet(Set<Grade> gradeSet) {
+        this.gradeSet = gradeSet;
     }
 
     public CourseSession getCourseSessionId() {

@@ -20,7 +20,7 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.Set;
 
 /**
  *
@@ -46,14 +46,13 @@ public class Criteria implements Serializable {
     @Size(min = 1, max = 20)
     @Column(name = "criteria_name")
     private String criteriaName;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "weight")
     private Integer weight;
     @JoinColumn(name = "course_session_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private CourseSession courseSessionId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "criteriaId")
-    private Collection<Grade> gradeCollection;
+    private Set<Grade> gradeSet;
 
     public Criteria() {
     }
@@ -99,12 +98,12 @@ public class Criteria implements Serializable {
         this.courseSessionId = courseSessionId;
     }
 
-    public Collection<Grade> getGradeCollection() {
-        return gradeCollection;
+    public Set<Grade> getGradeSet() {
+        return gradeSet;
     }
 
-    public void setGradeCollection(Collection<Grade> gradeCollection) {
-        this.gradeCollection = gradeCollection;
+    public void setGradeSet(Set<Grade> gradeSet) {
+        this.gradeSet = gradeSet;
     }
 
     @Override

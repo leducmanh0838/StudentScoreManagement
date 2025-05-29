@@ -147,4 +147,16 @@ public class CourseSessionRepositoryImpl implements CourseSessionRepository {
         query.setParameter("teacherId", teacherId);
         return query.getResultList();
     }
+
+    @Override
+    public boolean isStudentEnrolledInCourseSession(Integer courseSessionId, Integer studentId) {
+        Session session = this.factory.getObject().getCurrentSession();
+        Query<Long> query = session.createQuery(
+                "SELECT COUNT(e.id) FROM Enrollment e WHERE e.courseSessionId.id = :csId AND e.userId.id = :studentId", Long.class
+        );
+        query.setParameter("csId", courseSessionId);
+        query.setParameter("studentId", studentId);
+        return query.getSingleResult() > 0;
+    }
+
 }

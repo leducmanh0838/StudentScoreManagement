@@ -73,4 +73,9 @@ public class CourseSessionServiceImpl implements CourseSessionService{
     public List<CourseSessionListForTeacherDTO> getCourseSessionsByTeacherId(int teacherId) {
         return this.repo.getCourseSessionsByTeacherId(teacherId);
     }
+
+    @Override
+    public boolean isStudentEnrolledInCourseSession(Integer courseSessionId, Integer studentId) {
+        return this.repo.isStudentEnrolledInCourseSession(courseSessionId, studentId);
+    }
 }

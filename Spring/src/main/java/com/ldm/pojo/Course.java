@@ -20,8 +20,8 @@ import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
+import java.util.Set;
 
 /**
  *
@@ -58,7 +58,7 @@ public class Course implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedDate;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "courseId")
-    private Collection<CourseSession> courseSessionCollection;
+    private Set<CourseSession> courseSessionSet;
 
     public Course() {
     }
@@ -112,12 +112,12 @@ public class Course implements Serializable {
         this.updatedDate = updatedDate;
     }
 
-    public Collection<CourseSession> getCourseSessionCollection() {
-        return courseSessionCollection;
+    public Set<CourseSession> getCourseSessionSet() {
+        return courseSessionSet;
     }
 
-    public void setCourseSessionCollection(Collection<CourseSession> courseSessionCollection) {
-        this.courseSessionCollection = courseSessionCollection;
+    public void setCourseSessionSet(Set<CourseSession> courseSessionSet) {
+        this.courseSessionSet = courseSessionSet;
     }
 
     @Override

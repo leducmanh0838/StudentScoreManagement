@@ -22,8 +22,8 @@ import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
+import java.util.Set;
 
 /**
  *
@@ -68,8 +68,10 @@ public class CourseSession implements Serializable {
     @Column(name = "updated_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedDate;
+    @OneToMany(mappedBy = "courseSessionId")
+    private Set<ForumPost> forumPostSet;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "courseSessionId")
-    private Collection<Criteria> criteriaCollection;
+    private Set<Criteria> criteriaSet;
     @JoinColumn(name = "course_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Course courseId;
@@ -77,7 +79,7 @@ public class CourseSession implements Serializable {
     @ManyToOne(optional = false)
     private User teacherId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "courseSessionId")
-    private Collection<Enrollment> enrollmentCollection;
+    private Set<Enrollment> enrollmentSet;
 
     public CourseSession() {
     }
@@ -147,12 +149,20 @@ public class CourseSession implements Serializable {
         this.updatedDate = updatedDate;
     }
 
-    public Collection<Criteria> getCriteriaCollection() {
-        return criteriaCollection;
+    public Set<ForumPost> getForumPostSet() {
+        return forumPostSet;
     }
 
-    public void setCriteriaCollection(Collection<Criteria> criteriaCollection) {
-        this.criteriaCollection = criteriaCollection;
+    public void setForumPostSet(Set<ForumPost> forumPostSet) {
+        this.forumPostSet = forumPostSet;
+    }
+
+    public Set<Criteria> getCriteriaSet() {
+        return criteriaSet;
+    }
+
+    public void setCriteriaSet(Set<Criteria> criteriaSet) {
+        this.criteriaSet = criteriaSet;
     }
 
     public Course getCourseId() {
@@ -171,12 +181,12 @@ public class CourseSession implements Serializable {
         this.teacherId = teacherId;
     }
 
-    public Collection<Enrollment> getEnrollmentCollection() {
-        return enrollmentCollection;
+    public Set<Enrollment> getEnrollmentSet() {
+        return enrollmentSet;
     }
 
-    public void setEnrollmentCollection(Collection<Enrollment> enrollmentCollection) {
-        this.enrollmentCollection = enrollmentCollection;
+    public void setEnrollmentSet(Set<Enrollment> enrollmentSet) {
+        this.enrollmentSet = enrollmentSet;
     }
 
     @Override

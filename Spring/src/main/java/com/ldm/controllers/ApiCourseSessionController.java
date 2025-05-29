@@ -4,13 +4,18 @@
  */
 package com.ldm.controllers;
 
+import com.ldm.dto.ForumPostDTO;
+import com.ldm.dto.ForumPostInfoDTO;
 import com.ldm.dto.GradeInfoDTO;
 import com.ldm.dto.StudentGradeMailDTO;
 import com.ldm.pojo.CourseSession;
 import com.ldm.pojo.Criteria;
+import com.ldm.pojo.ForumPost;
+import com.ldm.pojo.User;
 import com.ldm.repositories.impl.CourseRepositoryImpl;
 import com.ldm.services.CourseService;
 import com.ldm.services.CourseSessionService;
+import com.ldm.services.ForumPostService;
 import com.ldm.services.GradeService;
 import com.ldm.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -49,6 +54,8 @@ public class ApiCourseSessionController {
     private GradeService gradeService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private ForumPostService forumPostService;
 
     @GetMapping("/courseSessions")
     public ResponseEntity<List<Map<String, Object>>> getCourseSessions(@RequestParam Map<String, String> params) {
@@ -127,5 +134,54 @@ public class ApiCourseSessionController {
         }
 
         return ResponseEntity.ok(gradeService.getGradesByCourseSessionId(courseSessionId));
+    }
+
+    @PostMapping("/secure/teacherAuth/courseSession/{courseSessionId}/addForumPost")
+    public ResponseEntity<?> addForumPostByTeacher(
+            @PathVariable(name = "courseSessionId") Integer courseSessionId,
+            HttpServletRequest request,
+            @RequestBody ForumPost input) {
+        Integer teacherId = ((Number) request.getAttribute("id")).intValue();
+        if (!courseSessionService.isTeacherOwnerOfCourseSession(courseSessionId, teacherId)) {
+            throw new ResponseStatusException(
+                    HttpStatus.FORBIDDEN,
+                    "Bạn không phải là giảng viên môn này!"
+            );
+        }
+
+        input.setCourseSessionId(new CourseSession(courseSessionId));
+        input.setUserId(new User(teacherId));
+        ForumPost forumPost = forumPostService.addOrUpdate(input);
+
+        return ResponseEntity.ok(new ForumPostDTO(forumPost));
+    }
+
+    @PostMapping("/secure/studentAuth/courseSession/{courseSessionId}/addForumPost")
+    public ResponseEntity<?> addForumPostByStudent(
+            @PathVariable(name = "courseSessionId") Integer courseSessionId,
+            HttpServletRequest request,
+            @RequestBody ForumPost input) {
+        Integer studentId = ((Number) request.getAttribute("id")).intValue();
+        if (!courseSessionService.isStudentEnrolledInCourseSession(courseSessionId, studentId)) {
+            throw new ResponseStatusException(
+                    HttpStatus.FORBIDDEN,
+                    "Bạn không phải là sinh viên môn này!"
+            );
+        }
+
+        input.setCourseSessionId(new CourseSession(courseSessionId));
+        input.setUserId(new User(studentId));
+        ForumPost forumPost = forumPostService.addOrUpdate(input);
+
+        return ResponseEntity.ok(new ForumPostDTO(forumPost));
+    }
+    
+    @GetMapping("/secure/courseSession/{courseSessionId}/getForumPosts")
+    public ResponseEntity<?> getForumPostByCourseSession(
+            @PathVariable(name = "courseSessionId") Integer courseSessionId) {
+//        List<ForumPost> forumPosts = forumPostService.getForumPostByCourseSession(courseSessionId);
+        List<ForumPostInfoDTO> forumPostDTOs = forumPostService.getForumPostDTOsByCourseSession(courseSessionId);
+
+        return ResponseEntity.ok(forumPostDTOs);
     }
 }

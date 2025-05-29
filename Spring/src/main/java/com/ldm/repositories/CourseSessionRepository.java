@@ -30,4 +30,5 @@ public interface CourseSessionRepository {
     String getGradeStatusByCourseSessionId(int id);
     boolean lockGradeStatus(Integer courseSessionId);
     List<CourseSessionListForTeacherDTO> getCourseSessionsByTeacherId(int teacherId);
+    boolean isStudentEnrolledInCourseSession(Integer courseSessionId, Integer studentId);
 }
