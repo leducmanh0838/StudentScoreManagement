@@ -23,6 +23,8 @@ C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\controllers\IndexController.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\controllers\LoginController.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\controllers\UserController.java
+C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\dto\CommentDTO.java
+C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\dto\CommentInfoDTO.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\dto\CourseSessionListForTeacherDTO.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\dto\CriteriaInCourseSessionDTO.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\dto\EnrollmentGradeDTO.java
@@ -54,12 +56,14 @@ C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\pojo\Grade.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\pojo\PreStudentRegistration.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\pojo\User.java
+C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\repositories\CommentRepository.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\repositories\CourseRepository.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\repositories\CourseSessionRepository.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\repositories\CriteriaRepository.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\repositories\EnrollmentRepository.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\repositories\ForumPostRepository.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\repositories\GradeRepository.java
+C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\repositories\impl\CommentRepositoryImpl.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\repositories\impl\CourseRepositoryImpl.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\repositories\impl\CourseSessionRepositoryImpl.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\repositories\impl\CriteriaRepositoryImpl.java
@@ -70,6 +74,7 @@ C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\repositories\impl\UserRepositoryImpl.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\repositories\PreStudentRegistrationRepository.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\repositories\UserRepository.java
+C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\services\CommentService.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\services\CourseService.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\services\CourseSessionService.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\services\CriteriaService.java
@@ -77,6 +82,7 @@ C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\services\EnrollmentService.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\services\ForumPostService.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\services\GradeService.java
+C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\services\impl\CommentServiceImpl.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\services\impl\CourseServiceImpl.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\services\impl\CourseSessionServiceImpl.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\services\impl\CriteriaServiceImpl.java

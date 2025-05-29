@@ -5,6 +5,7 @@
 package com.ldm.dto;
 
 import com.ldm.pojo.ForumPost;
+import java.util.Date;
 
 /**
  *
@@ -102,7 +103,5 @@ public class ForumPostDTO {
      */
     public void setUser(Integer user) {
         this.user = user;
-    }
-    
-    
+    }  
 }

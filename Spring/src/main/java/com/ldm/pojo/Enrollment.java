@@ -42,9 +42,9 @@ public class Enrollment implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Column(name = "is_active")
+    @Column(name = "is_active", insertable = false, updatable = false)
     private Boolean isActive;
-    @Column(name = "created_date")
+    @Column(name = "created_date", insertable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "enrollmentId")

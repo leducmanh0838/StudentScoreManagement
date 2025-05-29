@@ -28,16 +28,20 @@ com\ldm\dto\CourseSessionListForTeacherDTO.class
 com\ldm\repositories\UserRepository.class
 com\ldm\services\CourseSessionService.class
 com\ldm\tests\Main.class
+com\ldm\repositories\impl\CommentRepositoryImpl.class
 com\ldm\controllers\UserController.class
 com\ldm\services\impl\CriteriaServiceImpl.class
 com\ldm\configs\SpringSecurityConfigs.class
 com\ldm\repositories\CourseRepository.class
 com\ldm\repositories\impl\CourseSessionRepositoryImpl.class
+com\ldm\services\CommentService.class
 com\ldm\formatters\UserFormatter.class
 com\ldm\repositories\impl\PreStudentRegistrationRepositoryImpl.class
 com\ldm\dto\ScoreDTO.class
 com\ldm\services\EmailService.class
+com\ldm\repositories\CommentRepository.class
 com\ldm\configs\MessageConfig.class
+com\ldm\dto\CommentInfoDTO.class
 com\ldm\dto\EnrollmentInfoForStudentDTO.class
 com\ldm\finalexam\JakartaRestConfiguration.class
 com\ldm\dto\ForumPostDTO.class
@@ -89,4 +93,6 @@ com\ldm\repositories\EnrollmentRepository.class
 com\ldm\services\impl\UserServiceImpl.class
 com\ldm\controllers\IndexController.class
 com\ldm\services\EnrollmentService.class
+com\ldm\services\impl\CommentServiceImpl.class
+com\ldm\dto\CommentDTO.class
 com\ldm\pojo\ForumPost.class

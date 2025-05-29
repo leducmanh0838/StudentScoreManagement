@@ -57,12 +57,12 @@ public class ForumPost implements Serializable {
     @Size(min = 1, max = 65535)
     @Column(name = "content")
     private String content;
-    @Column(name = "is_active")
+    @Column(name = "is_active", insertable = false, updatable = false)
     private Boolean isActive;
-    @Column(name = "created_date")
+    @Column(name = "created_date", insertable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
-    @Column(name = "updated_date")
+    @Column(name = "updated_date", insertable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedDate;
     @JoinColumn(name = "course_session_id", referencedColumnName = "id")

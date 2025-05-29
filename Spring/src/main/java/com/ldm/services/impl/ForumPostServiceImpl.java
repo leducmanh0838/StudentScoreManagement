@@ -39,5 +39,10 @@ public class ForumPostServiceImpl implements ForumPostService{
     public List<ForumPostInfoDTO> getForumPostDTOsByCourseSession(Integer courseSessionId) {
         return forumPostRepository.getForumPostDTOsByCourseSession(courseSessionId);
     }
+
+    @Override
+    public Integer getCourseSessionIdByForumPostId(Integer forumPostId) {
+        return forumPostRepository.getCourseSessionIdByForumPostId(forumPostId);
+    }
     
 }

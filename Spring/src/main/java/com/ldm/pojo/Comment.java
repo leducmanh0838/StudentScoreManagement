@@ -47,7 +47,7 @@ public class Comment implements Serializable {
     @Size(min = 1, max = 65535)
     @Column(name = "content")
     private String content;
-    @Column(name = "created_at")
+    @Column(name = "created_at", insertable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
     @JoinColumn(name = "forum_post_id", referencedColumnName = "id")

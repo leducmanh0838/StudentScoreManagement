@@ -5,6 +5,7 @@
 package com.ldm.dto;
 
 import com.ldm.pojo.ForumPost;
+import java.util.Date;
 
 /**
  *
@@ -16,13 +17,15 @@ public class ForumPostInfoDTO {
     private Integer courseSessionId;
     private String title;
     private String content;
+    private Date createdDate;
 
-    public ForumPostInfoDTO(Integer id, UserNameAndAvatarDTO user, Integer courseSessionId, String title, String content) {
+    public ForumPostInfoDTO(Integer id, UserNameAndAvatarDTO user, Integer courseSessionId, String title, String content, Date createdDate) {
         this.id = id;
         this.user = user;
         this.courseSessionId = courseSessionId;
         this.title = title;
         this.content = content;
+        this.createdDate=createdDate;
     }
     
     /**
@@ -93,6 +96,20 @@ public class ForumPostInfoDTO {
      */
     public void setUser(UserNameAndAvatarDTO user) {
         this.user = user;
+    }
+
+    /**
+     * @return the createdDate
+     */
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    /**
+     * @param createdDate the createdDate to set
+     */
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
     }
     
     

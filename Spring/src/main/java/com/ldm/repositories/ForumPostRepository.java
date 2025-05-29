@@ -16,4 +16,5 @@ public interface ForumPostRepository {
     ForumPost addOrUpdate(ForumPost forumPost);
     List<ForumPost> getForumPostByCourseSession(Integer courseSessionId);
     List<ForumPostInfoDTO> getForumPostDTOsByCourseSession(Integer courseSessionId);
+    public Integer getCourseSessionIdByForumPostId(Integer forumPostId);
 }

@@ -9,6 +9,7 @@ import com.ldm.dto.UserNameAndAvatarDTO;
 import com.ldm.pojo.ForumPost;
 import com.ldm.repositories.ForumPostRepository;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
@@ -23,8 +24,8 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Repository
 @Transactional
-public class ForumPostRepositoryImpl implements ForumPostRepository{
-    
+public class ForumPostRepositoryImpl implements ForumPostRepository {
+
     @Autowired
     private LocalSessionFactoryBean factory;
 
@@ -44,47 +45,58 @@ public class ForumPostRepositoryImpl implements ForumPostRepository{
     public List<ForumPost> getForumPostByCourseSession(Integer courseSessionId) {
         Session session = this.factory.getObject().getCurrentSession();
         Query<ForumPost> query = session.createQuery(
-            "FROM ForumPost fp WHERE fp.courseSessionId.id = :courseSessionId",
-            ForumPost.class
+                "FROM ForumPost fp WHERE fp.courseSessionId.id = :courseSessionId",
+                ForumPost.class
         );
         query.setParameter("courseSessionId", courseSessionId);
         return query.getResultList();
     }
-    
+
     @Override
     public List<ForumPostInfoDTO> getForumPostDTOsByCourseSession(Integer courseSessionId) {
-    Session session = this.factory.getObject().getCurrentSession();
+        Session session = this.factory.getObject().getCurrentSession();
 
-    Query<Object[]> query = session.createQuery(
-        "SELECT fp.id, u.id, u.firstName, u.lastName, u.avatar, fp.courseSessionId.id, fp.title, fp.content " +
-        "FROM ForumPost fp JOIN fp.userId u WHERE fp.courseSessionId.id = :courseSessionId",
-        Object[].class
-    );
-    query.setParameter("courseSessionId", courseSessionId);
-
-    List<Object[]> results = query.getResultList();
-    List<ForumPostInfoDTO> dtos = new ArrayList<>();
-
-    for (Object[] row : results) {
-        UserNameAndAvatarDTO userDTO = new UserNameAndAvatarDTO(
-            (int) row[1],
-            (String) row[2],
-            (String) row[3],
-            (String) row[4]
+        Query<Object[]> query = session.createQuery(
+                "SELECT fp.id, u.id, u.firstName, u.lastName, u.avatar, fp.courseSessionId.id, fp.title, fp.content, fp.createdDate "
+                + "FROM ForumPost fp JOIN fp.userId u WHERE fp.courseSessionId.id = :courseSessionId",
+                Object[].class
         );
+        query.setParameter("courseSessionId", courseSessionId);
 
-        ForumPostInfoDTO postDTO = new ForumPostInfoDTO(
-            (Integer) row[0],
-            userDTO,
-            (Integer) row[5],
-            (String) row[6],
-            (String) row[7]
-        );
+        List<Object[]> results = query.getResultList();
+        List<ForumPostInfoDTO> dtos = new ArrayList<>();
 
-        dtos.add(postDTO);
+        for (Object[] row : results) {
+            UserNameAndAvatarDTO userDTO = new UserNameAndAvatarDTO(
+                    (int) row[1],
+                    (String) row[2],
+                    (String) row[3],
+                    (String) row[4]
+            );
+
+            ForumPostInfoDTO postDTO = new ForumPostInfoDTO(
+                    (Integer) row[0],
+                    userDTO,
+                    (Integer) row[5],
+                    (String) row[6],
+                    (String) row[7],
+                    (Date) row[8]
+            );
+
+            dtos.add(postDTO);
+        }
+
+        return dtos;
     }
 
-    return dtos;
-}
-
+    @Override
+    public Integer getCourseSessionIdByForumPostId(Integer forumPostId) {
+        Session session = this.factory.getObject().getCurrentSession();
+        Query<Integer> query = session.createQuery(
+                "SELECT fp.courseSessionId.id FROM ForumPost fp WHERE fp.id = :forumPostId",
+                Integer.class
+        );
+        query.setParameter("forumPostId", forumPostId);
+        return query.uniqueResult(); // hoặc query.getSingleResult() nếu bạn chắc chắn có 1 kết quả
+    }
 }

@@ -91,7 +91,7 @@ public class User implements Serializable {
     @Size(max = 255)
     @Column(name = "avatar")
     private String avatar;
-    @Column(name = "is_active")
+    @Column(name = "is_active", insertable = false, updatable = false)
     private Boolean isActive;
     @Column(name = "created_date", insertable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)

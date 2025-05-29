@@ -49,12 +49,12 @@ public class Course implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "name")
     private String name;
-    @Column(name = "is_active")
+    @Column(name = "is_active", insertable = false, updatable = false)
     private Boolean isActive;
-    @Column(name = "created_date")
+    @Column(name = "created_date", insertable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
-    @Column(name = "updated_date")
+    @Column(name = "updated_date", insertable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedDate;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "courseId")

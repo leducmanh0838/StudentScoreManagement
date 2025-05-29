@@ -78,7 +78,7 @@ public class PreStudentRegistration implements Serializable {
     private Date otpExpiration;
     @Column(name = "verification_attempts")
     private Integer verificationAttempts;
-    @Column(name = "created_date")
+    @Column(name = "created_date", insertable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
 
