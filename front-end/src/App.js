@@ -21,6 +21,7 @@ import ForumPostManagement from './components/ForumPost/ForumPostManagement ';
 import ProtectedRoute from './components/layout/ProtectedRoute';
 import { UserRoles } from './configs/MyValue';
 import FriendsList from './components/Chat/FriendsList';
+import UnreadCountListener from './components/Chat/UnreadCountListener ';
 
 const initUser = () => {
   const cookieUser = cookie.load('user');
@@ -35,7 +36,8 @@ const App = () => {
 
   // State quản lý tin nhắn và bạn chat hiện tại
   const [currentChatUser, setCurrentChatUser] = useState(null); //userId đang chat
-  const [chatMessages, setChatMessages] = useState([]); // messages với bạn chat hiện tại
+  // const [chatMessages, setChatMessages] = useState([]); // messages với bạn chat hiện tại
+  const [unreadCount, setUnreadCount] = useState(0); // messages với bạn chat hiện tại
 
   // State quản lý UI Messenger: có hiển thị danh sách bạn bè hay không
   const [showFriendList, setShowFriendList] = useState(false);
@@ -44,11 +46,11 @@ const App = () => {
     <MyUserContext.Provider value={user}>
       <MyDispatchContext.Provider value={dispatch}>
         <FriendsListContext.Provider value={{ friendsList, setFriendsList }}>
-          <ChatContext.Provider value={{ currentChatUser, setCurrentChatUser, chatMessages, setChatMessages }}>
-            <MessengerUIContext.Provider value={{ showFriendList, setShowFriendList }}>
+          <ChatContext.Provider value={{ currentChatUser, setCurrentChatUser }}>
+            <MessengerUIContext.Provider value={{ showFriendList, setShowFriendList, unreadCount, setUnreadCount }}>
               <BrowserRouter>
+                <UnreadCountListener />
                 <Header />
-
                 <Routes>
                   {/* <Route path="/" element={<Home />} /> */}
                   <Route path="/signup" element={<Signup />} />
@@ -74,6 +76,8 @@ const App = () => {
                 {/* <FriendsList /> */}
                 {showFriendList && <FriendsList />}
               </BrowserRouter>
+
+
             </MessengerUIContext.Provider>
           </ChatContext.Provider>
         </FriendsListContext.Provider>

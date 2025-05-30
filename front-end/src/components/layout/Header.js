@@ -16,8 +16,8 @@ const Header = () => {
   };
 
   // const { toggleMessenger } = useContext(ChatContext);
-  const { showFriendList, setShowFriendList } = useContext(MessengerUIContext);
-  const handleMessage = () =>{
+  const { showFriendList, setShowFriendList, unreadCount } = useContext(MessengerUIContext);
+  const handleMessage = () => {
     setShowFriendList(!showFriendList);
   }
 
@@ -61,7 +61,29 @@ const Header = () => {
                 style={{ width: 44, height: 44 }}
                 title="Messenger"
               >
-                <FaFacebookMessenger size={32}/>
+                <FaFacebookMessenger size={32} />
+                {unreadCount > 0 && (
+                  <span
+                    style={{
+                      position: 'absolute',
+                      top: 4,
+                      right: 4,
+                      backgroundColor: 'red',
+                      color: 'white',
+                      borderRadius: '50%',
+                      width: 18,
+                      height: 18,
+                      fontSize: 12,
+                      fontWeight: 'bold',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      userSelect: 'none',
+                    }}
+                  >
+                    {unreadCount > 99 ? '99+' : unreadCount}
+                  </span>
+                )}
               </button>
             )}
             {user ? (<>

@@ -1,118 +1,3 @@
-// import React, { useEffect, useRef, useState, useContext } from 'react';
-// import { db } from '../../firebase/firebase'; // Đã setup Firebase
-// import {
-//   collection,
-//   query,
-//   orderBy,
-//   onSnapshot,
-//   addDoc,
-//   serverTimestamp,
-// } from 'firebase/firestore';
-// import './ChatBox.css';
-// import { MyUserContext } from '../../configs/Contexts';
-
-// const ChatBox = () => {
-//   const [messages, setMessages] = useState([]);
-//   const [newMsg, setNewMsg] = useState('');
-//   const [isOpen, setIsOpen] = useState(true); // state ẩn hiện chatbox
-//   const user = useContext(MyUserContext);
-//   const bottomRef = useRef();
-
-//   const chatRoomId = 'global_chat';
-
-//   useEffect(() => {
-//     const q = query(
-//       collection(db, 'chats', chatRoomId, 'messages'),
-//       orderBy('timestamp')
-//     );
-//     const unsubscribe = onSnapshot(q, (snapshot) => {
-//       const msgs = snapshot.docs.map((doc) => ({
-//         id: doc.id,
-//         ...doc.data(),
-//       }));
-//       setMessages(msgs);
-//       bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
-//     });
-
-//     return () => unsubscribe();
-//   }, []);
-
-//   const sendMessage = async (e) => {
-//     e.preventDefault();
-//     if (!newMsg.trim()) return;
-
-//     await addDoc(collection(db, 'chats', chatRoomId, 'messages'), {
-//       senderId: user?.userId || 'anonymous',
-//       senderName: user ? `${user.firstName} ${user.lastName}` : 'Khách',
-//       message: newMsg,
-//       timestamp: serverTimestamp(),
-//     });
-//     setNewMsg('');
-//   };
-
-//   return (
-//     <div
-//       className="position-fixed bottom-0 end-0 m-3"
-//       style={{ width: '320px', zIndex: 1050 }}
-//     >
-//       {isOpen ? (
-//         <div className="card shadow">
-//           <div className="card-header bg-primary text-white py-2 px-3 d-flex justify-content-between align-items-center">
-//             <span>💬 Hỏi đáp</span>
-//             <button
-//               className="btn btn-sm btn-light"
-//               onClick={() => setIsOpen(false)}
-//               aria-label="Đóng chat"
-//               title="Ẩn chat"
-//             >
-//               &times;
-//             </button>
-//           </div>
-//           <div
-//             className="card-body p-2"
-//             style={{ maxHeight: '300px', overflowY: 'auto' }}
-//           >
-//             {messages.map((msg) => (
-//               <div key={msg.id} className="mb-2">
-//                 <strong>{msg.senderName}:</strong> {msg.message}
-//               </div>
-//             ))}
-//             <div ref={bottomRef} />
-//           </div>
-//           <form onSubmit={sendMessage} className="card-footer p-2 bg-light">
-//             <div className="input-group">
-//               <input
-//                 type="text"
-//                 className="form-control"
-//                 placeholder="Nhập tin nhắn..."
-//                 value={newMsg}
-//                 onChange={(e) => setNewMsg(e.target.value)}
-//               />
-//               <button type="submit" className="btn btn-primary">
-//                 Gửi
-//               </button>
-//             </div>
-//           </form>
-//         </div>
-//       ) : (
-//         // Nút nhỏ hiển thị khi chat box bị ẩn
-//         <button
-//           className="btn btn-primary rounded-circle"
-//           style={{ width: '50px', height: '50px' }}
-//           onClick={() => setIsOpen(true)}
-//           aria-label="Mở chat"
-//           title="Hiện chat"
-//         >
-//           💬
-//         </button>
-//       )}
-//     </div>
-//   );
-// };
-
-// export default ChatBox;
-
-
 import React, { useEffect, useRef, useState, useContext } from 'react';
 import { db } from '../../firebase/firebase';
 import {
@@ -123,19 +8,20 @@ import {
   addDoc,
   serverTimestamp,
   where,
+  updateDoc,
+  doc,
+  getDocs
 } from 'firebase/firestore';
-import { ChatContext } from '../../contexts/ChatContext';
-import { MyUserContext } from '../../configs/Contexts';
+import { ChatContext, MyUserContext } from '../../configs/Contexts';
 
 const ChatBox = () => {
-  const { activeChatUser, setActiveChatUser } = useContext(ChatContext);
+  const { currentChatUser: activeChatUser, setCurrentChatUser: setActiveChatUser } = useContext(ChatContext);
   const user = useContext(MyUserContext);
 
   const [messages, setMessages] = useState([]);
   const [newMsg, setNewMsg] = useState('');
   const bottomRef = useRef();
 
-  // Tạo chatRoomId theo 2 user (sắp xếp để luôn đồng nhất)
   const chatRoomId = activeChatUser
     ? [user.userId, activeChatUser.userId].sort().join('_')
     : null;
@@ -151,12 +37,31 @@ const ChatBox = () => {
       orderBy('timestamp')
     );
 
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const msgs = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setMessages(msgs);
+    const unsubscribe = onSnapshot(q, async (snapshot) => {
+      snapshot.docChanges().forEach(change => {
+        if (change.type === 'added') {
+          const newMsg = {
+            id: change.doc.id,
+            ...change.doc.data()
+          };
+          setMessages(prevMessages => [...prevMessages, newMsg]);
+        }
+
+      });
+
+      // Cập nhật readBy nếu chưa có
+      // const unread = snapshot.docs.filter(
+      //   doc => !doc.data().readBy?.includes(user.userId) && doc.data().senderId !== user.userId
+      // );
+
+      // for (const docSnap of unread) {
+      //   const messageRef = doc(db, 'chats', chatRoomId, 'messages', docSnap.id);
+      //   await updateDoc(messageRef, {
+      //     readBy: [...(docSnap.data().readBy || []), user.userId]
+      //   });
+      // }
+
+      // setMessages(msgs);
       bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
     });
 
@@ -173,6 +78,7 @@ const ChatBox = () => {
       senderName: `${user.firstName} ${user.lastName}`,
       message: newMsg,
       timestamp: serverTimestamp(),
+      // readBy: [user.userId]
     });
     setNewMsg('');
   };
