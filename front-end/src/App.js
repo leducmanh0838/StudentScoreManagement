@@ -41,13 +41,14 @@ const App = () => {
 
   // State quản lý UI Messenger: có hiển thị danh sách bạn bè hay không
   const [showFriendList, setShowFriendList] = useState(false);
+  const [unreadUserIds, setUnreadUserIds ] = useState([]);
 
   return (
     <MyUserContext.Provider value={user}>
       <MyDispatchContext.Provider value={dispatch}>
         <FriendsListContext.Provider value={{ friendsList, setFriendsList }}>
           <ChatContext.Provider value={{ currentChatUser, setCurrentChatUser }}>
-            <MessengerUIContext.Provider value={{ showFriendList, setShowFriendList, unreadCount, setUnreadCount }}>
+            <MessengerUIContext.Provider value={{ showFriendList, setShowFriendList, unreadCount, setUnreadCount, unreadUserIds, setUnreadUserIds }}>
               <BrowserRouter>
                 <UnreadCountListener />
                 <Header />

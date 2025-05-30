@@ -1,162 +1,44 @@
-// // import { useEffect, useContext } from 'react';
-// // import { collection, onSnapshot, query, orderBy } from 'firebase/firestore';
-// // import { db } from '../../firebase/firebase';
-// // import { ChatContext, MyUserContext } from '../../configs/Contexts';
-
-// // const UnreadCountListener = () => {
-// //   const { currentChatUser, setUnreadCount } = useContext(ChatContext);
-// //   const user = useContext(MyUserContext);
-
-// //   useEffect(() => {
-// //     if (!user?.userId) return;
-
-// //     const unsubscribe = onSnapshot(collection(db, 'chats'), (chatRoomSnap) => {
-// //       let totalUnread = 0;
-
-// //       chatRoomSnap.docs.forEach((chatRoomDoc) => {
-// //         const chatRoomId = chatRoomDoc.id;
-// //         if (!chatRoomId.includes(user.userId)) return;
-
-// //         const messagesQuery = query(
-// //           collection(db, 'chats', chatRoomId, 'messages'),
-// //           orderBy('timestamp')
-// //         );
-
-// //         onSnapshot(messagesQuery, (msgSnap) => {
-// //           msgSnap.docs.forEach((doc) => {
-// //             const data = doc.data();
-// //             const readBy = data.readBy || [];
-// //             const senderId = data.senderId;
-
-// //             // Chỉ tính tin nhắn chưa đọc và không phải của mình
-// //             if (!readBy.includes(user.userId) && senderId !== user.userId) {
-// //               totalUnread += 1;
-// //             }
-// //           });
-
-// //           setUnreadCount(totalUnread);
-// //         });
-// //       });
-// //     });
-
-// //     return () => unsubscribe();
-// //   }, [user?.userId]);
-
-// //   return null; // Không render gì cả
-// // };
-
-// // export default UnreadCountListener;
-
-
-// import { useContext, useEffect, useRef } from 'react';
-// import { ChatContext, MyUserContext } from '../../configs/Contexts';
-// import { db } from '../../firebase/firebase';
-// import { collection, onSnapshot, query, orderBy } from 'firebase/firestore';
-
-// const UnreadCountListener = () => {
-//   const { setUnreadCount } = useContext(ChatContext);
-//   const user = useContext(MyUserContext);
-//   const messageUnsubscribers = useRef([]);
-
-//   useEffect(() => {
-//     if (!user?.userId) return;
-
-//     console.log("🔔 Starting UnreadCountListener for user:", user.userId);
-
-//     // Cleanup tất cả old message snapshot
-//     messageUnsubscribers.current.forEach(unsub => unsub());
-//     messageUnsubscribers.current = [];
-
-//     const unsubscribeChats = onSnapshot(collection(db, 'chats'), (chatRoomSnap) => {
-//       const relevantRooms = chatRoomSnap.docs.filter(doc => doc.id.includes(user.userId));
-
-//       console.log("📦 Found chat rooms:", relevantRooms.map(d => d.id));
-
-//       // Cleanup old message snapshot listeners
-//       messageUnsubscribers.current.forEach(unsub => unsub());
-//       messageUnsubscribers.current = [];
-
-//       let totalUnread = 0;
-
-//       relevantRooms.forEach((chatRoomDoc) => {
-//         const chatRoomId = chatRoomDoc.id;
-
-//         const messagesQuery = query(
-//           collection(db, 'chats', chatRoomId, 'messages'),
-//           orderBy('timestamp')
-//         );
-
-//         const unsubscribeMessages = onSnapshot(messagesQuery, (msgSnap) => {
-//           let unreadInRoom = 0;
-
-//           msgSnap.docs.forEach((doc) => {
-//             const data = doc.data();
-//             const readBy = data.readBy || [];
-//             const senderId = data.senderId;
-
-//             if (!readBy.includes(user.userId) && senderId !== user.userId) {
-//               unreadInRoom += 1;
-//             }
-//           });
-
-//           totalUnread = 0;
-
-//           // Tổng lại toàn bộ unread từ các chatRoom đang theo dõi
-//           messageUnsubscribers.current.forEach((_, idx) => {
-//             totalUnread += unreadInRoom;
-//           });
-
-//           console.log(`📨 Unread in room ${chatRoomId}:`, unreadInRoom);
-//           console.log(`🔢 Total unread (across rooms):`, totalUnread);
-
-//           setUnreadCount(totalUnread);
-//         });
-
-//         messageUnsubscribers.current.push(unsubscribeMessages);
-//       });
-//     });
-
-//     return () => {
-//       console.log("🧹 Cleaning up UnreadCountListener");
-//       unsubscribeChats();
-//       messageUnsubscribers.current.forEach(unsub => unsub());
-//     };
-//   }, [user?.userId]);
-
-//   return null;
-// };
-
-// export default UnreadCountListener;
-
 import { useContext, useEffect } from 'react';
-import { ChatContext, MyUserContext } from '../../configs/Contexts';
+import { collectionGroup, onSnapshot } from 'firebase/firestore';
 import { db } from '../../firebase/firebase';
-import { collectionGroup, onSnapshot, query, where } from 'firebase/firestore';
+import { MyUserContext } from '../../configs/Contexts';
+import { MessengerUIContext } from '../../configs/Contexts';
 
 const UnreadCountListener = () => {
-  const { setUnreadCount } = useContext(ChatContext);
   const user = useContext(MyUserContext);
+  const { setUnreadCount, setUnreadUserIds } = useContext(MessengerUIContext);
 
   useEffect(() => {
-    // if (!user?.userId) return;
+    if (!user) return;
 
-    // // Lắng nghe tất cả tin nhắn chưa đọc gửi đến user
-    // const q = query(
-    //   collectionGroup(db, 'messages'),
-    //   where('readBy', 'not-in', [[user.userId]])      // không phải tin nhắn do user gửi
-    // );
+    // Lắng nghe tất cả message chưa đọc thuộc về user hiện tại
+    const unsubscribe = onSnapshot(
+      collectionGroup(db, 'messages'), // Tất cả messages trong tất cả chatRooms
+      (snapshot) => {
+        let count = 0;
 
-    // const unsubscribe = onSnapshot(q, (snapshot) => {
-    //   const unread = snapshot.docs.filter(doc => doc.data().senderId !== user.userId);
-    //   // Số lượng tin nhắn chưa đọc là số document snapshot trả về
-    //   setUnreadCount(snapshot.docs.length);
-    // });
+        const unreadUserSet = new Set();
 
-    // return () => unsubscribe();
-  }, [user?.userId, setUnreadCount]);
+        snapshot.docs.forEach((doc) => {
+          const data = doc.data();
 
-  return null;
+          // Điều kiện: không phải do mình gửi + mình chưa đọc
+          if (data.senderId !== user.userId && !data.readBy?.includes(user.userId)) {
+            count += 1;
+            unreadUserSet.add(data.senderId);
+          }
+        });
+
+        setUnreadCount(count); // Cập nhật số tin nhắn chưa đọc
+        // const unreadIds = Array.from(unreadUserSet);
+        setUnreadUserIds(Array.from(unreadUserSet));
+      }
+    );
+
+    return () => unsubscribe(); // Hủy listener khi unmount
+  }, [user, setUnreadCount]);
+
+  return null; // Không hiển thị gì cả
 };
 
 export default UnreadCountListener;
-

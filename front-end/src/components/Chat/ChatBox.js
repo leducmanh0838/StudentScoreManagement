@@ -10,7 +10,9 @@ import {
   where,
   updateDoc,
   doc,
-  getDocs
+  getDocs,
+  getDoc,
+  setDoc
 } from 'firebase/firestore';
 import { ChatContext, MyUserContext } from '../../configs/Contexts';
 
@@ -32,6 +34,31 @@ const ChatBox = () => {
       return;
     }
 
+    // Thêm đoạn kiểm tra và khởi tạo user
+    const chatDocRef = doc(db, 'chats', chatRoomId);
+    getDoc(chatDocRef).then((docSnap) => {
+      if (!docSnap.exists()) {
+        // Tạo metadata participants
+        setDoc(chatDocRef, {
+          participants: [
+            {
+              userId: user.userId,
+              firstName: user.firstName,
+              lastName: user.lastName,
+              avatar: user.avatar || null
+            },
+            {
+              userId: activeChatUser.userId,
+              firstName: activeChatUser.firstName,
+              lastName: activeChatUser.lastName,
+              avatar: activeChatUser.avatar || null
+            }
+          ],
+          createdAt: serverTimestamp()
+        });
+      }
+    });
+
     const q = query(
       collection(db, 'chats', chatRoomId, 'messages'),
       orderBy('timestamp')
@@ -50,16 +77,16 @@ const ChatBox = () => {
       });
 
       // Cập nhật readBy nếu chưa có
-      // const unread = snapshot.docs.filter(
-      //   doc => !doc.data().readBy?.includes(user.userId) && doc.data().senderId !== user.userId
-      // );
+      const unread = snapshot.docs.filter(
+        doc => !doc.data().readBy?.includes(user.userId) && doc.data().senderId !== user.userId
+      );
 
-      // for (const docSnap of unread) {
-      //   const messageRef = doc(db, 'chats', chatRoomId, 'messages', docSnap.id);
-      //   await updateDoc(messageRef, {
-      //     readBy: [...(docSnap.data().readBy || []), user.userId]
-      //   });
-      // }
+      for (const docSnap of unread) {
+        const messageRef = doc(db, 'chats', chatRoomId, 'messages', docSnap.id);
+        await updateDoc(messageRef, {
+          readBy: [...(docSnap.data().readBy || []), user.userId]
+        });
+      }
 
       // setMessages(msgs);
       bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -78,7 +105,7 @@ const ChatBox = () => {
       senderName: `${user.firstName} ${user.lastName}`,
       message: newMsg,
       timestamp: serverTimestamp(),
-      // readBy: [user.userId]
+      readBy: [user.userId]
     });
     setNewMsg('');
   };

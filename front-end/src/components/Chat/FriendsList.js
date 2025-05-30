@@ -6,7 +6,7 @@ import { authApis, endpoints } from '../../configs/Apis';
 
 const FriendsList = () => {
     const { setCurrentChatUser } = useContext(ChatContext);
-    const { setShowFriendList } = useContext(MessengerUIContext);
+    const { setShowFriendList, unreadUserIds, setUnreadUserIds } = useContext(MessengerUIContext);
     const user = useContext(MyUserContext);
 
     const [friends, setFriends] = useState([]);
@@ -76,6 +76,7 @@ const FriendsList = () => {
             }}
         >
             <div className="p-3 border-bottom bg-primary text-white fw-bold d-flex justify-content-between align-items-center">
+                <span>{unreadUserIds}</span>
                 <span>Danh sách bạn bè</span>
                 <button
                     type="button"
