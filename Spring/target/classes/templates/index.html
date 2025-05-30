@@ -2,19 +2,21 @@
 <html xmlns:th="http://www.thymeleaf.org">
     <head>
         <title>Trang chủ</title>
-        
-        <th:block th:replace="base :: bootstrap"></th:block>
-    </head>
-    <body>
-        <div th:replace="base :: header"></div>
-        
-        <div class="container mt-4">
-            <h2 th:text="${messages.USER_LIST}"></h2>
-            <ul class="list-group">
-                <li class="list-group-item" th:each="user : ${users}" th:text="${user.email}"></li>
-            </ul>
-        </div>
-        
-        <div th:replace="base :: footer"></div>
-    </body>
+
+    <th:block th:replace="base :: bootstrap"></th:block>
+</head>
+<body>
+    <div th:replace="base :: header"></div>
+
+    <div class="container mt-4">
+        <!--<h2></h2>-->
+<!--        <ul class="list-group">
+            <li class="list-group-item" th:each="user : ${users}" th:text="${user.email}"></li>
+        </ul>-->
+<!--        <p>Xin chào, <span th:text="${name}">User</span></p>
+        <img th:src="${avatar}" alt="Avatar" width="100" />-->
+    </div>
+
+    <div th:replace="base :: footer"></div>
+</body>
 </html>

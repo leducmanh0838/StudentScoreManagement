@@ -10,6 +10,7 @@ export const endpoints = {
     'current-user': '/secure/user/getCurrentUser',
     'verify': '/preStudent/verify',
     'find-users':'/secure/user/findUsers',
+    'auth-google':'/auth/google',
 
     //Enrollment
     'get-enrollments-by-student': '/secure/studentAuth/enrollment/getEnrollments',

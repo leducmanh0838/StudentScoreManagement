@@ -4,6 +4,7 @@
  */
 package com.ldm.controllers;
 
+import com.ldm.configs.LoggerConfig;
 import com.ldm.dto.StudentInCourseDTO;
 import com.ldm.dto.UserInfoDTO;
 import com.ldm.dto.UserNameAndAvatarDTO;
@@ -62,7 +63,7 @@ public class ApiUserController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User u) {
-
+        LoggerConfig.info("HELLO");
         if (this.userDetailsService.authenticate(u.getEmail(), u.getPassword())) {
             try {
                 User userInfo = this.userDetailsService.getUserByEmail(u.getEmail());

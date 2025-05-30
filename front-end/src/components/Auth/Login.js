@@ -58,6 +58,7 @@ const Login = () => {
           password: formData.password,
         }
       );
+      
       cookie.save('token', response.data.token,{
         path:',',
         maxAge:USER_MAX_AGE

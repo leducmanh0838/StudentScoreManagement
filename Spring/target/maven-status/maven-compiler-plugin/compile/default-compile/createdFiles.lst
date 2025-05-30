@@ -46,6 +46,7 @@ com\ldm\dto\EnrollmentInfoForStudentDTO.class
 com\ldm\finalexam\JakartaRestConfiguration.class
 com\ldm\dto\ForumPostDTO.class
 com\ldm\dto\StudentGradeMailDTO.class
+com\ldm\configs\OAuth2ClientConfig.class
 com\ldm\controllers\CourseSessionController.class
 com\ldm\formatters\CourseFormatter.class
 com\ldm\repositories\impl\UserRepositoryImpl.class
@@ -91,6 +92,7 @@ com\ldm\services\impl\CourseServiceImpl.class
 com\ldm\services\CriteriaService.class
 com\ldm\services\impl\PreStudentRegistrationServiceImpl.class
 com\ldm\repositories\EnrollmentRepository.class
+com\ldm\controllers\ApiGoogleController.class
 com\ldm\services\impl\UserServiceImpl.class
 com\ldm\controllers\IndexController.class
 com\ldm\services\EnrollmentService.class

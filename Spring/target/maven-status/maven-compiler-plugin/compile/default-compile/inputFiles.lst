@@ -4,6 +4,7 @@ C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\configs\LoggerConfig.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\configs\MailConfig.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\configs\MessageConfig.java
+C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\configs\OAuth2ClientConfig.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\configs\SecurityWebApplicationInitializer.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\configs\SpringSecurityConfigs.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\configs\ThymeleafConfig.java
@@ -13,6 +14,7 @@ C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\controllers\ApiCriteriaController.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\controllers\ApiEnrollmentController.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\controllers\ApiForumPostController.java
+C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\controllers\ApiGoogleController.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\controllers\ApiGradeController.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\controllers\ApiPreStudentRegistration.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\controllers\ApiUserController.java

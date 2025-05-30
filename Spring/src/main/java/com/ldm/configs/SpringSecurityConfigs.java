@@ -4,7 +4,6 @@ package com.ldm.configs;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.ldm.pojo.User;
@@ -36,8 +35,7 @@ import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
     "com.ldm.controllers",
     "com.ldm.repositories",
     "com.ldm.services",
-    "com.ldm.components",
-})
+    "com.ldm.components",})
 public class SpringSecurityConfigs {
 
     @Autowired
@@ -47,14 +45,14 @@ public class SpringSecurityConfigs {
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-    
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(c -> c.disable()).authorizeHttpRequests(requests
                 -> requests.requestMatchers("/").authenticated()
                         .requestMatchers(HttpMethod.GET, "/userListView").hasAuthority(User.STAFF_ROLE)
-//                        .requestMatchers(HttpMethod.GET, "/userListView/").permitAll()
+        //                        .requestMatchers(HttpMethod.GET, "/userListView/").permitAll()
                         .requestMatchers("/api/**").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(form -> form.loginPage("/login")
@@ -62,6 +60,25 @@ public class SpringSecurityConfigs {
                 .defaultSuccessUrl("/", true)
                 .failureUrl("/login/?error=true").permitAll())
                 .logout(logout -> logout.logoutSuccessUrl("/login").permitAll());
+
+//        http
+//            .authorizeHttpRequests(authorize -> authorize
+//                .requestMatchers("/", "/login**", "/css/**", "/js/**").permitAll()
+//                .anyRequest().authenticated()
+//            )
+//            .formLogin(form -> form
+//                .loginPage("/login")
+//                .permitAll()
+//            )
+//            .oauth2Login(oauth2 -> oauth2
+//                .loginPage("/login")  // dùng cùng trang login cho form + Google
+//                .defaultSuccessUrl("/", true)  // sau khi login thành công, redirect đến profile
+//            )
+//            .logout(logout -> logout
+//                .logoutSuccessUrl("/")
+//                .permitAll()
+//            );
+
 
         return http.build();
 //        http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
@@ -79,7 +96,7 @@ public class SpringSecurityConfigs {
 //                .logout(logout -> logout.logoutSuccessUrl("/login").permitAll());
 //        return http.build();
     }
-    
+
     @Bean
     public Cloudinary cloudinary() {
         Cloudinary cloudinary

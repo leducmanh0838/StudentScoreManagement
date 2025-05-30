@@ -7,10 +7,8 @@ import {
   onSnapshot,
   addDoc,
   serverTimestamp,
-  where,
   updateDoc,
   doc,
-  getDocs,
   getDoc,
   setDoc
 } from 'firebase/firestore';
@@ -35,25 +33,15 @@ const ChatBox = () => {
     }
 
     // Thêm đoạn kiểm tra và khởi tạo user
-    const chatDocRef = doc(db, 'chats', chatRoomId);
+    const chatDocRef = doc(db, 'users', String(user.userId));
     getDoc(chatDocRef).then((docSnap) => {
       if (!docSnap.exists()) {
         // Tạo metadata participants
         setDoc(chatDocRef, {
-          participants: [
-            {
-              userId: user.userId,
-              firstName: user.firstName,
-              lastName: user.lastName,
-              avatar: user.avatar || null
-            },
-            {
-              userId: activeChatUser.userId,
-              firstName: activeChatUser.firstName,
-              lastName: activeChatUser.lastName,
-              avatar: activeChatUser.avatar || null
-            }
-          ],
+          userId: user.userId,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          avatar: user.avatar || null,
           createdAt: serverTimestamp()
         });
       }
@@ -102,6 +90,7 @@ const ChatBox = () => {
 
     await addDoc(collection(db, 'chats', chatRoomId, 'messages'), {
       senderId: user.userId,
+      receiverId: activeChatUser.userId,
       senderName: `${user.firstName} ${user.lastName}`,
       message: newMsg,
       timestamp: serverTimestamp(),

@@ -100,6 +100,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean authenticate(String email, String password) {
+        if(password==null||password.isEmpty())
+            return false;
         return this.userRepository.authenticate(email, password);
     }
 

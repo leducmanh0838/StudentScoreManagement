@@ -23,7 +23,7 @@ const UnreadCountListener = () => {
           const data = doc.data();
 
           // Điều kiện: không phải do mình gửi + mình chưa đọc
-          if (data.senderId !== user.userId && !data.readBy?.includes(user.userId)) {
+          if (data.receiverId === user.userId && data.senderId !== user.userId && !data.readBy?.includes(user.userId)) {
             count += 1;
             unreadUserSet.add(data.senderId);
           }
