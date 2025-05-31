@@ -8,6 +8,7 @@ import com.ldm.configs.LoggerConfig;
 import com.ldm.dto.CourseSessionStatsDTO;
 import com.ldm.services.CourseService;
 import com.ldm.services.StatsService;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +36,7 @@ public class StatsController {
         List<Object[]> courseNames = courseService.getAllCourseNames();
         model.addAttribute("courseNames", courseNames);
         model.addAttribute("selectedCourseId", courseId); // để giữ lại selection
-        
+
 //        List<String> labels = Arrays.asList("TH001-IT1000", "TH002-IT1000", "TH003-IT1000", "TH004-IT1000");
 //        // Dữ liệu số lượng sinh viên - List<Integer>
 //        List<Integer> data = Arrays.asList(4, 8, 8, 8);
@@ -45,10 +46,19 @@ public class StatsController {
 
         if (courseId != null) {
             List<CourseSessionStatsDTO> stats = statsService.countEnrollmentsByCourse(courseId);
-            for (CourseSessionStatsDTO s : stats) {
-                LoggerConfig.info("s.getEnrollmentCount() {}", s.getEnrollmentCount());
-            }
             model.addAttribute("stats", stats);
+
+            // Tạo danh sách labels (mã buổi học) và data (số sinh viên)
+            List<String> labels = new ArrayList<>();
+            List<Long> data = new ArrayList<>();
+
+            for (CourseSessionStatsDTO s : stats) {
+                labels.add(s.getCourseSessionCode());     // Mã buổi học
+                data.add(s.getEnrollmentCount());         // Số sinh viên đăng ký
+            }
+
+            model.addAttribute("labels", labels);
+            model.addAttribute("data", data);
         }
 
         return "stats";
