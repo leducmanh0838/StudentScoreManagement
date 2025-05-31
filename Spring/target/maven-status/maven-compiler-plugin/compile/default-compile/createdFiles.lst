@@ -36,6 +36,7 @@ com\ldm\configs\SpringSecurityConfigs.class
 com\ldm\repositories\CourseRepository.class
 com\ldm\repositories\impl\CourseSessionRepositoryImpl.class
 com\ldm\services\CommentService.class
+com\ldm\dto\GradeStatsDTO.class
 com\ldm\formatters\UserFormatter.class
 com\ldm\repositories\impl\PreStudentRegistrationRepositoryImpl.class
 com\ldm\dto\ScoreDTO.class

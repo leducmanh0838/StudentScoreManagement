@@ -118,7 +118,7 @@ const Signup = () => {
     // const handleSuccess = async (credentialResponse) => {
     //     const idToken = credentialResponse.credential;
 
-    //     // Gửi id_token về Spring backend
+    //     
     //     try {
     //         const res = await Apis.post(endpoints['auth-google'], {
     //             idToken,

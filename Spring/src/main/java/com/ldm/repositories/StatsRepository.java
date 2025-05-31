@@ -5,6 +5,7 @@
 package com.ldm.repositories;
 
 import com.ldm.dto.CourseSessionStatsDTO;
+import com.ldm.dto.GradeStatsDTO;
 import java.util.List;
 
 /**
@@ -12,5 +13,6 @@ import java.util.List;
  * @author PC
  */
 public interface StatsRepository {
-    List<CourseSessionStatsDTO> countEnrollmentsByCourse(int courseId);
+    List<CourseSessionStatsDTO> countEnrollmentsByCourse(int courseId, Integer year);
+    List<GradeStatsDTO> studentPerformanceStats(int courseId, Integer year);
 }

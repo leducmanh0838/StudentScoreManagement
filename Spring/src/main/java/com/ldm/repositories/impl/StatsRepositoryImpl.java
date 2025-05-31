@@ -1,6 +1,7 @@
 package com.ldm.repositories.impl;
 
 import com.ldm.dto.CourseSessionStatsDTO;
+import com.ldm.dto.GradeStatsDTO;
 import com.ldm.pojo.CourseSession;
 import com.ldm.pojo.Enrollment;
 import com.ldm.repositories.StatsRepository;
@@ -12,6 +13,7 @@ import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Session;
@@ -28,7 +30,7 @@ public class StatsRepositoryImpl implements StatsRepository {
     private LocalSessionFactoryBean factory;
 
     @Override
-    public List<CourseSessionStatsDTO> countEnrollmentsByCourse(int courseId) {
+    public List<CourseSessionStatsDTO> countEnrollmentsByCourse(int courseId, Integer year) {
         Session session = factory.getObject().getCurrentSession();
 
         StoredProcedureQuery query = session
@@ -36,6 +38,8 @@ public class StatsRepositoryImpl implements StatsRepository {
 
         query.registerStoredProcedureParameter("courseId", Integer.class, ParameterMode.IN);
         query.setParameter("courseId", courseId);
+        query.registerStoredProcedureParameter("inputYear", Integer.class, ParameterMode.IN);
+        query.setParameter("inputYear", year);
 
         List<Object[]> results = query.getResultList();
 
@@ -50,28 +54,36 @@ public class StatsRepositoryImpl implements StatsRepository {
         }
 
         return dtos;
+    }
 
-//        Session session = factory.getObject().getCurrentSession();
-//        CriteriaBuilder cb = session.getCriteriaBuilder();
-//        CriteriaQuery<CourseSessionStatsDTO> cq = cb.createQuery(CourseSessionStatsDTO.class);
-//
-//        Root<CourseSession> csRoot = cq.from(CourseSession.class);
-//        Join<CourseSession, Enrollment> enrollmentJoin = csRoot.join("enrollmentSet", JoinType.LEFT);
-//
-//        // Lọc theo courseId
-//        Predicate courseMatch = cb.equal(csRoot.get("courseId").get("id"), courseId);
-//
-//        // GROUP BY courseSession id và code
-//        cq.select(cb.construct(
-//                CourseSessionStatsDTO.class,
-//                csRoot.get("id"),
-//                csRoot.get("code"),
-//                cb.count(enrollmentJoin.get("id"))
-//        ))
-//        .where(courseMatch)
-//        .groupBy(csRoot.get("id"), csRoot.get("code"))
-//        .orderBy(cb.asc(csRoot.get("id")));
-//
-//        return session.createQuery(cq).getResultList();
+    @Override
+    public List<GradeStatsDTO> studentPerformanceStats(int courseId, Integer year) {
+        Session session = factory.getObject().getCurrentSession();
+
+        StoredProcedureQuery query = session
+                .createStoredProcedureQuery("GetStudentPerformanceStats");
+
+        query.registerStoredProcedureParameter("courseId", Integer.class, ParameterMode.IN);
+        query.setParameter("courseId", courseId);
+        query.registerStoredProcedureParameter("inputYear", Integer.class, ParameterMode.IN);
+        query.setParameter("inputYear", year);
+
+        List<Object[]> results = query.getResultList();
+
+        List<GradeStatsDTO> dtos = new ArrayList<>();
+        for (Object[] row : results) {
+            dtos.add(new GradeStatsDTO(
+                    (Integer) row[0],
+                    (String) row[1],
+                    (String) row[2],
+                    String.format("%s %s", (String) row[3], (String) row[4]),
+                    ((BigDecimal) row[5]).intValue(),
+                    ((BigDecimal) row[6]).intValue(),
+                    ((BigDecimal) row[7]).intValue(),
+                    ((BigDecimal) row[8]).intValue()
+            ));
+        }
+
+        return dtos;
     }
 }

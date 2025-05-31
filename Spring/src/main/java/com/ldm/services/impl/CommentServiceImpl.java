@@ -9,6 +9,7 @@ import com.ldm.pojo.Comment;
 import com.ldm.repositories.CommentRepository;
 import com.ldm.repositories.CourseRepository;
 import com.ldm.services.CommentService;
+import com.ldm.utils.HtmlSanitizerUtil;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,12 @@ public class CommentServiceImpl implements CommentService{
     public Comment addOrUpdate(Comment comment) {
         if(comment.getContent()==null)
             throw new IllegalArgumentException("Chưa có nội dung");
+        String originalContent = comment.getContent();
+        String sanitizedContent = HtmlSanitizerUtil.sanitize(originalContent);
+
+        if (sanitizedContent.length() < originalContent.length()) {
+            throw new IllegalArgumentException("Nội dung chứa mã độc.");
+        }
         return this.commentRepository.addOrUpdate(comment);
     }
 

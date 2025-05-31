@@ -53,9 +53,12 @@ const CommentSection = ({ forumPostId }) => {
 
       setComments(prev => [newPost, ...prev]);
       setNewComment('');
-    } catch (err) {
-      setError('Gửi bình luận thất bại. Vui lòng thử lại.');
-      console.error(err);
+    } catch (error) {
+      if (error.response && error.response.data && error.response.data.message)
+        setError(error.response.data.message);
+      else
+        setError('Gửi bình luận thất bại. Vui lòng thử lại.');
+      console.error(error);
     } finally {
       setSubmitting(false);
     }

@@ -36,7 +36,10 @@
                             <a class="nav-link" th:href="@{/courseSessionListView}">Quản lý buổi đăng ký môn học</a>
                         </li>
                         <li class="nav-item" sec:authorize="hasAuthority('staff')">
-                            <a class="nav-link" th:href="@{/stats}">Thống kê</a>
+                            <a class="nav-link" th:href="@{/courseSessionStats}">Thống kê buổi học</a>
+                        </li>
+                        <li class="nav-item" sec:authorize="hasAuthority('staff')">
+                            <a class="nav-link" th:href="@{/gradeStats}">Thống kê điểm</a>
                         </li>
                     </ul>
 
