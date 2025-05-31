@@ -44,7 +44,8 @@ public class StatsRepositoryImpl implements StatsRepository {
             dtos.add(new CourseSessionStatsDTO(
                     (Integer) row[0],
                     (String) row[1],
-                    ((Number) row[2]).longValue()
+                    String.format("%s %s", (String) row[2], (String) row[3]),
+                    ((Number) row[4]).longValue()
             ));
         }
 

@@ -2,12 +2,14 @@ package com.ldm.dto;
 public class CourseSessionStatsDTO {
     private int courseSessionId;
     private String courseSessionCode;
+    private String teacherName;
     private long enrollmentCount;
 
-    public CourseSessionStatsDTO(int courseSessionId, String courseSessionCode, long enrollmentCount) {
+    public CourseSessionStatsDTO(int courseSessionId, String courseSessionCode, String teacherName, long enrollmentCount) {
         this.courseSessionId = courseSessionId;
         this.courseSessionCode = courseSessionCode;
         this.enrollmentCount = enrollmentCount;
+        this.teacherName=teacherName;
     }
 
     /**
@@ -50,6 +52,20 @@ public class CourseSessionStatsDTO {
      */
     public void setEnrollmentCount(long enrollmentCount) {
         this.enrollmentCount = enrollmentCount;
+    }
+
+    /**
+     * @return the teacherName
+     */
+    public String getTeacherName() {
+        return teacherName;
+    }
+
+    /**
+     * @param teacherName the teacherName to set
+     */
+    public void setTeacherName(String teacherName) {
+        this.teacherName = teacherName;
     }
 
     

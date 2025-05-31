@@ -87,7 +87,7 @@ const Header = () => {
               </button>
             )}
             {user ? (<>
-              <div className="flex items-center gap-2" onClick={()=>navigate(`/user/${user.userId}`)}>
+              <button className="flex items-center gap-2  bg-transparent border-0 p-0 m-0 cursor-pointer" onClick={()=>navigate(`/user/${user.userId}`)}>
                 <img
                 //https://lh3.googleusercontent.com/a/ACg8ocI9hTJ_GD7HFzn-zyKA6iu3_7QUqyvMrGRETvm6iYkH7FcfaD4=s96-c
                   src={user.avatar || getDefaultAvatar(user.firstName, user.lastName)}
@@ -95,7 +95,7 @@ const Header = () => {
                   style={{ width: "32px", height: "32px", objectFit: "cover", borderRadius: "50%" }}
                 />
                 <span className="text-white fw-medium text-capitalize ms-2">{user.firstName} {user.lastName}</span>
-              </div>
+              </button>
               <button
                 onClick={handleLogout}
                 className="btn btn-danger ms-2"
