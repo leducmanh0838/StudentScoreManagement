@@ -54,10 +54,8 @@ public class WebAppContextConfigs implements WebMvcConfigurer {
 //    }
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // Đường dẫn hiện tại cho js
         registry.addResourceHandler("/js/**").addResourceLocations("classpath:/static/js/");
 
-        // Thêm cấu hình cho thư mục myStatic/images/
         registry.addResourceHandler("/images/**").addResourceLocations("classpath:/static/images/");
     }
 

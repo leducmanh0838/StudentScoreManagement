@@ -18,10 +18,6 @@ import java.util.Map;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-/**
- *
- * @author huu-thanhduong
- */
 public class JwtFilter implements Filter {
 
     @Override
@@ -34,7 +30,7 @@ public class JwtFilter implements Filter {
         String contextPath = httpRequest.getContextPath();
         String securePath = String.format("%s/api/secure", contextPath);
 
-        // Chỉ áp dụng lọc cho các đường dẫn bắt đầu bằng /api/secure
+        //  /api/secure
         if (path.startsWith(securePath)) {
             String header = httpRequest.getHeader("Authorization");
 
@@ -50,7 +46,7 @@ public class JwtFilter implements Filter {
                 if (userDetails != null) {
                     String role = (String) userDetails.get("role");
 
-                    // Nếu truy cập endpoint dành riêng cho giáo viên thì kiểm tra role
+                    // /teacherAuth
                     if (path.startsWith(securePath + "/teacherAuth")) {
                         if (!User.TEACHER_ROLE.equals(role)) {
                             httpResponse.sendError(HttpServletResponse.SC_FORBIDDEN, "Bạn không có quyền truy cập endpoint dành cho giáo viên.");
@@ -64,7 +60,6 @@ public class JwtFilter implements Filter {
                         }
                     }
 
-                    // Gắn attribute vào request
                     httpRequest.setAttribute("id", userDetails.get("id"));
                     httpRequest.setAttribute("username", userDetails.get("username"));
                     httpRequest.setAttribute("role", role);
@@ -77,7 +72,7 @@ public class JwtFilter implements Filter {
                     return;
                 }
             } catch (Exception e) {
-                // Có thể log lỗi ở đây nếu cần
+                
             }
 
             httpResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token không hợp lệ hoặc đã hết hạn.");

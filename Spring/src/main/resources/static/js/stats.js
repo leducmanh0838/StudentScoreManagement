@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     const ctx = document.getElementById('pieChart').getContext('2d');
 
-    // Lấy dữ liệu đã được truyền từ server (biến global)
     const labels = window.labelsData || [];
     const data = window.dataData || [];
 

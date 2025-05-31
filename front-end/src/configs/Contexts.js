@@ -4,11 +4,11 @@ export const MyUserContext = createContext();
 export const MyDispatchContext = createContext();
 // export const MyCartContext = createContext();
 
-// Context quản lý danh sách bạn bè (friend list)
+// quản lý bạn bè
 export const FriendsListContext = createContext();
 
-// Context quản lý chat box, tin nhắn đang mở
+// quản lý chat
 export const ChatContext = createContext();
 
-// Context quản lý UI messenger (ví dụ: hiển thị/ẩn danh sách bạn bè)
+// quản lý UI
 export const MessengerUIContext = createContext();

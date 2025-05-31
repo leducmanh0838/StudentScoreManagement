@@ -5,7 +5,6 @@ C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\configs\LoggerConfig.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\configs\MailConfig.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\configs\MessageConfig.java
-C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\configs\OAuth2ClientConfig.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\configs\SecurityWebApplicationInitializer.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\configs\SpringSecurityConfigs.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\configs\ThymeleafConfig.java
@@ -103,9 +102,6 @@ C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\services\PreStudentRegistrationService.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\services\StatsService.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\services\UserService.java
-C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\tests\CourseSessionRepositoryImplTest.java
-C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\tests\Main.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\utils\HtmlSanitizerUtil.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\utils\JwtUtils.java
-C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\utils\MessageUtil.java
 C:\LeDucManh\Project\WebSystemDevelopment\FinalExam\Spring\src\main\java\com\ldm\utils\MyUserUtil.java

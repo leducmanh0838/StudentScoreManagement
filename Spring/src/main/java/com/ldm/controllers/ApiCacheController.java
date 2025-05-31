@@ -41,7 +41,6 @@ public class ApiCacheController {
 
         Object nativeCache = springCache.getNativeCache();
 
-        // Nếu là Caffeine
         if (nativeCache instanceof com.github.benmanes.caffeine.cache.Cache<?, ?> caffeineCache) {
             Map<Object, Object> mapView = (Map<Object, Object>) caffeineCache.asMap();
             List<Map<String, Object>> entries = new ArrayList<>();

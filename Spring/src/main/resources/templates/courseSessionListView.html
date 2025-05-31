@@ -56,7 +56,6 @@
                 </form>
 
                 <div class="mt-3 d-flex justify-content-between">
-                    <!-- Nút Trước (bên trái) -->
                     <div>
                         <form method="get" action="#"
                               th:classappend="${currentPage != null and currentPage != 1} ? '' : 'invisible'">
@@ -66,7 +65,6 @@
                         </form>
                     </div>
 
-                    <!-- Nút Sau (bên phải) -->
                     <div>
                         <form method="get" action="#"
                               th:classappend="${isLoadMore} ? '' : 'invisible'">

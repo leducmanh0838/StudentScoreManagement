@@ -61,40 +61,8 @@ public class SpringSecurityConfigs {
                 .failureUrl("/login/?error=true").permitAll())
                 .logout(logout -> logout.logoutSuccessUrl("/login").permitAll());
 
-//        http
-//            .authorizeHttpRequests(authorize -> authorize
-//                .requestMatchers("/", "/login**", "/css/**", "/js/**").permitAll()
-//                .anyRequest().authenticated()
-//            )
-//            .formLogin(form -> form
-//                .loginPage("/login")
-//                .permitAll()
-//            )
-//            .oauth2Login(oauth2 -> oauth2
-//                .loginPage("/login")  // dùng cùng trang login cho form + Google
-//                .defaultSuccessUrl("/", true)  // sau khi login thành công, redirect đến profile
-//            )
-//            .logout(logout -> logout
-//                .logoutSuccessUrl("/")
-//                .permitAll()
-//            );
-
 
         return http.build();
-//        http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
-//                .csrf(c -> c.disable()).authorizeHttpRequests(requests
-//                -> requests.requestMatchers("/", "/home").authenticated()
-//                        .requestMatchers("/api/**").permitAll()
-//                        .requestMatchers(HttpMethod.GET, "/products").hasRole("ADMIN")
-//                        .requestMatchers(HttpMethod.GET,
-//                                "/products/**").hasAnyRole("USER", "ADMIN")
-//                        .anyRequest().authenticated())
-//                .formLogin(form -> form.loginPage("/login")
-//                .loginProcessingUrl("/login")
-//                .defaultSuccessUrl("/", true)
-//                .failureUrl("/login?error=true").permitAll())
-//                .logout(logout -> logout.logoutSuccessUrl("/login").permitAll());
-//        return http.build();
     }
 
     @Bean

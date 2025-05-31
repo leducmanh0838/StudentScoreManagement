@@ -108,11 +108,11 @@ public class CommentRepositoryImpl implements CommentRepository {
             );
 
             CommentInfoDTO commentDTO = new CommentInfoDTO(
-                    (Integer) row[0], // comment id
-                    (Integer) row[1], // forum post id
+                    (Integer) row[0],
+                    (Integer) row[1],
                     userDTO,
-                    (String) row[6], // content
-                    (Date) row[7] // createdDate
+                    (String) row[6],
+                    (Date) row[7]
             );
 
             dtos.add(commentDTO);

@@ -74,7 +74,7 @@ public class CourseRepositoryImpl implements CourseRepository{
             query.setMaxResults(PAGE_SIZE);
             query.setFirstResult(start);
         }else{
-            int page = 1; // Mặc định trang 1
+            int page = 1;
             int start = (page - 1) * PAGE_SIZE;
             query.setMaxResults(PAGE_SIZE);
             query.setFirstResult(start);

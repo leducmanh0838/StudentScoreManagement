@@ -55,11 +55,11 @@ const Signup = () => {
         if (name === "avatar") {
             const file = files[0] || null;
             setFormData((prev) => ({ ...prev, avatar: file }));
-            setAvatarPreview(file ? URL.createObjectURL(file) : null);  // tạo preview
+            setAvatarPreview(file ? URL.createObjectURL(file) : null);  
             setErrors((prev) => ({ ...prev, avatar: null }));
         } else {
             setFormData((prev) => ({ ...prev, [name]: value }));
-            setErrors((prev) => ({ ...prev, [name]: null }));           // xoá lỗi field tương ứng
+            setErrors((prev) => ({ ...prev, [name]: null }));           
         }
     };
 
@@ -76,7 +76,6 @@ const Signup = () => {
         }
 
         try {
-            // Tạo đối tượng FormData để gửi file và dữ liệu text
             const data = new FormData();
             data.append("firstName", formData.firstName);
             data.append("lastName", formData.lastName);
@@ -86,7 +85,6 @@ const Signup = () => {
                 data.append("avatar", formData.avatar);
             }
 
-            // Gửi POST request
             let response = await Apis.post(
                 endpoints['signup'],
                 data,
@@ -105,7 +103,6 @@ const Signup = () => {
         } catch (error) {
             setSubmitSuccess(false);
 
-            // Nếu là lỗi từ phía server có message, ví dụ email đã tồn tại
             if (error.response && error.response.data && error.response.data.message) {
                 alert(error.response.data.message);  // hoặc bạn có thể setState để hiển thị trong UI
             } else {
@@ -326,7 +323,6 @@ const Signup = () => {
                         </Button>
                     }
 
-                    {/* Nút đăng ký bằng Google */}
                     {/* <Button
                         type="button"
                         variant="outline-danger"

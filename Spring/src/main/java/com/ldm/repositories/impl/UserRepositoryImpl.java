@@ -59,7 +59,6 @@ public class UserRepositoryImpl implements UserRepository {
 
         if (params != null) {
 
-            // Lọc theo tên (first_name hoặc last_name)
             String name = params.get("name");
             if (name != null && !name.isEmpty()) {
                 String namePattern = String.format("%%%s%%", name);
@@ -69,25 +68,21 @@ public class UserRepositoryImpl implements UserRepository {
                 ));
             }
 
-            // Lọc theo mã số người dùng (user_code)
             String userCode = params.get("userCode");
             if (userCode != null && !userCode.isEmpty()) {
                 predicates.add(b.equal(root.get("userCode"), userCode));
             }
 
-            // Lọc theo role
             String role = params.get("role");
             if (role != null && !role.isEmpty()) {
                 predicates.add(b.equal(root.get("role"), role));
             }
 
         }
-        // Thêm các điều kiện lọc vào câu truy vấn
         q.where(predicates.toArray(Predicate[]::new));
 
         Query query = s.createQuery(q);
 
-        // Phân trang nếu có tham số "page"
         if (params != null && params.containsKey("page")) {
             int page = Integer.parseInt(params.get("page"));
             int start = (page - 1) * PAGE_SIZE;
@@ -95,13 +90,11 @@ public class UserRepositoryImpl implements UserRepository {
             query.setFirstResult(start);
         }
 //        if (params != null && params.containsKey("page")) {
-//            // Nếu có tham số "page", lấy giá trị của nó
 //            int page = Integer.parseInt(params.get("page"));
 //            int start = (page - 1) * PAGE_SIZE;
 //            query.setMaxResults(PAGE_SIZE);
 //            query.setFirstResult(start);
 //        } else {
-//            // Nếu không có tham số "page", mặc định là trang 1
 //            int page = 1; // Mặc định trang 1
 //            int start = (page - 1) * PAGE_SIZE;
 //            query.setMaxResults(PAGE_SIZE);
@@ -125,7 +118,6 @@ public class UserRepositoryImpl implements UserRepository {
         } else {
             User existing = s.get(User.class, u.getId());
             if (existing != null) {
-                // 2. Chỉ cập nhật nếu != null
                 if (u.getFirstName() != null) {
                     existing.setFirstName(u.getFirstName());
                 }
@@ -135,8 +127,7 @@ public class UserRepositoryImpl implements UserRepository {
                 if (u.getAvatar() != null) {
                     existing.setAvatar(u.getAvatar());
                 }
-                // ... thêm các field khác tương tự
-                s.merge(existing); // cập nhật lại bản đã sửa
+                s.merge(existing);
                 return existing;
             }
         }
@@ -148,14 +139,13 @@ public class UserRepositoryImpl implements UserRepository {
         Session s = this.factory.getObject().getCurrentSession();
         Query<User> q = s.createQuery("FROM User WHERE email = :email", User.class);
         q.setParameter("email", email);
-        return q.uniqueResult(); // Trả về 1 user nếu tồn tại, null nếu không
+        return q.uniqueResult();
     }
 
     @Override
     public boolean authenticate(String email, String password) {
         User u = this.getUserByEmail(email);
 
-        // Kiểm tra null
         if (u == null || password == null || u.getPassword() == null) {
             return false;
         }

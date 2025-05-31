@@ -14,7 +14,6 @@
             <div class="card-body">
                 <h2 class="card-title mb-4 text-center text-primary">Danh sách môn học</h2>
 
-                <!-- Form thêm mới môn học -->
                 <form th:action="@{/addOrUpdateCourse}" method="post" class="row g-3 mb-4">
                     <div class="col-md-4">
                         <input type="text" name="name" class="form-control" placeholder="Tên môn học mới" required>
@@ -24,7 +23,6 @@
                     </div>
                 </form>
 
-                <!-- Form lọc -->
                 <form method="get" action="#">
                     <div class="row g-3 mb-4">
                         <div class="col-md-3">
@@ -57,7 +55,6 @@
                 </form>
 
                 <div class="mt-3 d-flex justify-content-between">
-                    <!-- Nút Trước (bên trái) -->
                     <div>
                         <form method="get" action="#"
                               th:classappend="${currentPage != null and currentPage != 1} ? '' : 'invisible'">
@@ -67,7 +64,6 @@
                         </form>
                     </div>
 
-                    <!-- Nút Sau (bên phải) -->
                     <div>
                         <form method="get" action="#"
                               th:classappend="${isLoadMore} ? '' : 'invisible'">

@@ -130,10 +130,10 @@ const Login = () => {
 
       navigate('/');
 
-      // console.log("Token từ backend:", res.data.token);
+      // console.log("Token  backend:", res.data.token);
     } catch (error) {
       if (error.response && error.response.data && error.response.data.message) {
-        alert(error.response.data.message);  // hoặc bạn có thể setState để hiển thị trong UI
+        alert(error.response.data.message);
       }
       if (error.response) {
         console.error("Lỗi backend:", error.response.data);

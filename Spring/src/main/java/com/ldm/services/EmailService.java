@@ -123,12 +123,12 @@ public class EmailService {
     private void sendHtmlEmail(String to, String subject, String body) {
         try {
             MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, true);  // true để gửi email HTML
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);  // email HTML
 
             helper.setFrom("leducmanhmanh2004@gmail.com");
             helper.setTo(to);
             helper.setSubject(subject);
-            helper.setText(body, true);  // true cho biết đây là email HTML
+            helper.setText(body, true);  // true email HTML
 
             mailSender.send(message);
         } catch (Exception e) {

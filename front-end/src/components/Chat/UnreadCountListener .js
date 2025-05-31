@@ -11,9 +11,9 @@ const UnreadCountListener = () => {
   useEffect(() => {
     if (!user) return;
 
-    // Lắng nghe tất cả message chưa đọc thuộc về user hiện tại
+    // Lắng nghe tất cả message chưa đọc thuộc về user
     const unsubscribe = onSnapshot(
-      collectionGroup(db, 'messages'), // Tất cả messages trong tất cả chatRooms
+      collectionGroup(db, 'messages'), 
       (snapshot) => {
         let count = 0;
 
@@ -22,23 +22,22 @@ const UnreadCountListener = () => {
         snapshot.docs.forEach((doc) => {
           const data = doc.data();
 
-          // Điều kiện: không phải do mình gửi + mình chưa đọc
           if (data.receiverId === user.userId && data.senderId !== user.userId && !data.readBy?.includes(user.userId)) {
             count += 1;
             unreadUserSet.add(data.senderId);
           }
         });
 
-        setUnreadCount(count); // Cập nhật số tin nhắn chưa đọc
+        setUnreadCount(count); 
         // const unreadIds = Array.from(unreadUserSet);
         setUnreadUserIds(Array.from(unreadUserSet));
       }
     );
 
-    return () => unsubscribe(); // Hủy listener khi unmount
+    return () => unsubscribe();
   }, [user, setUnreadCount]);
 
-  return null; // Không hiển thị gì cả
+  return null; 
 };
 
 export default UnreadCountListener;

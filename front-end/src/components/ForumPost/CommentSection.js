@@ -19,7 +19,6 @@ const CommentSection = ({ forumPostId }) => {
     return `https://ui-avatars.com/api/?name=${encodedName}&background=random`;
   };
 
-  // Dùng custom hook phân trang
   const {
     data: comments,
     setData: setComments,
@@ -49,7 +48,7 @@ const CommentSection = ({ forumPostId }) => {
           lastName: currentUser.lastName,
           avatar: currentUser.avatar || null,
         },
-        createdDate: Date.now(), // thời gian hiện tại (timestamp)
+        createdDate: Date.now(),
       };
 
       setComments(prev => [newPost, ...prev]);
@@ -65,7 +64,7 @@ const CommentSection = ({ forumPostId }) => {
   const toggleComments = () => {
     setShowComments(!showComments);
     // if (!showComments) {
-    //   refresh(); // load lại comments nếu lần đầu bật
+    //   refresh();
     // }
   };
 

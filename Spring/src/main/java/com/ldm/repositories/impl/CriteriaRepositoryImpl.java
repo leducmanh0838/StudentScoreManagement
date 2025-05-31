@@ -10,8 +10,6 @@ import com.ldm.repositories.CriteriaRepository;
 import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.stereotype.Repository;
@@ -25,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class CriteriaRepositoryImpl implements CriteriaRepository {
 
-    private static final Logger logger = LoggerFactory.getLogger(CriteriaRepositoryImpl.class);
     public static final int BATCH_SIZE = 20;
     @Autowired
     private LocalSessionFactoryBean factory;
@@ -63,14 +60,12 @@ public class CriteriaRepositoryImpl implements CriteriaRepository {
             Criteria c = criteriaList.get(i);
             session.persist(c);
 
-            // Flush + clear mỗi batchSize phần tử để tránh memory leak
             if (i % BATCH_SIZE == 0 && i > 0) {
                 session.flush(); // ghi xuống DB
                 session.clear(); // dọn dẹp session cache
             }
         }
 
-        // Flush lần cuối để đảm bảo mọi thứ được ghi vào DB
         session.flush();
         session.clear();
         return criteriaList;

@@ -26,7 +26,7 @@ public class CacheConfig {
         CaffeineCacheManager cacheManager = new CaffeineCacheManager("gradesByCourseSession");
         cacheManager.setCaffeine(
                 Caffeine.newBuilder()
-                        .expireAfterWrite(30, TimeUnit.MINUTES) // TTL 30 phút
+                        .expireAfterWrite(30, TimeUnit.MINUTES) // 30 phút
                         .maximumSize(1000)
         );
         return cacheManager;

@@ -65,7 +65,6 @@ public class ForumPostRepositoryImpl implements ForumPostRepository {
         );
         query.setParameter("courseSessionId", courseSessionId);
 
-        // Phân trang: đảm bảo page >= 1
         int safePage = page < 1 ? 1 : page;
         int offset = (safePage - 1) * PAGE_SIZE;
         query.setFirstResult(offset);
@@ -105,6 +104,6 @@ public class ForumPostRepositoryImpl implements ForumPostRepository {
                 Integer.class
         );
         query.setParameter("forumPostId", forumPostId);
-        return query.uniqueResult(); // hoặc query.getSingleResult() nếu bạn chắc chắn có 1 kết quả
+        return query.uniqueResult();
     }
 }

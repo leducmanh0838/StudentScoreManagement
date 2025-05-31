@@ -12,7 +12,7 @@ const VerifyOTPStyles = {
     borderRadius: 16,
     padding: 40,
     boxShadow: "0 12px 30px rgba(0, 0, 0, 0.2)",
-    width: "50%", // Chiếm 50% chiều ngang
+    width: "50%",
     maxWidth: 700,
     textAlign: "center",
     marginTop: 60,
@@ -21,12 +21,12 @@ const VerifyOTPStyles = {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    fontSize: 28,         // Tăng cỡ chữ
+    fontSize: 28,
     fontWeight: "bold",
     marginBottom: 15,
   },
   subtitle: {
-    fontSize: 18,         // Tăng cỡ chữ
+    fontSize: 18,
     marginBottom: 25,
   },
   form: {
@@ -36,12 +36,12 @@ const VerifyOTPStyles = {
   },
   otpGroup: {
     display: "flex",
-    gap: 15,              // Khoảng cách lớn hơn giữa các ô
+    gap: 15,
     justifyContent: "center",
     marginBottom: 30,
   },
   otpInput: {
-    width: 60,            // Ô to hơn
+    width: 60,
     height: 70,
     fontSize: 28,
     textAlign: "center",

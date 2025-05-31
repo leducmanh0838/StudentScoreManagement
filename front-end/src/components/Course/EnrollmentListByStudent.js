@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import cookie from 'react-cookies';
 import { authApis, endpoints } from '../../configs/Apis';
 import { FaComments, FaEye } from 'react-icons/fa';
-import { Modal, Button, Spinner, Alert } from 'react-bootstrap'; // cần cài react-bootstrap
-import { Link } from 'react-bootstrap-icons';
+import { Modal, Button, Spinner, Alert } from 'react-bootstrap';
+
 import { useNavigate } from 'react-router-dom';
 
 const EnrollmentListByStudent = () => {
@@ -41,7 +40,6 @@ const EnrollmentListByStudent = () => {
     nav(`/course-sessions/${courseSessionId}/forum-posts`);
   }
 
-  // Mở modal và gọi API lấy điểm
   const handleViewDetail = async (enrollmentId) => {
     setShowModal(true);
     setGradeLoading(true);
@@ -52,19 +50,16 @@ const EnrollmentListByStudent = () => {
       const response = await authApis().get(endpoints['get-grades-by-enrollment'](enrollmentId));
       const gradesData = response.data;
 
-      // Thay null thành 0
       const gradesWithNoNull = gradesData.map(g => ({
         ...g,
         score: g.score === null ? 0 : g.score
       }));
 
-      // Tính tổng điểm
       const totalWeight = gradesWithNoNull.reduce((sum, g) => sum + g.weight, 0);
       const totalScore = totalWeight > 0
         ? gradesWithNoNull.reduce((sum, g) => sum + g.score * g.weight, 0) / totalWeight
         : 0;
 
-      // Thêm 1 phần tử điểm cuối cùng (total)
       const gradesWithTotal = [...gradesWithNoNull, {
         criteria: 'Tổng điểm',
         score: totalScore,
@@ -74,7 +69,6 @@ const EnrollmentListByStudent = () => {
       setGrades(gradesWithTotal);
     } catch (error) {
       // if (error.response && error.response.status >= 400 && error.response.status < 500) {
-      //   // Lỗi 4xx có thể là điểm chưa công bố
       //   setGradeError('Điểm chưa được công bố.');
       // } else {
       //   setGradeError('Lỗi không xác định khi lấy điểm.');
@@ -146,7 +140,6 @@ const EnrollmentListByStudent = () => {
         </div>
       </div>
 
-      {/* Modal hiển thị điểm */}
       <Modal show={showModal} onHide={() => setShowModal(false)} size="lg" centered>
         <Modal.Header closeButton>
           <Modal.Title>Chi tiết điểm</Modal.Title>

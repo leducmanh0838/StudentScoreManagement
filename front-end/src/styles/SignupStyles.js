@@ -41,8 +41,8 @@ const SignupStyles = {
         borderRadius: "50%",
         objectFit: "cover",
         border: "2px solid #ccc",
-        maxWidth: "100%",   // hạn chế kích thước không vượt quá container
-        display: "block",   // tránh ảnh có khoảng cách thừa bên dưới
+        maxWidth: "100%",
+        display: "block",
     }
 };
 

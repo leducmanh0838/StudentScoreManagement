@@ -28,7 +28,6 @@ com\ldm\dto\CourseSessionListForTeacherDTO.class
 com\ldm\repositories\UserRepository.class
 com\ldm\configs\CacheConfig.class
 com\ldm\services\CourseSessionService.class
-com\ldm\tests\Main.class
 com\ldm\repositories\impl\StatsRepositoryImpl.class
 com\ldm\repositories\impl\CommentRepositoryImpl.class
 com\ldm\controllers\UserController.class
@@ -49,7 +48,6 @@ com\ldm\dto\EnrollmentInfoForStudentDTO.class
 com\ldm\finalexam\JakartaRestConfiguration.class
 com\ldm\dto\ForumPostDTO.class
 com\ldm\dto\StudentGradeMailDTO.class
-com\ldm\configs\OAuth2ClientConfig.class
 com\ldm\controllers\CourseSessionController.class
 com\ldm\formatters\CourseFormatter.class
 com\ldm\repositories\impl\UserRepositoryImpl.class

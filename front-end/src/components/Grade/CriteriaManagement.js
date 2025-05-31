@@ -71,7 +71,7 @@ const CriteriaManagement = () => {
 
     const handleDelete = (index) => {
         if (locked) return;
-        // Không cho xóa midterm và final
+        // Không xóa midterm và final
         const critName = criterias[index].criteriaName.toLowerCase();
         if (critName === "midterm" || critName === "final") return;
 
@@ -111,7 +111,7 @@ const CriteriaManagement = () => {
             "Bạn có chắc chắn muốn xác nhận các tiêu chí này? Sau khi xác nhận, sẽ không thể chỉnh sửa nữa."
         );
         if (!isConfirmed) {
-            return; // Hủy xác nhận nếu người dùng nhấn Cancel
+            return;
         }
 
         try {

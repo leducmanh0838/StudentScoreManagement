@@ -9,11 +9,9 @@ const CourseSessionStudents = () => {
   const { courseSessionId } = useParams();
   const [searchParams, setSearchParams] = useState({ courseSessionId });
 
-  // Bộ lọc
   const [filters, setFilters] = useState({ name: '', userCode: '' });
 
 
-  // Custom hook gọi API
   const {
     data: students,
     loading,
@@ -26,7 +24,6 @@ const CourseSessionStudents = () => {
     true
   );
 
-  // Xử lý input
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFilters(prev => ({ ...prev, [name]: value }));
@@ -49,7 +46,6 @@ const CourseSessionStudents = () => {
         </Card.Header>
         <Card.Body>
 
-          {/* Bộ lọc tìm kiếm */}
           <Form onSubmit={handleSearch} className="mb-4">
             <Row className="g-2">
               <Col md={5}>

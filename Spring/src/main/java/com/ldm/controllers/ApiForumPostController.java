@@ -4,13 +4,11 @@
  */
 package com.ldm.controllers;
 
-import com.ldm.configs.LoggerConfig;
 import com.ldm.dto.CommentDTO;
 import com.ldm.dto.CommentInfoDTO;
-import com.ldm.dto.ForumPostDTO;
-import com.ldm.dto.ForumPostInfoDTO;
+
 import com.ldm.pojo.Comment;
-import com.ldm.pojo.CourseSession;
+
 import com.ldm.pojo.ForumPost;
 import com.ldm.pojo.User;
 import com.ldm.services.CommentService;
@@ -45,12 +43,6 @@ public class ApiForumPostController {
 
     @Autowired
     private CourseSessionService courseSessionService;
-    @Autowired
-    private CourseService courseService;
-    @Autowired
-    private GradeService gradeService;
-    @Autowired
-    private UserService userService;
     @Autowired
     private ForumPostService forumPostService;
     @Autowired

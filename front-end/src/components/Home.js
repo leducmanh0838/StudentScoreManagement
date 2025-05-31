@@ -14,7 +14,6 @@ const Home = () => {
         color: 'white',
       }}
     >
-      {/* Lớp phủ mờ */}
       <div
         style={{
           position: 'absolute',

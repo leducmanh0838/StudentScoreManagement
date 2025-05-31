@@ -59,7 +59,6 @@ public class StatsController {
         }
 
 //        List<String> labels = Arrays.asList("TH001-IT1000", "TH002-IT1000", "TH003-IT1000", "TH004-IT1000");
-//        // Dữ liệu số lượng sinh viên - List<Integer>
 //        List<Integer> data = Arrays.asList(4, 8, 8, 8);
 //
 //        model.addAttribute("labels", labels);
@@ -68,13 +67,12 @@ public class StatsController {
             List<CourseSessionStatsDTO> stats = statsService.countEnrollmentsByCourse(courseId);
             model.addAttribute("stats", stats);
 
-            // Tạo danh sách labels (mã buổi học) và data (số sinh viên)
             List<String> labels = new ArrayList<>();
             List<Long> data = new ArrayList<>();
 
             for (CourseSessionStatsDTO s : stats) {
-                labels.add(s.getCourseSessionCode());     // Mã buổi học
-                data.add(s.getEnrollmentCount());         // Số sinh viên đăng ký
+                labels.add(s.getCourseSessionCode());    
+                data.add(s.getEnrollmentCount());       
             }
 
             model.addAttribute("labels", labels);
@@ -92,7 +90,6 @@ public class StatsController {
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Báo Cáo Đăng Ký");
 
-        // Tạo font in đậm cho tiêu đề
         CellStyle titleStyle = workbook.createCellStyle();
         Font titleFont = workbook.createFont();
         titleFont.setBold(true);
@@ -100,13 +97,12 @@ public class StatsController {
         titleStyle.setFont(titleFont);
         titleStyle.setAlignment(HorizontalAlignment.CENTER);
 
-        // Tạo dòng tiêu đề chính
         Row titleRow = sheet.createRow(0);
         Cell titleCell = titleRow.createCell(0);
         titleCell.setCellValue(String.format("Báo cáo đăng ký môn %s", courseName));
         titleCell.setCellStyle(titleStyle);
 
-        // Merge các ô để căn giữa tiêu đề
+        // Merge
         sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 2)); // từ cột 0 đến 2
 
         String[] columns = {"Mã buổi học", "Giảng viên phụ trách", "Số lượng đăng ký"};

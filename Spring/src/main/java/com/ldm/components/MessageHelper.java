@@ -15,7 +15,7 @@ public class MessageHelper {
     private Map<String, MessageSource> customMessageSources;
 
 //    private static final List<String> NEEDED_KEYS = List.of(
-//        "USER_LIST", "USER_NAME" // có thể truyền thêm từ controller nếu muốn tùy biến
+//        "USER_LIST", "USER_NAME"
 //    );
 //
 //    public Map<String, String> getMessages(String lang) {

@@ -3,8 +3,6 @@ public class ScoreUpdateDTO {
     private int gradeId;
     private float score;
 
-    // Getters và Setters
-
     /**
      * @return the gradeId
      */

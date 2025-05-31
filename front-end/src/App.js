@@ -33,15 +33,12 @@ const initUser = () => {
 const App = () => {
   const [user, dispatch] = useReducer(MyUserReducer, null, initUser);
 
-  // State quản lý danh sách bạn bè
   const [friendsList, setFriendsList] = useState([]);
 
-  // State quản lý tin nhắn và bạn chat hiện tại
-  const [currentChatUser, setCurrentChatUser] = useState(null); //userId đang chat
-  // const [chatMessages, setChatMessages] = useState([]); // messages với bạn chat hiện tại
-  const [unreadCount, setUnreadCount] = useState(0); // messages với bạn chat hiện tại
+  const [currentChatUser, setCurrentChatUser] = useState(null);
+  // const [chatMessages, setChatMessages] = useState([]);
+  const [unreadCount, setUnreadCount] = useState(0);
 
-  // State quản lý UI Messenger: có hiển thị danh sách bạn bè hay không
   const [showFriendList, setShowFriendList] = useState(false);
   const [unreadUserIds, setUnreadUserIds ] = useState([]);
 
@@ -65,7 +62,7 @@ const App = () => {
                   <Route path="/course-sessions/:courseSessionId/forum-posts" element={<ForumPostManagement />} />
                   <Route path="/user/:userId" element={<UserProfile />} />
 
-                  {/* Các route dành riêng cho TEACHER */}
+                  {/* Các route dành riêng cho teacher */}
                   <Route element={<ProtectedRoute allowedRoles={[UserRoles.ROLE_TEACHER]} />}>
                     <Route path="/teacher">
                       <Route path="course-sessions" element={<TeacherCourseSessions />} />

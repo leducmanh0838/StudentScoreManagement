@@ -12,13 +12,11 @@
                 <h2 class="card-title mb-4 text-center text-primary">Quản lý buổi học</h2>
                 <form method="post" th:action="@{/addOrUpdateCourseSession}" th:object="${courseSession}">
 
-                    <!-- Mã buổi học -->
                     <div class="mb-3 mt-3">
                         <label for="maxSlots" class="form-label">Mã buổi học:</label>
                         <input type="text" class="form-control" id="code" th:field="*{code}" th:readonly="${courseSession.id != null}"/>
                     </div>
 
-                    <!-- Môn học -->
                     <div class="mb-3 mt-3">
                         <label for="courseName" class="form-label">Môn học:</label>
                         <input type="text" class="form-control" id="courseName" list="coursesList" 
@@ -29,12 +27,10 @@
                                     th:data-id="${course[0]}" 
                                     th:value="${course[1]}"></option>
                         </datalist>
-                        <!-- Hidden field để gửi ID -->
                         <input type="hidden" th:field="*{courseId}" id="courseId">
                     </div>
 
 
-                    <!-<!-- Giảng viên -->
                     <div class="mb-3 mt-3">
                         <label for="teacherName" class="form-label">Giảng viên:</label>
                         <input type="text" class="form-control" id="teacherName" 
@@ -49,16 +45,13 @@
                         <input type="hidden" th:field="*{teacherId}" id="teacherId">
                     </div>
 
-                    <!-- Trạng thái mở -->
                     <div class="form-check mb-3 mt-3">
                         <input type="checkbox" class="form-check-input" id="isOpen" th:field="*{isOpen}" />
                         <label class="form-check-label" for="isOpen">Lớp đang mở</label>
                     </div>
 
-                    <!-- Hidden ID nếu đang cập nhật -->
                     <input type="hidden" th:field="*{id}" />
 
-                    <!-- Nút submit -->
                     <div class="mb-3 mt-3">
                         <button class="btn btn-success mt-1" type="submit">
                             <span th:if="${courseSession.id == null}">Thêm buổi học</span>
@@ -73,28 +66,6 @@
     <!--<div th:replace="base :: footer"></div>-->
 
     <script th:src="@{/js/addOrUpdateCourseSession.js}"></script>
-<!--    <script>
-        document.getElementById('courseName').addEventListener('input', function () {
-            const input = this.value;
-            const list = document.getElementById('coursesList').options;
-            for (let i = 0; i < list.length; i++) {
-                if (list[i].value === input) {
-                    document.getElementById('courseId').value = list[i].getAttribute('data-id');
-                    break;
-                }
-            }
-        });
 
-        document.getElementById('teacherName').addEventListener('input', function () {
-            const input = this.value;
-            const list = document.getElementById('teachersList').options;
-            for (let i = 0; i < list.length; i++) {
-                if (list[i].value === input) {
-                    document.getElementById('teacherId').value = list[i].getAttribute('data-id');
-                    break;
-                }
-            }
-        });
-    </script>-->
 </body>
 </html>

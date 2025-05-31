@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -47,6 +48,7 @@ public class GradeServiceImpl implements GradeService {
     private CacheManager cacheManager;
 
     @Override
+    @CacheEvict(value = "gradesByCourseSession", key = "#req.courseSessionId")
     public List<Grade> addGrades(GradeRequestDTO req) {
         // 1. courseSessionId phải là số nguyên dương
         if (req.getCourseSessionId() <= 0) {
@@ -91,33 +93,31 @@ public class GradeServiceImpl implements GradeService {
 
         List<Grade> results = gradeRepository.addGrades(req);
 
-//         Xử lý cache sau khi thêm
-        Cache cache = cacheManager.getCache("gradesByCourseSession");
-        if (cache != null) {
-            Integer courseSessionId = req.getCourseSessionId();
-
-            // Lấy danh sách cũ từ cache
-            List<GradeInfoDTO> cachedList = cache.get(courseSessionId, List.class);
-
-            // Convert danh sách Grade sang GradeInfoDTO
-            List<GradeInfoDTO> newDtos = results.stream()
-                    .map(GradeInfoDTO::new)
-                    .collect(Collectors.toList());
-
-            if (cachedList != null) {
-                // Thêm các phần tử mới vào danh sách cũ
-                cachedList.addAll(newDtos);
-                cache.put(courseSessionId, cachedList);
-            } else {
-                // Nếu chưa có cache, tạo mới
-                cache.put(courseSessionId, newDtos);
-            }
-        }
+//        Cache cache = cacheManager.getCache("gradesByCourseSession");
+//        if (cache != null) {
+//            Integer courseSessionId = req.getCourseSessionId();
+//
+//            List<GradeInfoDTO> cachedList = cache.get(courseSessionId, List.class);
+//
+//            List<GradeInfoDTO> newDtos = results.stream()
+//                    .map(GradeInfoDTO::new)
+//                    .collect(Collectors.toList());
+//
+//            if (cachedList != null) {
+//                // Thêm các phần tử mới vào danh sách cũ
+//                cachedList.addAll(newDtos);
+//                cache.put(courseSessionId, cachedList);
+//            } else {
+//                // Nếu chưa có cache, tạo mới
+//                cache.put(courseSessionId, newDtos);
+//            }
+//        }
 
         return results;
     }
 
     @Override
+    @CacheEvict(value = "gradesByCourseSession", key = "#req.courseSessionId")
     public boolean updateGrades(UpdateGradeRequestDTO req) {
         //req.getScores()
         // 1. courseSessionId phải là số nguyên dương
@@ -147,35 +147,32 @@ public class GradeServiceImpl implements GradeService {
             }
         }
 
-        // Nếu hợp lệ thì gọi repository xử lý cập nhật
-        boolean success = gradeRepository.updateGrades(req);
+        return gradeRepository.updateGrades(req);
 
-        if (success) {
-            Cache cache = cacheManager.getCache("gradesByCourseSession");
-            if (cache != null) {
-                Integer courseSessionId = req.getCourseSessionId();
-                // Lấy danh sách cũ trong cache
-                List<GradeInfoDTO> cachedList = cache.get(courseSessionId, List.class);
-                if (cachedList != null) {
-                    // Tạo Map gradeId -> score mới để dễ tìm kiếm
-                    Map<Integer, Float> updatedScores = scores.stream()
-                            .collect(Collectors.toMap(ScoreUpdateDTO::getGradeId, ScoreUpdateDTO::getScore));
-
-                    // Cập nhật điểm trong danh sách cache
-                    cachedList.forEach(g -> {
-                        Float newScore = updatedScores.get(g.getGradeId());
-                        if (newScore != null) {
-                            g.setScore(newScore); // Cập nhật điểm mới
-                        }
-                    });
-
-                    // Cập nhật lại cache
-                    cache.put(courseSessionId, cachedList);
-                }
-            }
-        }
-
-        return success;
+//        if (success) {
+//            Cache cache = cacheManager.getCache("gradesByCourseSession");
+//            if (cache != null) {
+//                Integer courseSessionId = req.getCourseSessionId();
+//                // Lấy danh sách cũ trong cache
+//                List<GradeInfoDTO> cachedList = cache.get(courseSessionId, List.class);
+//                if (cachedList != null) {
+//                    // Tạo Map gradeId -> score mới để dễ tìm kiếm
+//                    Map<Integer, Float> updatedScores = scores.stream()
+//                            .collect(Collectors.toMap(ScoreUpdateDTO::getGradeId, ScoreUpdateDTO::getScore));
+//
+//                    // Cập nhật điểm trong danh sách cache
+//                    cachedList.forEach(g -> {
+//                        Float newScore = updatedScores.get(g.getGradeId());
+//                        if (newScore != null) {
+//                            g.setScore(newScore); // Cập nhật điểm mới
+//                        }
+//                    });
+//
+//                    // Cập nhật lại cache
+//                    cache.put(courseSessionId, cachedList);
+//                }
+//            }
+//        }
     }
 
     @Override

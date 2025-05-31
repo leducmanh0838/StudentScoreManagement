@@ -58,20 +58,17 @@ public class GradeRepositoryImpl implements GradeRepository {
         List<EnrollmentGradeDTO> enrollments = req.getEnrollments();
 
         if (enrollments == null || enrollments.isEmpty()) {
-            return Collections.emptyList(); // hoặc trả về null tùy ý
+            return Collections.emptyList();
         }
 
-        // Lấy danh sách enrollmentId từ request
         List<Integer> enrollmentIds = enrollments.stream()
                 .map(EnrollmentGradeDTO::getEnrollmentId)
                 .collect(Collectors.toList());
 
-        // Kiểm tra enrollment có nằm trong course session
         if (!this.enrollmentRepository.areAllEnrollmentsInCourseSession(enrollmentIds, courseSessionId)) {
             throw new IllegalArgumentException("Có enrollment không thuộc course session");
         }
 
-        // Lấy danh sách Criteria từ courseSession
         List<Criteria> criteriaList = this.criteriaRepository.getCriteriaByCourseSesion(courseSessionId);
         Set<Integer> validCriteriaIdSet = criteriaList.stream()
                 .map(Criteria::getId)
@@ -114,12 +111,10 @@ public class GradeRepositoryImpl implements GradeRepository {
         int courseSessionId = req.getCourseSessionId();
         List<ScoreUpdateDTO> scores = req.getScores();
 
-        // Lấy danh sách gradeIds từ request
         List<Integer> gradeIds = scores.stream()
                 .map(ScoreUpdateDTO::getGradeId)
                 .collect(Collectors.toList());
 
-        // Kiểm tra tất cả gradeId đều thuộc courseSession
         if (!this.areAllGradesInCourseSession(gradeIds, courseSessionId)) {
             throw new IllegalArgumentException("grade này không thuộc buổi học !!");
         }

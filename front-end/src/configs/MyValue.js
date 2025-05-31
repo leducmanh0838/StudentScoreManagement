@@ -3,7 +3,6 @@ export const UserRoles = {
   ROLE_STUDENT: "student",
   ROLE_TEACHER: "teacher",
   ROLE_ADMIN: "admin",
-  // thêm các role khác nếu cần
 };
 export const WEB_CLIENT_ID = '680589489153-d932o1cnulr5juc3ff04ar2l6eck5ep4.apps.googleusercontent.com'
 

@@ -33,10 +33,8 @@ const AddForumPostDialog = ({ courseSessionId, show, handleClose, onPostSuccess 
                 }
             );
 
-            // Lấy user hiện tại từ cookie
             const currentUser = cookie.load('user');
 
-            // Tạo bài viết mới với thông tin đầy đủ
             const newPost = {
                 ...res.data,
                 user: {
@@ -45,18 +43,17 @@ const AddForumPostDialog = ({ courseSessionId, show, handleClose, onPostSuccess 
                     lastName: currentUser.lastName,
                     avatar: currentUser.avatar || null,
                 },
-                createdDate: Date.now(), // thời gian hiện tại (timestamp)
+                createdDate: Date.now(),
             };
 
             setTitle('');
             setContent('');
 
-            // Gửi bài viết mới đầy đủ về cho component cha
             onPostSuccess(newPost);
             handleClose();
         } catch (error) {
             if (error.response && error.response.data && error.response.data.message)
-                setError(error.response.data.message);  // hoặc bạn có thể setState để hiển thị trong UI
+                setError(error.response.data.message);
             else
                 setError('Đã xảy ra lỗi khi thêm bài viết.');
         } finally {

@@ -8,7 +8,7 @@ import { getDefaultAvatar } from "../../configs/MyValue";
 const UserProfile = () => {
   const { userId } = useParams();
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true); // để hiển thị "Loading..."
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -47,7 +47,6 @@ const UserProfile = () => {
           }}
         ></div>
 
-        {/* Avatar and Name Section */}
         <Card.Body className="text-center position-relative" style={{ marginTop: "-75px" }}>
           <img
             src={avatarUrl}

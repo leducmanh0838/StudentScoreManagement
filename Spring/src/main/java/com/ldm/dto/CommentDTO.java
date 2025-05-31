@@ -5,7 +5,6 @@
 package com.ldm.dto;
 
 import com.ldm.pojo.Comment;
-import java.util.Date;
 
 /**
  *

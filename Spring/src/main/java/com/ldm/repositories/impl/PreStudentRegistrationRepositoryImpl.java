@@ -28,11 +28,9 @@ public class PreStudentRegistrationRepositoryImpl implements PreStudentRegistrat
     public PreStudentRegistration addOrUpdate(PreStudentRegistration p) {
         Session s = this.factory.getObject().getCurrentSession();
 
-        // Tìm xem email đã tồn tại chưa
         PreStudentRegistration existing = findByEmail(p.getEmail());
 
         if (existing != null) {
-            // Cập nhật lại các trường cần thiết
             existing.setOtp(p.getOtp());
             existing.setOtpExpiration(p.getOtpExpiration());
             existing.setPassword(p.getPassword());
@@ -41,11 +39,10 @@ public class PreStudentRegistrationRepositoryImpl implements PreStudentRegistrat
             existing.setLastName(p.getLastName());
             existing.setAvatar(p.getAvatar());
             existing.setVerificationAttempts(p.getVerificationAttempts());
-            // Cập nhật record
+
             s.merge(existing);
             return existing;
         } else {
-            // Email chưa tồn tại, tạo mới
             s.persist(p);
             return p;
         }

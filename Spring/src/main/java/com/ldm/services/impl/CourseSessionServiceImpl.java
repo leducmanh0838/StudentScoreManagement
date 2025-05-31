@@ -5,24 +5,12 @@
 package com.ldm.services.impl;
 
 import com.ldm.dto.CourseSessionListForTeacherDTO;
-import com.ldm.repositories.impl.*;
-import com.ldm.pojo.Course;
 import com.ldm.pojo.CourseSession;
-import com.ldm.pojo.User;
-import com.ldm.repositories.CourseRepository;
 import com.ldm.repositories.CourseSessionRepository;
 import com.ldm.services.CourseSessionService;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Join;
-import jakarta.persistence.criteria.JoinType;
-import jakarta.persistence.criteria.Root;
 import java.util.List;
 import java.util.Map;
-import org.hibernate.Session;
-import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.stereotype.Service;
 
 /**

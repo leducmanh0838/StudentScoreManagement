@@ -73,7 +73,6 @@ const VerifyOTP = () => {
             }
         }
 
-        // Gọi API verify ở đây
         // console.log("OTP:", code);
         // setError("");
         // setSuccess(true);

@@ -18,6 +18,7 @@ public class EnrollmentInfoForStudentDTO {
     /**
      * @return the enrollmentId
      */
+    
     public int getEnrollmentId() {
         return enrollmentId;
     }
@@ -55,6 +56,20 @@ public class EnrollmentInfoForStudentDTO {
      */
     public void setEnrollmentDate(Date enrollmentDate) {
         this.enrollmentDate = enrollmentDate;
+    }
+
+    /**
+     * @return the courseSessionId
+     */
+    public int getCourseSessionId() {
+        return courseSessionId;
+    }
+
+    /**
+     * @param courseSessionId the courseSessionId to set
+     */
+    public void setCourseSessionId(int courseSessionId) {
+        this.courseSessionId = courseSessionId;
     }
 
     

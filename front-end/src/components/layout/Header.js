@@ -11,7 +11,7 @@ const Header = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    dispatch({ type: 'logout' }); // bạn cần định nghĩa hành động này trong reducer
+    dispatch({ type: 'logout' });
     navigate('/login');
   };
 
@@ -24,17 +24,14 @@ const Header = () => {
   return (
     <Navbar bg="dark" variant="dark" expand="lg" className="px-3">
       <Container fluid>
-        {/* Logo */}
         <Navbar.Brand as={NavLink} to="/" className="d-flex align-items-center">
           <FaGraduationCap className="me-2" />
           Hệ thống điểm Sinh Viên
         </Navbar.Brand>
 
-        {/* Toggle cho mobile */}
         <Navbar.Toggle />
         <Navbar.Collapse>
 
-          {/* Menu trái */}
           <Nav className="me-auto">
             <NavLink to="/" end className="nav-link">Trang chủ</NavLink>
             {user && user.role === UserRoles.ROLE_STUDENT && (
@@ -52,7 +49,6 @@ const Header = () => {
 
           </Nav>
 
-          {/* Đăng nhập + Đăng ký bên phải, styled như nút */}
           <Nav className="d-flex gap-2 align-items-center">
             {user && (
               <button

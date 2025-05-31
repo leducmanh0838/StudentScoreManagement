@@ -38,12 +38,11 @@ const FriendsList = () => {
         setUnreadFriends(userList);
     };
 
-    // Tính role ngược lại
     const getOppositeRole = (role) => {
-        if (!role) return UserRoles.ROLE_TEACHER; // default
+        if (!role) return UserRoles.ROLE_TEACHER; 
         if (role === UserRoles.ROLE_STUDENT) return UserRoles.ROLE_TEACHER;
         if (role === UserRoles.ROLE_TEACHER) return UserRoles.ROLE_STUDENT;
-        return UserRoles.ROLE_STUDENT; // fallback
+        return UserRoles.ROLE_STUDENT; 
     };
 
     useEffect(() => {
@@ -55,7 +54,7 @@ const FriendsList = () => {
 
         const roleToFind = getOppositeRole(user.role);
 
-        // tạo timeout trì hoãn 500ms mới gọi API
+        // chờ 500ms mới gọi API
         const handler = setTimeout(() => {
             const fetchFriends = async () => {
                 try {
@@ -81,7 +80,7 @@ const FriendsList = () => {
             fetchFriends();
         }, 500);
 
-        // cleanup function: huỷ timeout nếu searchName thay đổi trong 500ms
+        // huỷ timeout
         return () => clearTimeout(handler);
 
     }, [user, searchName]);
@@ -98,7 +97,7 @@ const FriendsList = () => {
             className="position-fixed top-0 end-0 d-flex flex-column"
             style={{
                 width: 320,
-                height: '100vh', // lấp đầy chiều cao viewport
+                height: '100vh',
                 backgroundColor: 'white',
                 boxShadow: '0 0 10px rgba(0,0,0,0.3)',
                 borderRadius: '0 0 0 8px',
@@ -163,7 +162,7 @@ const FriendsList = () => {
                                             marginRight: 12,
                                         }}
                                     />
-                                    {/* Tên bạn bè */}
+
                                     <span>{f.firstName} {f.lastName}</span>
 
                                     <span className="ms-auto">
@@ -189,9 +188,8 @@ const FriendsList = () => {
                         style={{ cursor: 'pointer' }}
                         onClick={() => handleSelectFriend(f)}
                     >
-                        {/* Avatar */}
                         <img
-                            src={f.avatar || getDefaultAvatar(f.firstName, f.lastName)} // ảnh đại diện hoặc placeholder
+                            src={f.avatar || getDefaultAvatar(f.firstName, f.lastName)}
                             alt={`${f.firstName} ${f.lastName}`}
                             style={{
                                 width: 40,
@@ -201,7 +199,7 @@ const FriendsList = () => {
                                 marginRight: 12,
                             }}
                         />
-                        {/* Tên bạn bè */}
+                        
                         <span>{f.firstName} {f.lastName}</span>
                     </li>
                 ))}

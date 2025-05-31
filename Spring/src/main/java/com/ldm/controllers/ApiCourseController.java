@@ -32,7 +32,6 @@ public class ApiCourseController {
     public ResponseEntity<?> getCourseSessions() {
         List<Object[]> results = courseService.getAllCourseNames();
 
-        // Chuyển đổi Object[] thành danh sách Map để dễ đọc ở frontend
         List<Map<String, Object>> response = new ArrayList<>();
         for (Object[] row : results) {
             Map<String, Object> item = new HashMap<>();

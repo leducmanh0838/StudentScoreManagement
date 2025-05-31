@@ -21,10 +21,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class IndexController {
     
-//    private static final List<String> MESSAGE_KEYS = List.of(
-//            "USER_LIST" // có thể truyền thêm từ controller nếu muốn tùy biến
-//    );
-    
     @Autowired
     private MessageHelper messageHelper;
 
@@ -32,49 +28,7 @@ public class IndexController {
     private UserService userService;
     
     @RequestMapping("/")
-    public String index(Model model, @RequestParam Map<String, String> params) {
-//        String lang = params.getOrDefault("lang", "vi");
-//        Map<String, String> messages = messageHelper.getMessages(lang, MESSAGE_KEYS);
-//        model.addAttribute("users", this.userService.getAllUsers());
-//        model.addAttribute("messages", messages);
+    public String index() {
         return "index";
     }
-        
-        
-//       @Autowired
-//    private Map<String, MessageSource> customMessageSources;
-//
-//    private static final List<String> NEEDED_KEYS = List.of(
-//            "USER_LIST", "USER_NAME" // thêm các key bạn cần
-//    );
-//
-//    @GetMapping("/")
-//    public String home(Model model, @RequestParam Map<String, String> params) {
-//        MessageSource ms = customMessageSources.getOrDefault(params.get("lang"), customMessageSources.get("vi"));
-//
-//        Map<String, String> messages = new HashMap<>();
-//        for (String key : NEEDED_KEYS) {
-//            String value = ms.getMessage(key, null, Locale.ROOT);
-//            messages.put(key, value);
-//        }
-//        model.addAttribute("messages", messages); // truyền 1 object chứa các message cần thiết
-//        return "index";
-//    }
-        
-        
-        
-//        private static final List<String> NEEDED_KEYS = List.of(
-//            "USER_LIST", "USER_NAME" // có thể truyền thêm từ controller nếu muốn tùy biến
-//    );
-//
-//    @Autowired
-//    private MessageHelper messageHelper;
-//
-//    @GetMapping("/")
-//    public String home(Model model, @RequestParam Map<String, String> params) {
-//        String lang = params.getOrDefault("lang", "vi");
-//        Map<String, String> messages = messageHelper.getMessages(lang, NEEDED_KEYS);
-//        model.addAttribute("messages", messages);
-//        return "index";
-//    }
 }

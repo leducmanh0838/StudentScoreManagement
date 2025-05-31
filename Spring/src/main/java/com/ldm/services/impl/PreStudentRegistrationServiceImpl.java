@@ -51,7 +51,6 @@ public class PreStudentRegistrationServiceImpl implements PreStudentRegistration
         String email = params.get("email");
         String password = params.get("password");
         
-        // Kiểm tra rỗng
         if (firstName == null || firstName.isEmpty())
             throw new IllegalArgumentException("Thiếu firstName");
         if (lastName == null || lastName.isEmpty())
@@ -61,7 +60,6 @@ public class PreStudentRegistrationServiceImpl implements PreStudentRegistration
         if (password == null || password.isEmpty())
             throw new IllegalArgumentException("Thiếu password");
         
-        // kiểm tra đầu vào
         if(!MyUserUtil.isStrongPassword(password))
             throw new IllegalArgumentException("mật khẩu yếu");
         if(!MyUserUtil.isOuEmail(email))
@@ -106,7 +104,7 @@ public class PreStudentRegistrationServiceImpl implements PreStudentRegistration
             throw new IllegalArgumentException("Không tìm thấy người dùng.");
         }
 
-        // Kiểm tra thời gian hết hạn
+        // thời gian hết hạn
         Date otpExpiration = preStudent.getOtpExpiration();
         LocalDateTime expirationTime = otpExpiration.toInstant()
             .atZone(ZoneId.systemDefault())
@@ -121,7 +119,7 @@ public class PreStudentRegistrationServiceImpl implements PreStudentRegistration
             preStudent.setVerificationAttempts(attempts);
 
             if (attempts >= MAX_ATTEMPTS) {
-                // Xóa nếu vượt quá số lần
+                // quá số lần
                 preStudentRepo.delete(preStudent);
                 throw new IllegalArgumentException(String.format("Bạn đã nhập sai OTP quá %s lần. Tài khoản đã bị xóa.", MAX_ATTEMPTS));
             } else {
@@ -143,7 +141,6 @@ public class PreStudentRegistrationServiceImpl implements PreStudentRegistration
         
         preStudentRepo.delete(preStudent);
 
-        // Đúng OTP: xác thực thành công
 //        preStudent.setVerificationAttempts(0);
 //        preStudent.setOtp(null);
 //        preStudent.setOtpExpiration(null);

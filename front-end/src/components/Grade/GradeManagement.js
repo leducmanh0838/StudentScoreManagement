@@ -9,7 +9,7 @@ const GradeManagement = () => {
   const [criteria, setCriteria] = useState([]);
   const [students, setStudents] = useState([]);
   const [originalScores, setOriginalScores] = useState({}); // Điểm gốc
-  const [scores, setScores] = useState({}); // Điểm hiện tại (có thể chỉnh sửa)
+  const [scores, setScores] = useState({}); // Điểm hiện tại
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [submitMsg, setSubmitMsg] = useState('');
@@ -41,7 +41,6 @@ const GradeManagement = () => {
 
         const gradeData = gradesRes.data || [];
 
-        // Tạo ma trận điểm gốc và ma trận hiện tại
         const initial = {};
         (studentsRes.data || []).forEach(s => {
           initial[s.enrollmentId] = {};
@@ -59,7 +58,6 @@ const GradeManagement = () => {
         // console.info('gradesRes.data: ', gradesRes.data);
 
         setOriginalScores(initial);
-        // Copy nguyên giá trị cho scores
         const clone = JSON.parse(JSON.stringify(initial));
         setScores(clone);
       } catch (err) {
@@ -90,11 +88,9 @@ const GradeManagement = () => {
   const handleExportCSV = () => {
     const csvRows = [];
 
-    // Header
     const header = ['#', 'Họ tên', 'Mã sinh viên', 'Email', ...criteria.map(c => `${c.criteriaName} (${c.weight}%)`)];
     csvRows.push(header);
 
-    // Dữ liệu từng sinh viên
     students.forEach((student, index) => {
       const row = [
         index + 1,
@@ -155,56 +151,54 @@ const GradeManagement = () => {
   // };
 
   const handleCSVUpload = (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
+    const file = e.target.files[0];
+    if (!file) return;
 
-  Papa.parse(file, {
-    header: true,
-    skipEmptyLines: true,
-    complete: (results) => {
-      const parsedData = results.data;
-      const newScores = { ...scores };
+    Papa.parse(file, {
+      header: true,
+      skipEmptyLines: true,
+      complete: (results) => {
+        const parsedData = results.data;
+        const newScores = { ...scores };
 
-      parsedData.forEach(row => {
-        const userCode = row['Mã sinh viên']?.trim();
-        const student = students.find(s => s.userCode === userCode);
+        parsedData.forEach(row => {
+          const userCode = row['Mã sinh viên']?.trim();
+          const student = students.find(s => s.userCode === userCode);
 
-        if (!student) return;
+          if (!student) return;
 
-        const enrollmentId = student.enrollmentId;
+          const enrollmentId = student.enrollmentId;
 
-        // Duyệt từng tiêu chí (criteria)
-        criteria.forEach(c => {
-          const columnName = `${c.criteriaName} (${c.weight}%)`;
-          const scoreValue = row[columnName];
+          criteria.forEach(c => {
+            const columnName = `${c.criteriaName} (${c.weight}%)`;
+            const scoreValue = row[columnName];
 
-          if (scoreValue !== undefined && scoreValue !== "") {
-            const score = parseFloat(scoreValue);
+            if (scoreValue !== undefined && scoreValue !== "") {
+              const score = parseFloat(scoreValue);
 
-            if (!isNaN(score)) {
-              if (!newScores[enrollmentId]) newScores[enrollmentId] = {};
-              if (!newScores[enrollmentId][c.id]) newScores[enrollmentId][c.id] = {};
+              if (!isNaN(score)) {
+                if (!newScores[enrollmentId]) newScores[enrollmentId] = {};
+                if (!newScores[enrollmentId][c.id]) newScores[enrollmentId][c.id] = {};
 
-              newScores[enrollmentId][c.id].score = score;
+                newScores[enrollmentId][c.id].score = score;
+              }
             }
-          }
+          });
         });
-      });
 
-      setScores(newScores);
-    },
-    error: (error) => {
-      console.error("Lỗi khi đọc file CSV:", error);
-      alert("Không thể đọc file CSV. Vui lòng kiểm tra định dạng.");
-    }
-  });
-};
+        setScores(newScores);
+      },
+      error: (error) => {
+        console.error("Lỗi khi đọc file CSV:", error);
+        alert("Không thể đọc file CSV. Vui lòng kiểm tra định dạng.");
+      }
+    });
+  };
 
 
   const updateOriginalScores = (responseData) => {
     const originalScoresTemp = JSON.parse(JSON.stringify(originalScores));
 
-    // Duyệt qua mỗi điểm mới được thêm
     responseData.forEach((item) => {
       const { enrollmentId, criteriaId, score, id: gradeId } = item;
 
@@ -218,11 +212,10 @@ const GradeManagement = () => {
       };
     });
 
-    console.info(JSON.stringify(originalScoresTemp,null,2))
+    console.info(JSON.stringify(originalScoresTemp, null, 2))
 
     setOriginalScores(originalScoresTemp);
 
-    // Copy luôn sang scores để hiển thị cập nhật
     const scoresCopy = JSON.parse(JSON.stringify(originalScoresTemp));
     setScores(scoresCopy);
   };
@@ -256,7 +249,7 @@ const GradeManagement = () => {
 
         if (responseAdd.status === 200)
           setOriginalScores(JSON.parse(JSON.stringify(scores)));
-          console.info('sửa điểm thành công')
+        console.info('sửa điểm thành công')
       }
       else {
         console.log("JSON Cập nhật điểm: KHÔNG có điểm nào thay đổi.");
@@ -266,8 +259,9 @@ const GradeManagement = () => {
 
     } catch (error) {
       if (error.response && error.response.data && error.response.data.message) {
-        alert(error.response.data.message);  // hoặc bạn có thể setState để hiển thị trong UI
-      } else {
+        alert(error.response.data.message);
+      }
+      else {
         alert("Đã xảy ra lỗi không xác định. Vui lòng thử lại sau.");
       }
     }
@@ -275,6 +269,14 @@ const GradeManagement = () => {
 
   const handleLockScores = async () => {
     console.info("khóa điểm")
+
+    const isConfirmed = window.confirm(
+      "Bạn có chắc chắn muốn khóa điểm? Sau khi khóa, sẽ không thể chỉnh sửa nữa."
+    );
+    if (!isConfirmed) {
+      return;
+    }
+
     const { jsonAdd: jsonRequestAdd, jsonUpdate: jsonRequestUpdate } = getJsonData();
 
     console.info('jsonRequestAdd: ', JSON.stringify(jsonRequestAdd, null, 2))
@@ -310,7 +312,7 @@ const GradeManagement = () => {
 
     } catch (error) {
       if (error.response && error.response.data && error.response.data.message) {
-        alert(error.response.data.message);  // hoặc bạn có thể setState để hiển thị trong UI
+        alert(error.response.data.message);
       } else {
         alert("Đã xảy ra lỗi không xác định. Vui lòng thử lại sau.");
       }
@@ -328,22 +330,19 @@ const GradeManagement = () => {
       scores: []
     };
 
-    // Duyệt từng enrollmentId trong scores
+    // enrollmentId trong scores
     for (const enrollmentId in scores) {
       const addScores = [];
       const criteriaScores = scores[enrollmentId];
 
-      // Duyệt từng criteriaId trong từng enrollment
+      // criteriaId trong enrollment
       for (const criteriaId in criteriaScores) {
         const { score, gradeId } = criteriaScores[criteriaId];
 
-        // Lấy điểm gốc để so sánh
         const original = (originalScores[enrollmentId] && originalScores[enrollmentId][criteriaId]) || {};
         console.info('original: ', original);
 
-        // Trường hợp thêm điểm: chưa có gradeId (null hoặc undefined), và có điểm
         if (!gradeId && score !== '') {
-          // Nếu điểm gốc giống điểm hiện tại thì không cần thêm
           if (original.score === score) continue;
 
           addScores.push({
@@ -351,7 +350,6 @@ const GradeManagement = () => {
             score: parseFloat(score)
           });
         }
-        // Trường hợp cập nhật điểm: có gradeId và điểm thay đổi
         else if (
           gradeId &&
           score !== '' &&
@@ -364,7 +362,6 @@ const GradeManagement = () => {
         }
       }
 
-      // Nếu có điểm cần thêm thì đưa vào enrollments
       if (addScores.length > 0) {
         jsonAdd.enrollments.push({
           enrollmentId: parseInt(enrollmentId),
@@ -378,7 +375,7 @@ const GradeManagement = () => {
 
   const handleShowJson = () => {
     const result = getJsonData();
-    setJsonResult(result); // Hiển thị JSON cho người dùng
+    setJsonResult(result);
   };
 
 
@@ -450,7 +447,6 @@ const GradeManagement = () => {
                 </tbody>
               </Table>
 
-              {/* Nút lưu nháp và khóa điểm */}
               <div className="d-flex justify-content-end mt-4 gap-2">
                 {/* <Button variant="success" onClick={handleExportCSV}>
                   <i className="bi bi-file-earmark-spreadsheet"></i> Xuất CSV
