@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import cookie from 'react-cookies';
 import { authApis, endpoints } from '../../configs/Apis';
-import { FaEye } from 'react-icons/fa';
+import { FaComments, FaEye } from 'react-icons/fa';
 import { Modal, Button, Spinner, Alert } from 'react-bootstrap'; // cần cài react-bootstrap
+import { Link } from 'react-bootstrap-icons';
+import { useNavigate } from 'react-router-dom';
 
 const EnrollmentListByStudent = () => {
+  const nav = useNavigate();
   const [enrollments, setEnrollments] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -33,6 +36,10 @@ const EnrollmentListByStudent = () => {
     const date = new Date(timestamp);
     return date.toLocaleDateString();
   };
+
+  const handleViewForumPost = async (courseSessionId) =>{
+    nav(`/course-sessions/${courseSessionId}/forum-posts`);
+  }
 
   // Mở modal và gọi API lấy điểm
   const handleViewDetail = async (enrollmentId) => {
@@ -116,12 +123,18 @@ const EnrollmentListByStudent = () => {
                       <td>{index + 1}</td>
                       <td>{item.courseName}</td>
                       <td>{formatDate(item.enrollmentDate)}</td>
-                      <td className="text-center">
+                      <td className="text-center d-flex justify-content-center gap-2">
                         <button
-                          className="btn btn-outline-primary btn-sm d-flex align-items-center gap-1 mx-auto"
+                          className="btn btn-outline-primary btn-sm d-flex align-items-center gap-1"
                           onClick={() => handleViewDetail(item.enrollmentId)}
                         >
                           <FaEye /> Xem chi tiết
+                        </button>
+                        <button
+                          className="btn btn-outline-success btn-sm d-flex align-items-center gap-1"
+                          onClick={() => handleViewForumPost(item.courseSessionId)}
+                        >
+                          <FaComments /> Xem diễn đàn
                         </button>
                       </td>
                     </tr>

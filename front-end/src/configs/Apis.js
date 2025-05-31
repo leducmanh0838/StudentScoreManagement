@@ -11,6 +11,7 @@ export const endpoints = {
     'verify': '/preStudent/verify',
     'find-users':'/secure/user/findUsers',
     'auth-google':'/auth/google',
+    'get-user-info':(userId) => `/secure/user/${userId}/getUserInfo`,
 
     //Enrollment
     'get-enrollments-by-student': '/secure/studentAuth/enrollment/getEnrollments',

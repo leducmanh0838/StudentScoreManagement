@@ -1,12 +1,12 @@
 import { useContext, useState } from "react";
 import { Form, Button, Container, Alert } from "react-bootstrap";
 import SignupStyles from "../../styles/SignupStyles";
-import axios from "axios";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Apis, { authApis, endpoints } from "../../configs/Apis";
 import { MyDispatchContext } from "../../configs/Contexts";
 import cookie from 'react-cookies'
-import { USER_MAX_AGE } from "../../configs/MyValue";
+import { USER_MAX_AGE, WEB_CLIENT_ID } from "../../configs/MyValue";
+import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -58,10 +58,10 @@ const Login = () => {
           password: formData.password,
         }
       );
-      
-      cookie.save('token', response.data.token,{
-        path:',',
-        maxAge:USER_MAX_AGE
+
+      cookie.save('token', response.data.token, {
+        path: ',',
+        maxAge: USER_MAX_AGE
       });
 
       let currentUser = await authApis().get(endpoints['current-user']);
@@ -75,8 +75,8 @@ const Login = () => {
       });
 
       cookie.save('user', currentUser.data, {
-        path:',',
-        maxAge:USER_MAX_AGE
+        path: ',',
+        maxAge: USER_MAX_AGE
       });
 
 
@@ -96,6 +96,52 @@ const Login = () => {
       }
 
       console.error("Login error:", error.response || error.message);
+    }
+  };
+
+  const handleSuccess = async (credentialResponse) => {
+    const idToken = credentialResponse.credential;
+    try {
+      const res = await Apis.post(endpoints['auth-google'], {
+        idToken,
+      });
+      console.log("token id:", res.data);
+      const token = res.data.token;
+
+      cookie.save('token', token, {
+        path: ',',
+        maxAge: USER_MAX_AGE
+      });
+
+      let currentUser = await authApis().get(endpoints['current-user']);
+
+      console.log("Login success:", currentUser.data);
+
+      console.info(currentUser.data);
+      dispatch({
+        "type": "login",
+        "payload": currentUser.data
+      });
+
+      cookie.save('user', currentUser.data, {
+        path: ',',
+        maxAge: USER_MAX_AGE
+      });
+
+      navigate('/');
+
+      // console.log("Token từ backend:", res.data.token);
+    } catch (error) {
+      if (error.response && error.response.data && error.response.data.message) {
+        alert(error.response.data.message);  // hoặc bạn có thể setState để hiển thị trong UI
+      }
+      if (error.response) {
+        console.error("Lỗi backend:", error.response.data);
+      } else if (error.request) {
+        console.error("Không nhận được phản hồi từ server:", error.request);
+      } else {
+        console.error("Lỗi khi gửi yêu cầu:", error.message);
+      }
     }
   };
 
@@ -149,9 +195,18 @@ const Login = () => {
             </Form.Control.Feedback>
           </Form.Group>
 
-          <Button type="submit" variant="primary" className="w-100 rounded-pill py-2">
+          <Button type="submit" variant="primary" className="w-100 rounded-pill py-2 mb-3">
             Đăng nhập
           </Button>
+
+          <GoogleOAuthProvider clientId={WEB_CLIENT_ID}>
+            <GoogleLogin
+              onSuccess={handleSuccess}
+              onError={() => {
+                console.log("Login thất bại");
+              }}
+            />
+          </GoogleOAuthProvider>
         </Form>
       </Container>
     </div>

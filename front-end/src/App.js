@@ -22,6 +22,8 @@ import ProtectedRoute from './components/layout/ProtectedRoute';
 import { UserRoles } from './configs/MyValue';
 import FriendsList from './components/Chat/FriendsList';
 import UnreadCountListener from './components/Chat/UnreadCountListener ';
+import Home from './components/Home';
+import UserProfile from './components/Auth/UserProfile';
 
 const initUser = () => {
   const cookieUser = cookie.load('user');
@@ -54,12 +56,14 @@ const App = () => {
                 <Header />
                 <Routes>
                   {/* <Route path="/" element={<Home />} /> */}
+                  <Route path="/" element={<Home />} />
                   <Route path="/signup" element={<Signup />} />
                   <Route path="/verify-otp" element={<VerifyOTP />} />
                   <Route path="/login" element={<Login />} />
                   <Route path="/register-course-session" element={<CourseSessionList />} />
                   <Route path="/enrollment-list" element={<EnrollmentListByStudent />} />
-                  <Route path="course-sessions/:courseSessionId/forum-posts" element={<ForumPostManagement />} />
+                  <Route path="/course-sessions/:courseSessionId/forum-posts" element={<ForumPostManagement />} />
+                  <Route path="/user/:userId" element={<UserProfile />} />
 
                   {/* Các route dành riêng cho TEACHER */}
                   <Route element={<ProtectedRoute allowedRoles={[UserRoles.ROLE_TEACHER]} />}>

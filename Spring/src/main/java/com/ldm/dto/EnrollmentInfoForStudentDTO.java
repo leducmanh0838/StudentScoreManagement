@@ -6,11 +6,13 @@ public class EnrollmentInfoForStudentDTO {
     private int enrollmentId;
     private String courseName;
     private Date enrollmentDate;
+    private int courseSessionId;
 
-    public EnrollmentInfoForStudentDTO(int enrollmentId, String courseName, Date enrollmentDate) {
+    public EnrollmentInfoForStudentDTO(int enrollmentId, String courseName, Date enrollmentDate, int courseSessionId) {
         this.enrollmentId = enrollmentId;
         this.courseName = courseName;
         this.enrollmentDate = enrollmentDate;
+        this.courseSessionId=courseSessionId;
     }
 
     /**

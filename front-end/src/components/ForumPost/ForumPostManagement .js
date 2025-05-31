@@ -29,7 +29,10 @@ const ForumPostManagement = () => {
     true
   );
 
-  const defaultAvatar = "https://ui-avatars.com/api/?name=User&background=random";
+  const getDefaultAvatar = (name) => {
+    const encodedName = encodeURIComponent(name || "User");
+    return `https://ui-avatars.com/api/?name=${encodedName}&background=random`;
+  };
 
   const handlePostSuccess = (newPost) => {
     setForumPosts(prev => [newPost, ...prev]);
@@ -55,7 +58,7 @@ const ForumPostManagement = () => {
               <Card.Body>
                 <div className="d-flex mb-2">
                   <Image
-                    src={post.user.avatar || defaultAvatar}
+                    src={post.user.avatar || getDefaultAvatar(`${post.user.firstName} ${post.user.lastName}`)}
                     roundedCircle
                     width={45}
                     height={45}

@@ -1,13 +1,9 @@
 import { useContext, useState } from "react";
 import { Form, Button, Container, Row, Col, Alert } from "react-bootstrap";
 import SignupStyles from "../../styles/SignupStyles";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import Apis, { authApis, endpoints } from "../../configs/Apis";
+import Apis, {  endpoints } from "../../configs/Apis";
 import MySpinner from "../layout/MySpinner";
-import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
-import { USER_MAX_AGE, WEB_CLIENT_ID } from "../../configs/MyValue";
-import cookie from 'react-cookies'
 import { MyDispatchContext } from "../../configs/Contexts";
 
 const Signup = () => {
@@ -139,51 +135,51 @@ const Signup = () => {
     //     }
 
     // };
-    const handleSuccess = async (credentialResponse) => {
-        const idToken = credentialResponse.credential;
-        try {
-            const res = await Apis.post(endpoints['auth-google'], {
-                idToken,
-            });
-            console.log("token id:", res.data);
-            const token = res.data.token;
+    // const handleSuccess = async (credentialResponse) => {
+    //     const idToken = credentialResponse.credential;
+    //     try {
+    //         const res = await Apis.post(endpoints['auth-google'], {
+    //             idToken,
+    //         });
+    //         console.log("token id:", res.data);
+    //         const token = res.data.token;
 
-            cookie.save('token', token, {
-                path: ',',
-                maxAge: USER_MAX_AGE
-            });
+    //         cookie.save('token', token, {
+    //             path: ',',
+    //             maxAge: USER_MAX_AGE
+    //         });
 
-            let currentUser = await authApis().get(endpoints['current-user']);
+    //         let currentUser = await authApis().get(endpoints['current-user']);
 
-            console.log("Login success:", currentUser.data);
+    //         console.log("Login success:", currentUser.data);
 
-            console.info(currentUser.data);
-            dispatch({
-                "type": "login",
-                "payload": currentUser.data
-            });
+    //         console.info(currentUser.data);
+    //         dispatch({
+    //             "type": "login",
+    //             "payload": currentUser.data
+    //         });
 
-            cookie.save('user', currentUser.data, {
-                path: ',',
-                maxAge: USER_MAX_AGE
-            });
+    //         cookie.save('user', currentUser.data, {
+    //             path: ',',
+    //             maxAge: USER_MAX_AGE
+    //         });
 
-            navigate('/');
+    //         navigate('/');
 
-            // console.log("Token từ backend:", res.data.token);
-        } catch (error) {
-            if (error.response && error.response.data && error.response.data.message) {
-                alert(error.response.data.message);  // hoặc bạn có thể setState để hiển thị trong UI
-            }
-            if (error.response) {
-                console.error("Lỗi backend:", error.response.data);
-            } else if (error.request) {
-                console.error("Không nhận được phản hồi từ server:", error.request);
-            } else {
-                console.error("Lỗi khi gửi yêu cầu:", error.message);
-            }
-        }
-    };
+    //         // console.log("Token từ backend:", res.data.token);
+    //     } catch (error) {
+    //         if (error.response && error.response.data && error.response.data.message) {
+    //             alert(error.response.data.message);  // hoặc bạn có thể setState để hiển thị trong UI
+    //         }
+    //         if (error.response) {
+    //             console.error("Lỗi backend:", error.response.data);
+    //         } else if (error.request) {
+    //             console.error("Không nhận được phản hồi từ server:", error.request);
+    //         } else {
+    //             console.error("Lỗi khi gửi yêu cầu:", error.message);
+    //         }
+    //     }
+    // };
 
     return (
         <div style={SignupStyles.wrapper}>
@@ -343,14 +339,14 @@ const Signup = () => {
                         
                     </Button> */}
 
-                    <GoogleOAuthProvider clientId={WEB_CLIENT_ID}>
+                    {/* <GoogleOAuthProvider clientId={WEB_CLIENT_ID}>
                         <GoogleLogin
                             onSuccess={handleSuccess}
                             onError={() => {
                                 console.log("Login thất bại");
                             }}
                         />
-                    </GoogleOAuthProvider>
+                    </GoogleOAuthProvider> */}
 
 
 

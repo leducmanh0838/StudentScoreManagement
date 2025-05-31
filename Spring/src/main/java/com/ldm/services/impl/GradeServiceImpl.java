@@ -4,6 +4,7 @@
  */
 package com.ldm.services.impl;
 
+import com.ldm.configs.LoggerConfig;
 import com.ldm.dto.EnrollmentGradeDTO;
 import com.ldm.dto.GradeInfoDTO;
 import com.ldm.dto.GradeRequestDTO;
@@ -14,12 +15,16 @@ import com.ldm.dto.StudentGradeMailDTO;
 import com.ldm.dto.UpdateGradeRequestDTO;
 import com.ldm.pojo.Grade;
 import com.ldm.repositories.CourseRepository;
-import com.ldm.repositories.CriteriaRepository;
 import com.ldm.repositories.GradeRepository;
 import com.ldm.services.EmailService;
 import com.ldm.services.GradeService;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -31,12 +36,15 @@ public class GradeServiceImpl implements GradeService {
 
     @Autowired
     private GradeRepository gradeRepository;
-    
+
     @Autowired
     private CourseRepository courseRepository;
-    
+
     @Autowired
     private EmailService emailService;
+    
+    @Autowired
+    private CacheManager cacheManager;
 
     @Override
     public List<Grade> addGrades(GradeRequestDTO req) {
@@ -81,12 +89,37 @@ public class GradeServiceImpl implements GradeService {
             }
         }
 
-        // Nếu mọi thứ hợp lệ thì tiếp tục gọi repository để thêm dữ liệu
-        return gradeRepository.addGrades(req);
+        List<Grade> results = gradeRepository.addGrades(req);
+
+//         Xử lý cache sau khi thêm
+        Cache cache = cacheManager.getCache("gradesByCourseSession");
+        if (cache != null) {
+            Integer courseSessionId = req.getCourseSessionId();
+
+            // Lấy danh sách cũ từ cache
+            List<GradeInfoDTO> cachedList = cache.get(courseSessionId, List.class);
+
+            // Convert danh sách Grade sang GradeInfoDTO
+            List<GradeInfoDTO> newDtos = results.stream()
+                    .map(GradeInfoDTO::new)
+                    .collect(Collectors.toList());
+
+            if (cachedList != null) {
+                // Thêm các phần tử mới vào danh sách cũ
+                cachedList.addAll(newDtos);
+                cache.put(courseSessionId, cachedList);
+            } else {
+                // Nếu chưa có cache, tạo mới
+                cache.put(courseSessionId, newDtos);
+            }
+        }
+
+        return results;
     }
 
     @Override
     public boolean updateGrades(UpdateGradeRequestDTO req) {
+        //req.getScores()
         // 1. courseSessionId phải là số nguyên dương
         if (req.getCourseSessionId() <= 0) {
             throw new IllegalArgumentException("courseSessionId phải là số nguyên dương");
@@ -115,7 +148,34 @@ public class GradeServiceImpl implements GradeService {
         }
 
         // Nếu hợp lệ thì gọi repository xử lý cập nhật
-        return gradeRepository.updateGrades(req);
+        boolean success = gradeRepository.updateGrades(req);
+
+        if (success) {
+            Cache cache = cacheManager.getCache("gradesByCourseSession");
+            if (cache != null) {
+                Integer courseSessionId = req.getCourseSessionId();
+                // Lấy danh sách cũ trong cache
+                List<GradeInfoDTO> cachedList = cache.get(courseSessionId, List.class);
+                if (cachedList != null) {
+                    // Tạo Map gradeId -> score mới để dễ tìm kiếm
+                    Map<Integer, Float> updatedScores = scores.stream()
+                            .collect(Collectors.toMap(ScoreUpdateDTO::getGradeId, ScoreUpdateDTO::getScore));
+
+                    // Cập nhật điểm trong danh sách cache
+                    cachedList.forEach(g -> {
+                        Float newScore = updatedScores.get(g.getGradeId());
+                        if (newScore != null) {
+                            g.setScore(newScore); // Cập nhật điểm mới
+                        }
+                    });
+
+                    // Cập nhật lại cache
+                    cache.put(courseSessionId, cachedList);
+                }
+            }
+        }
+
+        return success;
     }
 
     @Override
@@ -124,14 +184,16 @@ public class GradeServiceImpl implements GradeService {
     }
 
     @Override
+    @Cacheable(value = "gradesByCourseSession", key = "#courseSessionId")
     public List<GradeInfoDTO> getGradesByCourseSessionId(int courseSessionId) {
+        LoggerConfig.info("Da goi getGradesByCourseSessionId va truy van");
         return this.gradeRepository.getGradesByCourseSessionId(courseSessionId);
     }
 
     @Override
     public List<StudentGradeMailDTO> getStudentGradeMailByCourseSessionId(int courseSessionId) {
         List<StudentGradeMailDTO> students = this.gradeRepository.getStudentGradeMailByCourseSessionId(courseSessionId);
-        String courseName= courseRepository.getCourseNameByCourseSessionId(courseSessionId);
+        String courseName = courseRepository.getCourseNameByCourseSessionId(courseSessionId);
         emailService.sendGradesToStudents(students, courseName);
         return students;
     }

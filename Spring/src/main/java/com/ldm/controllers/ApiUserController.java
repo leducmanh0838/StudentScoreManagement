@@ -73,7 +73,8 @@ public class ApiUserController {
                 return ResponseEntity.status(500).body("Lỗi khi tạo JWT");
             }
         }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Sai thông tin đăng nhập");
+        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Sai thông tin đăng nhập");
+//        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Sai thông tin đăng nhập");
     }
     
     @GetMapping("/secure/teacherAuth/getStudentsByCourseSession")

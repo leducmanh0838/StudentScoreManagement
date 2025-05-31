@@ -3,7 +3,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { FaFacebookMessenger, FaGraduationCap } from "react-icons/fa";
 import { useContext } from "react";
 import { ChatContext, MessengerUIContext, MyDispatchContext, MyUserContext } from "../../configs/Contexts";
-import { UserRoles } from "../../configs/MyValue";
+import { getDefaultAvatar, UserRoles } from "../../configs/MyValue";
 
 const Header = () => {
   const user = useContext(MyUserContext);
@@ -87,10 +87,10 @@ const Header = () => {
               </button>
             )}
             {user ? (<>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2" onClick={()=>navigate(`/user/${user.userId}`)}>
                 <img
                 //https://lh3.googleusercontent.com/a/ACg8ocI9hTJ_GD7HFzn-zyKA6iu3_7QUqyvMrGRETvm6iYkH7FcfaD4=s96-c
-                  src={user.avatar || "/avatar-default.jpg"}
+                  src={user.avatar || getDefaultAvatar(user.firstName, user.lastName)}
                   alt="avatar"
                   style={{ width: "32px", height: "32px", objectFit: "cover", borderRadius: "50%" }}
                 />

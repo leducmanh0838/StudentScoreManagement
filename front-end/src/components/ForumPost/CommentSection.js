@@ -14,7 +14,10 @@ const CommentSection = ({ forumPostId }) => {
   const [error, setError] = useState(null);
 
   const [showComments, setShowComments] = useState(true);
-  const defaultAvatar = "https://ui-avatars.com/api/?name=User&background=random";
+  const getDefaultAvatar = (name) => {
+    const encodedName = encodeURIComponent(name || "User");
+    return `https://ui-avatars.com/api/?name=${encodedName}&background=random`;
+  };
 
   // Dùng custom hook phân trang
   const {
@@ -90,7 +93,7 @@ const CommentSection = ({ forumPostId }) => {
                   <ListGroup.Item key={comment.id}>
                     <div className="d-flex">
                       <Image
-                        src={comment.user.avatar || defaultAvatar}
+                        src={comment.user.avatar || getDefaultAvatar(`${comment.user.firstName} ${comment.user.lastName}`)}
                         roundedCircle
                         width={40}
                         height={40}

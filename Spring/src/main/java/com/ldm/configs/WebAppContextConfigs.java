@@ -10,6 +10,7 @@ import com.ldm.formatters.CourseFormatter;
 import com.ldm.formatters.UserFormatter;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -33,6 +34,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableWebMvc
 @EnableTransactionManagement
 @EnableAsync
+@EnableCaching
 @ComponentScan(basePackages = {
     "com.ldm.controllers",
     "com.ldm.repositories",

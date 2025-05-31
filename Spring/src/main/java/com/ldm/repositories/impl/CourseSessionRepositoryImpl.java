@@ -13,7 +13,9 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.JoinType;
+import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import org.hibernate.Session;
@@ -53,35 +55,39 @@ public class CourseSessionRepositoryImpl implements CourseSessionRepository {
         CriteriaBuilder cb = s.getCriteriaBuilder();
         CriteriaQuery<Object[]> cq = cb.createQuery(Object[].class);
 
-        // Root CourseSession
         Root<CourseSession> root = cq.from(CourseSession.class);
 
-        // Join Course and User (teacher)
         Join<CourseSession, Course> courseJoin = root.join("courseId", JoinType.INNER);
         Join<CourseSession, User> teacherJoin = root.join("teacherId", JoinType.INNER);
 
-        // Multiselect: choose fields to select
         cq.multiselect(
                 root.get("id"),
                 root.get("code"),
-                courseJoin.get("name"), // Course name
-                cb.concat(cb.concat(teacherJoin.get("firstName"), " "), teacherJoin.get("lastName")), // Teacher's name
-                root.get("isOpen") // Is open
+                courseJoin.get("name"),
+                cb.concat(cb.concat(teacherJoin.get("firstName"), " "), teacherJoin.get("lastName")),
+                root.get("isOpen")
         );
 
-        // Apply filtering for courseId if provided
+        List<Predicate> predicates = new ArrayList<>();
+
         if (params.containsKey("courseId")) {
             Long courseId = Long.valueOf(params.get("courseId"));
-            cq.where(cb.equal(courseJoin.get("id"), courseId));
+            predicates.add(cb.equal(courseJoin.get("id"), courseId));
         }
 
-        // Create query and set pagination
-        Query<Object[]> query = s.createQuery(cq);
+        if (params.containsKey("code")) {
+            String code = "%" + params.get("code").toLowerCase() + "%";
+            predicates.add(cb.like(cb.lower(root.get("code")), code));
+        }
 
-        // Pagination: Set start position (page - 1) * PAGE_SIZE and max results
-        int page = Integer.parseInt(params.getOrDefault("page", "1")); // Default to page 1
-        query.setFirstResult((page - 1) * PAGE_SIZE); // Start from the correct offset (page - 1) * PAGE_SIZE
-        query.setMaxResults(PAGE_SIZE); // Limit results per page
+        if (!predicates.isEmpty()) {
+            cq.where(cb.and(predicates.toArray(new Predicate[0])));
+        }
+
+        Query<Object[]> query = s.createQuery(cq);
+        int page = Integer.parseInt(params.getOrDefault("page", "1"));
+        query.setFirstResult((page - 1) * PAGE_SIZE);
+        query.setMaxResults(PAGE_SIZE);
 
         return query.getResultList();
     }

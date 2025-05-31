@@ -31,7 +31,8 @@ public class UserController {
 
     @GetMapping("/userListView")
     public String userListView(Model model, @RequestParam Map<String, String> params) {
-
+        if(params.get("page")==null)
+            params.put("page", "1");
         List<User> users = this.userService.getUsersForStaff(params);
         model.addAttribute("users", users);
         model.addAttribute("currentRole", params.get("role"));

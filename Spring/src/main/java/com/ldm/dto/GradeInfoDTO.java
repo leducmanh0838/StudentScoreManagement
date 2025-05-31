@@ -1,4 +1,7 @@
 package com.ldm.dto;
+
+import com.ldm.pojo.Grade;
+
 public class GradeInfoDTO {
     private int gradeId;
     private float score;
@@ -10,6 +13,13 @@ public class GradeInfoDTO {
         this.score = score;
         this.enrollmentId = enrollmentId;
         this.criteriaId = criteriaId;
+    }
+    
+    public GradeInfoDTO(Grade grade) {
+        this.gradeId = grade.getId();
+        this.score = grade.getScore();
+        this.enrollmentId = grade.getEnrollmentId().getId();
+        this.criteriaId = grade.getCriteriaId().getId();
     }
 
     /**

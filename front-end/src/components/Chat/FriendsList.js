@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { ChatContext, MessengerUIContext, MyUserContext } from '../../configs/Contexts';
 import axios from 'axios';
-import { UserRoles } from '../../configs/MyValue';
+import { getDefaultAvatar, UserRoles } from '../../configs/MyValue';
 import { authApis, endpoints } from '../../configs/Apis';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../../firebase/firebase';
@@ -153,7 +153,7 @@ const FriendsList = () => {
                                 >
                                     {/* Avatar */}
                                     <img
-                                        src={f.avatar || 'https://via.placeholder.com/40?text=U'} // ảnh đại diện hoặc placeholder
+                                        src={f.avatar || getDefaultAvatar(f.firstName, f.lastName)} 
                                         alt={`${f.firstName} ${f.lastName}`}
                                         style={{
                                             width: 40,
@@ -191,7 +191,7 @@ const FriendsList = () => {
                     >
                         {/* Avatar */}
                         <img
-                            src={f.avatar || 'https://via.placeholder.com/40?text=U'} // ảnh đại diện hoặc placeholder
+                            src={f.avatar || getDefaultAvatar(f.firstName, f.lastName)} // ảnh đại diện hoặc placeholder
                             alt={`${f.firstName} ${f.lastName}`}
                             style={{
                                 width: 40,

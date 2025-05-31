@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Thống kê</title>
+    <th:block th:replace="base :: bootstrap"></th:block>
+</head>
+<body>
+    <div th:replace="base :: header"></div>
+
+    <div th:text="${debugMessage}" style="color: red; font-weight: bold;"></div>
+
+    <div class="container mt-5">
+        <div class="card shadow">
+            <div class="card-body">
+                <h2 class="card-title mb-4 text-center text-primary">Thống kê số lượng sinh viên theo buổi học</h2>
+
+                <form method="get" th:action="@{/stats}" class="mb-4">
+                    <div class="row g-2 align-items-center">
+                        <div class="col-md-4">
+                            <label for="courseId" class="form-label fw-bold">Chọn môn học:</label>
+                            <select name="courseId" id="courseId" class="form-select"
+                                    onchange="this.form.submit()">
+                                <option value="" disabled selected>-- Chọn môn học --</option>
+                                <th:block th:each="course : ${courseNames}">
+                                    <option th:value="${course[0]}"
+                                            th:text="${course[1]}"
+                                            th:selected="${course[0]} == ${selectedCourseId}">
+                                    </option>
+                                </th:block>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+
+                <div th:if="${stats != null}">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped">
+                            <thead class="table-light">
+                                <tr>
+                                    <th scope="col">Mã buổi học</th>
+                                    <th scope="col">Số sinh viên đăng ký</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="s : ${stats}">
+                                    <td th:text="${s.courseSessionCode}"></td>
+                                    <td th:text="${s.enrollmentCount}"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                         Biểu đồ 
+                        <canvas id="pieChart"></canvas>
+                    </div>
+                </div>
+
+                <div th:if="${selectedCourseId != null and #lists.isEmpty(stats)}" class="alert alert-warning mt-3" role="alert">
+                    Không có dữ liệu thống kê cho môn học này.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+</body>
+</html>
+
+<!--<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Thống kê</title>
+    <th:block th:replace="base :: bootstrap"></th:block>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <div class="container mt-5">
+        <h2 class="mb-4">Thống kê số sinh viên theo buổi học</h2>
+
+        <div th:if="${stats != null}">
+             Bảng dữ liệu 
+            <div class="table-responsive mb-5">
+                <table class="table table-bordered table-striped">
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col">Mã buổi học</th>
+                            <th scope="col">Số sinh viên đăng ký</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="s : ${stats}">
+                            <td th:text="${s.courseSessionCode}"></td>
+                            <td th:text="${s.enrollmentCount}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+             Biểu đồ 
+            <div class="col-md-6">
+                <canvas id="pieChart" width="400" height="400"></canvas>
+            </div>
+
+             Script để vẽ biểu đồ 
+            <script>
+                const labels = [[${"'"+labels+"'"}]];
+    const data = [[${data}]];
+
+                const ctx = document.getElementById('pieChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                                label: 'Số lượng sinh viên',
+                                data: data,
+                                backgroundColor: [
+                                    'rgba(255, 99, 132, 0.6)',
+                                    'rgba(54, 162, 235, 0.6)',
+                                    'rgba(255, 206, 86, 0.6)',
+                                    'rgba(75, 192, 192, 0.6)'
+                                ],
+                                borderColor: 'white',
+                                borderWidth: 1
+                            }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'right',
+                            },
+                            title: {
+                                display: true,
+                                text: 'Biểu đồ số sinh viên theo buổi học'
+                            }
+                        }
+                    }
+                });
+            </script>
+
+        </div>
+    </div>
+
+</body>
+</html>-->
+
+<!--<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Thống kê</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<div class="container mt-5">
+    <h2>Thống kê số sinh viên theo buổi học</h2>
+    <canvas id="pieChart" width="400" height="400"></canvas>
+</div>
+
+ Truyền dữ liệu từ server sang JS global biến 
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    window.labelsData = /*[[${labels}]]*/ [];
+    window.dataData = /*[[${data}]]*/ [];
+    /*]]>*/
+</script>
+
+ Gọi file JS riêng 
+<script th:src="@{/js/stats.js}"></script>
+
+</body>
+</html>-->

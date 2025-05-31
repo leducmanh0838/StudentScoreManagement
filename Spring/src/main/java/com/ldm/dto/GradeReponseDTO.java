@@ -25,10 +25,13 @@ public class GradeReponseDTO {
         this.enrollmentId = grade.getEnrollmentId().getId();
         this.criteriaId = grade.getCriteriaId().getId();
     }
-
     
-    
-
+    public GradeReponseDTO(GradeInfoDTO grade) {
+        this.id = grade.getGradeId();
+        this.score = grade.getScore();
+        this.enrollmentId = grade.getEnrollmentId();
+        this.criteriaId = grade.getCriteriaId();
+    }
     /**
      * @return the id
      */

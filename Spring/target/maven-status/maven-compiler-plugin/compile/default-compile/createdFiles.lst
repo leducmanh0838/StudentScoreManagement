@@ -26,8 +26,10 @@ com\ldm\dto\StudentInCourseDTO.class
 com\ldm\controllers\ApiForumPostController.class
 com\ldm\dto\CourseSessionListForTeacherDTO.class
 com\ldm\repositories\UserRepository.class
+com\ldm\configs\CacheConfig.class
 com\ldm\services\CourseSessionService.class
 com\ldm\tests\Main.class
+com\ldm\repositories\impl\StatsRepositoryImpl.class
 com\ldm\repositories\impl\CommentRepositoryImpl.class
 com\ldm\controllers\UserController.class
 com\ldm\services\impl\CriteriaServiceImpl.class
@@ -38,6 +40,7 @@ com\ldm\services\CommentService.class
 com\ldm\formatters\UserFormatter.class
 com\ldm\repositories\impl\PreStudentRegistrationRepositoryImpl.class
 com\ldm\dto\ScoreDTO.class
+com\ldm\services\StatsService.class
 com\ldm\services\EmailService.class
 com\ldm\repositories\CommentRepository.class
 com\ldm\configs\MessageConfig.class
@@ -53,6 +56,7 @@ com\ldm\repositories\impl\UserRepositoryImpl.class
 com\ldm\repositories\PreStudentRegistrationRepository.class
 com\ldm\services\impl\GradeServiceImpl.class
 com\ldm\controllers\ApiCourseSessionController.class
+com\ldm\dto\CourseSessionStatsDTO.class
 com\ldm\utils\MyUserUtil.class
 com\ldm\repositories\impl\ForumPostRepositoryImpl.class
 com\ldm\controllers\LoginController.class
@@ -67,9 +71,12 @@ com\ldm\pojo\Criteria.class
 com\ldm\dto\UserInfoDTO.class
 com\ldm\configs\HibernateConfigs.class
 com\ldm\configs\LoggerConfig.class
+com\ldm\controllers\ApiCacheController.class
+com\ldm\controllers\StatsController.class
 com\ldm\controllers\ApiPreStudentRegistration.class
 com\ldm\controllers\ApiGradeController.class
 com\ldm\dto\ForumPostInfoDTO.class
+com\ldm\repositories\StatsRepository.class
 com\ldm\controllers\GlobalExceptionHandler.class
 com\ldm\repositories\impl\EnrollmentRepositoryImpl.class
 com\ldm\dto\ScoreUpdateDTO.class
@@ -83,6 +90,7 @@ com\ldm\finalexam\resources\JakartaEE11Resource.class
 com\ldm\pojo\Grade.class
 com\ldm\utils\JwtUtils.class
 com\ldm\configs\SecurityWebApplicationInitializer.class
+com\ldm\services\impl\StatsServiceImpl.class
 com\ldm\controllers\CourseController.class
 com\ldm\controllers\ApiCriteriaController.class
 com\ldm\pojo\CourseSession.class

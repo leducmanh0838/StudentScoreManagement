@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Card, Container, ListGroup, Button, Spinner, Form, Row, Col } from 'react-bootstrap';
 import { endpoints } from '../../configs/Apis';
 import PaginatedData from '../../configs/PaginatedData';
 
 const CourseSessionStudents = () => {
+  const navigate = useNavigate();
   const { courseSessionId } = useParams();
   const [searchParams, setSearchParams] = useState({ courseSessionId });
 
   // Bộ lọc
   const [filters, setFilters] = useState({ name: '', userCode: '' });
-  
+
 
   // Custom hook gọi API
   const {
@@ -79,8 +80,17 @@ const CourseSessionStudents = () => {
 
           <ListGroup variant="flush">
             {students.map((student) => (
-              <ListGroup.Item key={student.enrollmentId}>
-                <strong>{student.lastName} {student.firstName}</strong> - <span className="text-muted">{student.userCode}</span>
+              <ListGroup.Item key={student.enrollmentId}  className="d-flex justify-content-between align-items-center py-3">
+                <div>
+                  <strong>{student.lastName} {student.firstName}</strong> - <span className="text-muted">{student.userCode}</span>
+                </div>
+                <Button
+                  variant="outline-primary"
+                  size="sm"
+                  onClick={() => navigate(`/user/${student.userId}`)}
+                >
+                  Xem chi tiết
+                </Button>
               </ListGroup.Item>
             ))}
           </ListGroup>

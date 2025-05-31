@@ -4,6 +4,7 @@
  */
 package com.ldm.controllers;
 
+import com.ldm.dto.GradeInfoDTO;
 import com.ldm.dto.GradeReponseDTO;
 import com.ldm.dto.GradeRequestDTO;
 import com.ldm.dto.UpdateGradeRequestDTO;

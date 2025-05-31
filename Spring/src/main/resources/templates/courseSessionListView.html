@@ -9,87 +9,80 @@
 
     <!--<div th:text="${debugMessage}" style="color: red; font-weight: bold;"></div>-->
 
-    <div class="container mt-4">
-        <h2></h2>
+    <div class="container mt-5">
+        <div class="card shadow">
+            <div class="card-body">
+                <h2 class="card-title mb-4 text-center text-primary">Danh sách buổi học</h2>
 
-        <!-- Form thêm mới môn học -->
-        <!--        <form th:action="@{/addOrUpdateCourse/}" method="post" class="row g-3 mb-4">
-                    <div class="col-md-4">
-                        <input type="text" name="name" class="form-control" placeholder="Tên môn học mới" required>
+                <form method="get" action="#">
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-3">
+                            <input type="text" name="code" class="form-control" placeholder="Tìm theo mã"
+                                   th:value="${param.code}">
+                        </div>
+                        <div class="col-md-3">
+                            <button type="submit" class="btn btn-primary">Lọc</button>
+                            <a th:href="@{/courseListView}" class="btn btn-secondary">Reset</a>
+                            <a th:href="@{/addOrUpdateCourseSessionView}" class="btn btn-danger">Thêm buổi học</a>
+                        </div>
                     </div>
-                    <div class="col-md-2">
-                        <button type="submit" class="btn btn-success">Thêm môn học</button>
+
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Mã buổi học</th>
+                                <th>Tên môn học</th>
+                                <th>Tên giảng viên phụ trách</th>
+                                <th>Trạng thái</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="courseSession : ${courseSessions}">
+                                <td th:text="${courseSession[1]}"></td> 
+                                <td th:text="${courseSession[2]}"></td>
+                                <td th:text="${courseSession[3]}"></td>
+                                <td th:text="${courseSession[4] ? 'Mở' : 'Đóng'}"></td>
+                                <td>
+                                    <a th:href="@{'/addOrUpdateCourseSessionView/' + ${courseSession[0]} + '?courseName=' + ${courseSession[2]} + '&teacherName=' + ${courseSession[3]}}" 
+                                       class="btn btn-info btn-sm">
+                                        Chỉnh sửa
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </form>
+
+                <div class="mt-3 d-flex justify-content-between">
+                    <!-- Nút Trước (bên trái) -->
+                    <div>
+                        <form method="get" action="#"
+                              th:classappend="${currentPage != null and currentPage != 1} ? '' : 'invisible'">
+                            <input type="hidden" name="page" th:value="${currentPage > 1 ? currentPage - 1 : 1}" />
+                            <input type="hidden" name="name" th:value="${param.name}" />
+                            <button type="submit" class="btn btn-secondary">Trước</button>
+                        </form>
                     </div>
-                </form>-->
 
-        <!-- Form lọc -->
-        <form method="get" action="#">
-            <div class="row g-3 mb-4">
-                <div class="col-md-3">
-                    <input type="text" name="name" class="form-control" placeholder="Tìm theo tên"
-                           th:value="${param.name}">
+                    <!-- Nút Sau (bên phải) -->
+                    <div>
+                        <form method="get" action="#"
+                              th:classappend="${isLoadMore} ? '' : 'invisible'">
+                            <input type="hidden" name="page" th:value="${currentPage + 1}" />
+                            <input type="hidden" name="name" th:value="${param.name}" />
+                            <button type="submit" class="btn btn-primary">Sau</button>
+                        </form>
+                    </div>
                 </div>
-                <div class="col-md-3">
-                    <button type="submit" class="btn btn-primary">Lọc</button>
-                    <a th:href="@{/courseListView/}" class="btn btn-secondary">Reset</a>
-                    <a th:href="@{/addOrUpdateCourseSessionView}" class="btn btn-danger">Thêm buổi học</a>
-                </div>
-            </div>
 
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Mã buổi học</th>
-                        <th>Tên môn học</th>
-                        <th>Tên giảng viên phụ trách</th>
-                        <th>Trạng thái</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="courseSession : ${courseSessions}">
-                        <td th:text="${courseSession[1]}"></td> <!-- CourseSession ID -->
-                        <td th:text="${courseSession[2]}"></td>
-                        <td th:text="${courseSession[3]}"></td>
-                        <td th:text="${courseSession[4] ? 'Mở' : 'Đóng'}"></td>
-                        <td>
-                            <a th:href="@{'/addOrUpdateCourseSessionView/' + ${courseSession[0]} + '?courseName=' + ${courseSession[2]} + '&teacherName=' + ${courseSession[3]}}" 
-                                class="btn btn-info btn-sm">
-                                Chỉnh sửa
-                             </a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-
-        </form>
-
-        <div class="mt-3 d-flex justify-content-between">
-            <!-- Nút Trước (bên trái) -->
-            <div>
-                <form method="get" action="#"
-                      th:classappend="${currentPage != null and currentPage != 1} ? '' : 'invisible'">
-                    <input type="hidden" name="page" th:value="${currentPage > 1 ? currentPage - 1 : 1}" />
-                    <input type="hidden" name="name" th:value="${param.name}" />
-                    <button type="submit" class="btn btn-secondary">Trước</button>
-                </form>
-            </div>
-
-            <!-- Nút Sau (bên phải) -->
-            <div>
-                <form method="get" action="#"
-                      th:classappend="${isLoadMore} ? '' : 'invisible'">
-                    <input type="hidden" name="page" th:value="${currentPage + 1}" />
-                    <input type="hidden" name="name" th:value="${param.name}" />
-                    <button type="submit" class="btn btn-primary">Sau</button>
-                </form>
             </div>
         </div>
-
     </div>
 
-    <div th:replace="base :: footer"></div>
-    
+    <!--<div th:replace="base :: footer"></div>-->
+
     <!--<script th:src="@{/js/main.js}"></script>-->
 </body>
 </html>

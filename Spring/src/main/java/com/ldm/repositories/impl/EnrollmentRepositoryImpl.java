@@ -97,7 +97,7 @@ public class EnrollmentRepositoryImpl implements EnrollmentRepository {
         Session session = this.factory.getObject().getCurrentSession();
 
         String hql = """
-        SELECT new EnrollmentInfoForStudentDTO(e.id, c.name, e.createdDate)
+        SELECT new EnrollmentInfoForStudentDTO(e.id, c.name, e.createdDate, cs.id)
         FROM Enrollment e
         JOIN e.courseSessionId cs
         JOIN cs.courseId c
