@@ -53,6 +53,14 @@
 
 <img width="1881" height="1081" alt="image" src="https://github.com/user-attachments/assets/6b4b3cb6-30d1-4a92-bc2d-195e513e106d" />
 
+### Teacher
+**Grade management**
+
+<img width="1919" height="1080" alt="image" src="https://github.com/user-attachments/assets/834bf524-5719-4855-b18d-7597fb12ffc5" />
+
+**Criteria management**
+
+<img width="1919" height="510" alt="image" src="https://github.com/user-attachments/assets/84fe258a-6540-40b9-88b7-71ce02778eef" />
 
 
 ### Academic staff
