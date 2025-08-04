@@ -32,7 +32,8 @@ public class ApiCacheController {
     private CacheManager cacheManager;
 
     @GetMapping("/{cacheName}")
-    public ResponseEntity<?> viewCache(@PathVariable(name = "cacheName") String cacheName) {
+    public ResponseEntity<?> viewCache(
+            @PathVariable(name = "cacheName") String cacheName) {
         org.springframework.cache.Cache springCache = cacheManager.getCache(cacheName);
         if (springCache == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)

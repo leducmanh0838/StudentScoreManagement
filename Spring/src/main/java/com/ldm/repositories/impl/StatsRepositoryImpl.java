@@ -77,10 +77,10 @@ public class StatsRepositoryImpl implements StatsRepository {
                     (String) row[1],
                     (String) row[2],
                     String.format("%s %s", (String) row[3], (String) row[4]),
-                    ((BigDecimal) row[5]).intValue(),
-                    ((BigDecimal) row[6]).intValue(),
-                    ((BigDecimal) row[7]).intValue(),
-                    ((BigDecimal) row[8]).intValue()
+                    ((Number) row[5]).longValue(), // excellentCount
+                    ((Number) row[6]).longValue(), // goodCount
+                    ((Number) row[7]).longValue(), // averageCount
+                    ((Number) row[8]).longValue()
             ));
         }
 
