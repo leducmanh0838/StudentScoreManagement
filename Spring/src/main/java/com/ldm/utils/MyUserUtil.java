@@ -23,7 +23,8 @@ public class MyUserUtil {
     
     public static boolean isOuEmail(String email) {
         if (email == null) return false;
-        return email.matches("^[A-Za-z0-9._%+-]+@ou\\.edu\\.vn$");
+        return true;
+//        return email.matches("^[A-Za-z0-9._%+-]+@ou\\.edu\\.vn$");
     }
     
     public static boolean isStrongPassword(String password) {
