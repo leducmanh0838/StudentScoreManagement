@@ -35,4 +35,15 @@
 <img width="1919" height="1016" alt="image" src="https://github.com/user-attachments/assets/64455852-3971-468c-952f-6bbf0d1116b9" />
 **List Of Registered Subjects**
 <img width="1919" height="1029" alt="image" src="https://github.com/user-attachments/assets/140402ee-78af-4cca-b522-d40c0c2202ac" />
+<img width="1918" height="965" alt="image" src="https://github.com/user-attachments/assets/74dcfc16-8e04-41a9-8bf1-b428ed0fd0f3" />
+**Forum Post**
+<img width="1919" height="1011" alt="image" src="https://github.com/user-attachments/assets/1b12c250-f11a-42ae-a0af-ad5cb8d06752" />
+<img width="1919" height="1018" alt="image" src="https://github.com/user-attachments/assets/d0b1e3c9-952a-44ab-b6b5-44d3504d95e9" />
 
+### Teacher
+**Course List**:
+<img width="1919" height="1075" alt="image" src="https://github.com/user-attachments/assets/5c1abb10-0b90-4a6c-8be4-3e1ef839778e" />
+**Criterias**
+<img width="1919" height="1077" alt="image" src="https://github.com/user-attachments/assets/0638c92b-a9ef-4da8-97ba-fb1af5f26407" />
+**Grades**
+<img width="1919" height="1072" alt="image" src="https://github.com/user-attachments/assets/f0145eb6-d178-43aa-9094-8d6f17e9668b" />
