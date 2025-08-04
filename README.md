@@ -35,15 +35,21 @@
 <img width="1919" height="1016" alt="image" src="https://github.com/user-attachments/assets/64455852-3971-468c-952f-6bbf0d1116b9" />
 **List Of Registered Subjects**
 <img width="1919" height="1029" alt="image" src="https://github.com/user-attachments/assets/140402ee-78af-4cca-b522-d40c0c2202ac" />
-<img width="1918" height="965" alt="image" src="https://github.com/user-attachments/assets/74dcfc16-8e04-41a9-8bf1-b428ed0fd0f3" />
-**Forum Post**
-<img width="1919" height="1011" alt="image" src="https://github.com/user-attachments/assets/1b12c250-f11a-42ae-a0af-ad5cb8d06752" />
-<img width="1919" height="1018" alt="image" src="https://github.com/user-attachments/assets/d0b1e3c9-952a-44ab-b6b5-44d3504d95e9" />
 
-### Teacher
-**Course List**:
-<img width="1919" height="1075" alt="image" src="https://github.com/user-attachments/assets/5c1abb10-0b90-4a6c-8be4-3e1ef839778e" />
-**Criterias**
-<img width="1919" height="1077" alt="image" src="https://github.com/user-attachments/assets/0638c92b-a9ef-4da8-97ba-fb1af5f26407" />
-**Grades**
-<img width="1919" height="1072" alt="image" src="https://github.com/user-attachments/assets/f0145eb6-d178-43aa-9094-8d6f17e9668b" />
+
+### Academic staff
+**Home Page**:
+<img width="1919" height="1041" alt="image" src="https://github.com/user-attachments/assets/43bbb60f-0280-46e4-b980-58c2a31a8756" />
+**Teacher Management**
+<img width="1914" height="1083" alt="image" src="https://github.com/user-attachments/assets/dfdb9ee0-c948-42cb-9116-fe90640311fb" />
+**Course Management**
+<img width="1919" height="1027" alt="image" src="https://github.com/user-attachments/assets/cd894162-9da0-4844-a947-f5b67d9d93d1" />
+**Course Session Management**
+<img width="1919" height="1032" alt="image" src="https://github.com/user-attachments/assets/5d178277-ad55-421e-b7bf-1f092e977be5" />
+**Statistical**
+<img width="1919" height="1071" alt="image" src="https://github.com/user-attachments/assets/0e3ee9be-d3e6-4e8d-92dc-56138dc648e7" />
+
+<img width="1895" height="1081" alt="image" src="https://github.com/user-attachments/assets/6448cd5a-5a14-475f-848f-afbaa558ad16" />
+
+
+
