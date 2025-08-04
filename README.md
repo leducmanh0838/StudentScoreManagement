@@ -36,3 +36,20 @@
 **List Of Registered Subjects**
 <img width="1919" height="1029" alt="image" src="https://github.com/user-attachments/assets/140402ee-78af-4cca-b522-d40c0c2202ac" />
 
+
+### Academic staff
+**Home Page**:
+<img width="1919" height="1041" alt="image" src="https://github.com/user-attachments/assets/43bbb60f-0280-46e4-b980-58c2a31a8756" />
+**Teacher Management**
+<img width="1914" height="1083" alt="image" src="https://github.com/user-attachments/assets/dfdb9ee0-c948-42cb-9116-fe90640311fb" />
+**Course Management**
+<img width="1919" height="1027" alt="image" src="https://github.com/user-attachments/assets/cd894162-9da0-4844-a947-f5b67d9d93d1" />
+**Course Session Management**
+<img width="1919" height="1032" alt="image" src="https://github.com/user-attachments/assets/5d178277-ad55-421e-b7bf-1f092e977be5" />
+**Statistical**
+<img width="1919" height="1071" alt="image" src="https://github.com/user-attachments/assets/0e3ee9be-d3e6-4e8d-92dc-56138dc648e7" />
+
+<img width="1895" height="1081" alt="image" src="https://github.com/user-attachments/assets/6448cd5a-5a14-475f-848f-afbaa558ad16" />
+
+
+
