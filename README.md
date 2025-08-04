@@ -16,6 +16,7 @@
 | Backend    | Spring MVC      |
 | Database   | MySQL                       |
 | Auth       | JWT (JSON Web Token)        |
+| Realtime Chat| Firebase|
 
 ---
 
