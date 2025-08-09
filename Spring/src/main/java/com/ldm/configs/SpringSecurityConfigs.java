@@ -6,12 +6,18 @@ package com.ldm.configs;
  */
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.gson.GsonFactory;
 import com.ldm.pojo.User;
+import java.util.Collections;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -36,8 +42,11 @@ import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
     "com.ldm.repositories",
     "com.ldm.services",
     "com.ldm.components",})
+@PropertySource("classpath:application.properties")
 public class SpringSecurityConfigs {
-
+    @Autowired
+    private Environment env;
+    
     @Autowired
     private UserDetailsService userDetailsService;
 
@@ -69,11 +78,21 @@ public class SpringSecurityConfigs {
     public Cloudinary cloudinary() {
         Cloudinary cloudinary
                 = new Cloudinary(ObjectUtils.asMap(
-                        "cloud_name", "dedsaxk7j",
-                        "api_key", "475528271894445",
-                        "api_secret", "8OjLj8udRhzD494zkKSwCO3tZOo",
+                        "cloud_name", env.getProperty("cloudinary.cloud_name"),
+                        "api_key", env.getProperty("cloudinary.api_key"),
+                        "api_secret", env.getProperty("cloudinary.api_secret"),
                         "secure", true));
         return cloudinary;
+    }
+    
+    @Bean
+    public GoogleIdTokenVerifier googleIdTokenVerifier() {
+        return new GoogleIdTokenVerifier.Builder(
+                new NetHttpTransport(),
+                GsonFactory.getDefaultInstance()
+        )
+        .setAudience(Collections.singletonList(env.getProperty("google.client-id")))
+        .build();
     }
 
     @Bean

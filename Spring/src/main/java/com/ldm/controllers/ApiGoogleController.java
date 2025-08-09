@@ -36,19 +36,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/auth")
 @CrossOrigin
 public class ApiGoogleController {
+    
+    @Autowired
+    private GoogleIdTokenVerifier verifier;
 
     @Autowired
     private UserService userDetailsService;
 
-    private static final String WEB_CLIENT_ID = "680589489153-d932o1cnulr5juc3ff04ar2l6eck5ep4.apps.googleusercontent.com";
-
     @PostMapping("/google")
     public ResponseEntity<?> loginWithGoogle(@RequestBody Map<String, String> body) throws GeneralSecurityException, IOException, Exception {
         String idTokenString = body.get("idToken");
-
-        GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), GsonFactory.getDefaultInstance())
-                .setAudience(Collections.singletonList(WEB_CLIENT_ID)) // Nhớ đúng Client ID
-                .build();
 
         GoogleIdToken idToken = verifier.verify(idTokenString);
 
