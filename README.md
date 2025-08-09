@@ -93,3 +93,63 @@
 
 ## Database
 <img width="1249" height="943" alt="image" src="https://github.com/user-attachments/assets/67040ee0-d631-442d-a921-08a6c7c8fd59" />
+
+## Installation & Database Setup
+### Database Setup
+
+**Step 1 — Clone project**
+```bash
+git clone https://github.com/leducmanh0838/StudentScoreManagement.git
+```
+
+**Step 2 — Create table and data**
+- Create your mysql database
+- Run CreateTableFile.sql to create tables
+- Run CreateDataFile.sql to insert data
+<img width="768" height="81" alt="image" src="https://github.com/user-attachments/assets/fbe37adc-d629-4dca-a2b8-b809c6f8fe39" />
+
+**Step 3 — Configure environment variables**
+- front-end/.env
+```bash
+REACT_APP_GOOGLE_CLIENT_ID=<your_google_client_id_here>
+
+REACT_APP_FIREBASE_API_KEY=<your_firebase_api_key_here>
+REACT_APP_FIREBASE_AUTH_DOMAIN=<your_firebase_auth_domain_here>
+REACT_APP_FIREBASE_PROJECT_ID=<your_firebase_project_id_here>
+REACT_APP_FIREBASE_STORAGE_BUCKET=<your_firebase_storage_bucket_here>
+REACT_APP_FIREBASE_MESSAGING_SENDER_ID=<your_firebase_messaging_sender_id_here>
+REACT_APP_FIREBASE_APP_ID=<your_firebase_app_id_here>
+REACT_APP_FIREBASE_MEASUREMENT_ID=<your_firebase_measurement_id_here>
+```
+
+- Spring/src/main/resources/application.properties
+```bash
+# ===============================
+# Hibernate Configuration
+# ===============================
+hibernate.dialect=<your_hibernate_dialect>
+hibernate.showSql=<true_or_false>
+hibernate.connection.driverClass=<your_jdbc_driver_class>
+hibernate.connection.url=<your_database_url>
+hibernate.connection.username=<your_database_username>
+hibernate.connection.password=<your_database_password>
+
+# ===============================
+# Cloudinary Configuration
+# ===============================
+cloudinary.cloud_name=<your_cloudinary_cloud_name>
+cloudinary.api_key=<your_cloudinary_api_key>
+cloudinary.api_secret=<your_cloudinary_api_secret>
+cloudinary.secure=<true_or_false>
+
+# ===============================
+# Email Configuration
+# ===============================
+mail.username=<your_email_username>
+mail.password=<your_email_password>
+
+# ===============================
+# Google OAuth 2.0
+# ===============================
+google.client-id=<your_google_client_id>
+```
