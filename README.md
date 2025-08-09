@@ -4,9 +4,9 @@
 
 ## Features
 
-- 🧑‍🎓 Students: View personal results, register for the course.
-- 👨‍🏫 Teachers: Add, edit, and manage student grades
-- 📊 Academic staff: Manage teachers, course, course session, view statistics and generate reports
+- 🧑‍🎓 **Students**: View personal results, register for the course.
+- 👨‍🏫 **Teachers**: Add, edit, and manage student grades
+- 📊 **Academic** staff: Manage teachers, course, course session, view statistics and generate reports
 
 ## Tech Stack
 
@@ -29,7 +29,7 @@
 ### Student
 **Home Page**:
 
-<img width="1898" height="1025" alt="image" src="https://github.com/user-attachments/assets/bc7070b9-3352-477d-9c71-e1e8362d9494" />
+<img width="900" height="500" alt="image" src="https://github.com/user-attachments/assets/bc7070b9-3352-477d-9c71-e1e8362d9494" />
 
 **Login**:
 
