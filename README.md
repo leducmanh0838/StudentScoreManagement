@@ -24,7 +24,7 @@
 - **Firebase**: Used specifically for real-time chat functionality and messaging services.
 ---
 
-## Screenshots
+## Pages
 
 ### Student
 **Home Page**:
