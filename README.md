@@ -95,7 +95,6 @@
 <img width="1249" height="943" alt="image" src="https://github.com/user-attachments/assets/67040ee0-d631-442d-a921-08a6c7c8fd59" />
 
 ## Installation & Database Setup
-### Database Setup
 
 **Step 1 — Clone project**
 ```bash
