@@ -10,14 +10,18 @@
 
 ## Tech Stack
 
-| Layer      | Technology                  |
-|------------|-----------------------------|
-| Frontend   | ReactJS, Boostrap        |
-| Backend    | Spring MVC      |
-| Database   | MySQL                       |
-| Auth       | JWT (JSON Web Token)        |
-| Realtime Chat| Firebase|
-
+### Backend
+- Spring MVC: A framework for building web applications using the Model-View-Controller architecture.
+- Spring Security: A library for securing applications, handling authentication and authorization.
+- Spring Mail: Provides email sending capabilities within Spring applications.
+- Hibernate: An ORM library that simplifies database interactions with Java objects.
+- MySQL: A relational database management system used for data storage.
+- Cloudinary:  A cloud-based service for managing and hosting images and videos.
+- Google OAuth 2.0: A secure user authentication method allowing login with Google accounts.
+### Frontend
+- ReactJS: A JavaScript library for building dynamic and responsive user interfaces.
+- React Boostrap: A UI toolkit based on Bootstrap that simplifies building React components with pre-styled elements.
+- Firebase: Used specifically for real-time chat functionality and messaging services.
 ---
 
 ## Screenshots
